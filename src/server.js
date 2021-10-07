@@ -7,14 +7,14 @@ const expressLayout = require('express-ejs-layouts')
 const mongoose = require('mongoose')
 const methodOverride = require('method-override')
 // includes routes
-const indexRoute = require('./routes/index.js')
+const indexRoute = require('./api/routes/index.js')
 
 const app = express()
 const port = 3000
 
 // setting
 app.set('view engine', 'ejs')
-app.set('views', __dirname+ '/views')
+app.set('views', __dirname+ '/api/views')
 app.set('layout', 'layouts/layout')
 
 // utilities
