@@ -6,8 +6,8 @@
     "node": "14.x"
   },
   "scripts": {
-    "start": "node server.js",
-    "devStart": "nodemon server.js"
+    "start": "node ./src/server.js",
+    "devStart": "nodemon ./src/server.js"
   },
   "dependencies": {
     "autoprefixer": "^10.3.1",
