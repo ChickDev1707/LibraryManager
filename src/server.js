@@ -29,7 +29,7 @@ app.use(methodOverride('_method'))
 app.use('/', indexRoute)
 
 // database
-mongoose.connect(process.env.DATABASE_URL, {
+mongoose.connect("mongodb://localhost:27017/library-manager", {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
