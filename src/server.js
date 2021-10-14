@@ -6,8 +6,15 @@ const express = require('express')
 const expressLayout = require('express-ejs-layouts')
 const mongoose = require('mongoose')
 const methodOverride = require('method-override')
+const passport = require('passport')
+const flash = require('express-flash')
+const session = require('express-session')
+const passportConfig = require('./config/passport-config.js')
 // includes routes
 const indexRoute = require('./api/routes/index.js')
+const librarianAuthRoute = require('./api/routes/librarian/auth.js')
+const readerAuthRoute = require('./api/routes/reader/auth.js')
+const loginRoute = require('./api/routes/shared/login.js')
 
 const app = express()
 const port = 3000
@@ -19,14 +26,27 @@ app.set('layout', 'layouts/layout')
 
 // utilities
 app.use(expressLayout)
-// app.use(bodyParser.urlencoded({ limit: '10mb', extended: false }))
 app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'))
 app.use('/public', express.static(__dirname+ '/public'))
 app.use(methodOverride('_method'))
 
+// authentication
+passportConfig.init(passport)
+app.use(flash())
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false
+}))
+app.use(passport.initialize())
+app.use(passport.session())
+
 // routes
 app.use('/', indexRoute)
+app.use('/librarian', librarianAuthRoute)
+app.use('/reader', readerAuthRoute)
+app.use('/login', loginRoute(passport))
 
 // database
 mongoose.connect("mongodb://localhost:27017/library-manager", {
