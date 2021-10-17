@@ -49,7 +49,7 @@ app.use('/reader', readerAuthRoute)
 app.use('/login', loginRoute(passport))
 
 // database
-mongoose.connect("mongodb://localhost:27017/library-manager", {
+mongoose.connect(process.env.DATABASE_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })

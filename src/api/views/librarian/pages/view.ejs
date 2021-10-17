@@ -1,0 +1,38 @@
+<%- contentFor('head') %>
+<div >
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tên độc giả</th>
+                <th>Email</th>
+                <th>Giới tính</th>
+                <th>Ngày sinh</th>
+                <th>Địa chỉ</th>
+                <th>Ngày lập thẻ</th>
+                <th>Thời hạn thẻ</th>
+                <th>Tiền nợ</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><%= docGia.ho_ten %></td>
+                <td><%= docGia.email %></td>
+                <td><%= docGia.gioi_tinh %></td>
+                <td><%= docGia.ngay_sinh.toDateString() %></td>
+                <td><%= docGia.dia_chi %></td>
+                <td><%= docGia.ngay_lap_the.toDateString() %></td>
+                <td><%= docGia.thoi_han_the.toDateString() %></td>
+                <td><%= docGia.tien_no %></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div >
+        <a href="/librarian/doc_gia" >Cancel</a>
+        <a href="/librarian/doc_gia/<%= docGia.id %>/edit" >Edit</a>
+        <form action="/librarian/doc_gia/<%= docGia.id %>?_method=DELETE" method="post">
+            <button type="submit">Delete</button>
+        </form>
+    </div>
+   
+</div>
