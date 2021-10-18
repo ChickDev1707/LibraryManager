@@ -10,6 +10,8 @@ const passport = require('passport')
 const flash = require('express-flash')
 const session = require('express-session')
 const passportConfig = require('./config/passport-config.js')
+const path = require('path')
+global.appRoot = path.resolve(__dirname, "..");
 // includes routes
 const indexRoute = require('./api/routes/index.js')
 const librarianAuthRoute = require('./api/routes/librarian/auth.js')
@@ -25,9 +27,12 @@ app.set('views', __dirname+ '/api/views')
 app.set('layout', 'layouts/layout')
 
 // utilities
+app.use('/css', express.static(path.join(appRoot, 'node_modules/bootstrap/dist/css')))
+app.use('/js', express.static(path.join(appRoot, 'node_modules/bootstrap/dist/js')))
+app.use('/js', express.static(path.join(appRoot, 'node_modules/jquery/dist')))
+
 app.use(expressLayout)
 app.use(express.urlencoded({extended: true}))
-app.use(express.static('public'))
 app.use('/public', express.static(__dirname+ '/public'))
 app.use(methodOverride('_method'))
 
