@@ -17,8 +17,5 @@ module.exports = function(passport){
           failureRedirect: '/login',
           failureFlash: true
         }))
-  function test(){
-
-  }
   return router
 }
