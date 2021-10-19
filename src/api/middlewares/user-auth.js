@@ -34,12 +34,12 @@ async function checkNotAuthenticated(req, res, next){
 async function decideUserPage(req, res, next){
   const currentUser = await req.user
   if(!currentUser){
-    req.userPage = "index.ejs"
+    req.userPage = "user/index.ejs"
   }else{
     if(currentUser.vai_tro == "librarian"){
-      req.userPage = "librarian/pages/index.ejs" 
+      req.userPage = "librarian/index.ejs" 
     }else if(currentUser.vai_tro == "reader"){
-      req.userPage = "reader/pages/index.ejs" 
+      req.userPage = "reader/index.ejs" 
     }
   }
   next()

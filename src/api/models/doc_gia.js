@@ -25,14 +25,7 @@ const docGia=new mongoose.Schema({
         type:Date,
         require:true
     },
-    thoi_han_the:{
-        type:Date,
-        require:true
-    },
-    tien_no:{
-        type:String,
-        require:true
-    },
+
 })
 
 module.exports =mongoose.model("doc-gia",docGia)

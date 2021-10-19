@@ -10,11 +10,13 @@ const passport = require('passport')
 const flash = require('express-flash')
 const session = require('express-session')
 const passportConfig = require('./config/passport-config.js')
+const path = require('path')
+global.appRoot = path.resolve(__dirname, "..");
 // includes routes
-const indexRoute = require('./api/routes/index.js')
-const librarianAuthRoute = require('./api/routes/librarian/auth.js')
-const readerAuthRoute = require('./api/routes/reader/auth.js')
-const loginRoute = require('./api/routes/shared/login.js')
+// const librarianRoute = require('./api/routes/librarian.js')
+const librarianRoute=require('./api/routes/librarian/auth')
+const readerRoute = require('./api/routes/reader.js')
+const userRoute = require('./api/routes/user.js')
 
 const app = express()
 const port = 3000
@@ -25,9 +27,12 @@ app.set('views', __dirname+ '/api/views')
 app.set('layout', 'layouts/layout')
 
 // utilities
+app.use('/css', express.static(path.join(appRoot, 'node_modules/bootstrap/dist/css')))
+app.use('/js', express.static(path.join(appRoot, 'node_modules/bootstrap/dist/js')))
+app.use('/js', express.static(path.join(appRoot, 'node_modules/jquery/dist')))
+
 app.use(expressLayout)
 app.use(express.urlencoded({extended: true}))
-app.use(express.static('public'))
 app.use('/public', express.static(__dirname+ '/public'))
 app.use(methodOverride('_method'))
 
@@ -43,10 +48,9 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 // routes
-app.use('/', indexRoute)
-app.use('/librarian', librarianAuthRoute)
-app.use('/reader', readerAuthRoute)
-app.use('/login', loginRoute(passport))
+app.use('/librarian', librarianRoute)
+app.use('/reader', readerRoute)
+app.use('/', userRoute(passport))
 
 // database
 mongoose.connect(process.env.DATABASE_URL, {
