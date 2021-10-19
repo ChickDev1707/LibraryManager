@@ -13,10 +13,9 @@ const passportConfig = require('./config/passport-config.js')
 const path = require('path')
 global.appRoot = path.resolve(__dirname, "..");
 // includes routes
-const indexRoute = require('./api/routes/index.js')
-const librarianAuthRoute = require('./api/routes/librarian/auth.js')
-const readerAuthRoute = require('./api/routes/reader/auth.js')
-const loginRoute = require('./api/routes/shared/login.js')
+const librarianRoute = require('./api/routes/librarian.js')
+const readerRoute = require('./api/routes/reader.js')
+const userRoute = require('./api/routes/user.js')
 
 const app = express()
 const port = 3000
@@ -48,10 +47,9 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 // routes
-app.use('/', indexRoute)
-app.use('/librarian', librarianAuthRoute)
-app.use('/reader', readerAuthRoute)
-app.use('/login', loginRoute(passport))
+app.use('/librarian', librarianRoute)
+app.use('/reader', readerRoute)
+app.use('/', userRoute(passport))
 
 // database
 mongoose.connect(process.env.DATABASE_URL, {

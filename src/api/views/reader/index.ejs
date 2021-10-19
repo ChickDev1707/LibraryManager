@@ -2,8 +2,8 @@
 <title>Reader home page</title>
 
 <%- contentFor('body') %> 
-<%- include('../components/header.ejs') %> 
+<%- include('../partials/header/reader-header.ejs') %> 
 
 <h1>welcome to Reader home page</h1>
 <p>nice to meet you</p>
-<%- include('../../partials/log-out-button.ejs', {url: '/reader/logout'}) %> 
+<%- include('../partials/log-out-button.ejs', {url: '/reader/logout'}) %> 

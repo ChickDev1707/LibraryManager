@@ -1,7 +1,7 @@
 <%- contentFor('head') %> 
 <title>Librarian home page</title>
 <%- contentFor('body') %> 
-<%- include('../components/header.ejs') %> 
+<%- include('../partials/header/librarian-header.ejs') %> 
 <h1>welcome to Librarian home page</h1>
 <p>nice to meet you</p>
-<%- include('../../partials/log-out-button.ejs', {url: '/librarian/logout'}) %> 
+<%- include('../partials/log-out-button.ejs', {url: '/librarian/logout'}) %> 
