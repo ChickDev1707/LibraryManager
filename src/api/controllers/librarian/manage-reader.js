@@ -172,8 +172,6 @@ async function editReader(req,res){
         else{
             res.redirect('/librarian/doc_gia')   
         }
-
-
     }
     else{  
         reader.ho_ten=req.body.ho_ten
@@ -188,17 +186,19 @@ async function editReader(req,res){
         await account.save()
         
         res.redirect('/librarian/doc_gia')   
-        // res.render('librarian/edit',{
-        //     docGia:Data,
-        //     error:"Email chưa đăng kí"
-        // })
+
     }
 }
 
 async function deleteReader(req,res){
     try {
         const reader= await docGia.findById(req.params.id)
+        const readerAccount=await taiKhoan.findById(reader.id_account)
+
         await reader.remove()
+        await readerAccount.remove()
+
+        
         res.redirect('/librarian/doc_gia')
     } catch (error) {
         res.redirect('/librarian/doc_gia')
