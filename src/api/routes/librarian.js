@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
+const authController = require('../controllers/librarian/auth.js')
+const userAuth = require('../middlewares/user-auth.js')
 
 const authController = require('../controllers/librarian/auth.js')
 const readerController=require('../controllers/librarian/manage-reader')
 // index
-router.route('/').get((req, res)=>{
+router.route('/').get(userAuth.checkAuthenticatedAsLibrarian, (req, res)=>{
   res.render('librarian/index.ejs')
 })
 // auth

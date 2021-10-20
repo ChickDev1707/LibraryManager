@@ -7,9 +7,7 @@ module.exports = function(passport){
   const router = express.Router();
 
   // index
-  router.route('/').get(searchBookController.searhBook, userAuth.decideUserPage, async (req, res)=>{
-      res.render(req.userPage)
-  })
+  router.route('/').get(userAuth.decideUserPage, searchBookController.searchBook)
 
   // login route
   router.route('/login')

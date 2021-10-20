@@ -3,7 +3,7 @@ const BookType = require('../../models/book-type.js')
 const Comment = require('../../models/comment.js')
 
 //search book 
-async function searhBook(req, res){
+async function searchBook(req, res){
     let query = BookHead.find()
     //option filter
     if(req.query.searchBox != null && req.query.searchBox != ''){
@@ -50,7 +50,7 @@ async function searhBook(req, res){
     try{
         const bookTypes = await BookType.find({})
         const bookHeads = await query.exec()   
-        res.render('user/index.ejs', {
+        res.render(req.userPage, {
             bookTypes: bookTypes,
             bookHeads: bookHeads,
             searchOptions: req.query
@@ -100,7 +100,7 @@ async function comment(req, res){
 }
 
 module.exports = {
-    searhBook,
+    searchBook,
     showBookDetail,
     comment
 }
