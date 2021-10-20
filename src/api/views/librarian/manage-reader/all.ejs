@@ -1,0 +1,69 @@
+
+
+<a href="/librarian/reader/new">Thêm độc giả</a><br>
+<div >
+
+    <div >
+        <span >Tất cả độc giả</span>
+    </div>
+
+    <form action="/librarian/reader" method="GET">
+        <div >
+            <span >
+                Tìm kiếm độc giả
+            </span>
+        </div>    
+        <div >
+            <input type="text" name="ho_ten" value="<%= search.ho_ten %>" >
+            <button type="submit" >Tìm kiếm</button>
+        </div>  
+
+    </form>
+
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">STT</th>
+            <th scope="col">Tên độc giả</th>
+            <th scope="col">Xem thông tin độc giả</th>
+            <th scope="col">Sữa thông tin độc giả</th>
+            <th scope="col">Xóa độc giả</th>
+          </tr>
+        </thead>
+        <tbody>
+    <% reader.forEach((reader,key)=>{ %> 
+        <tr>
+            <th>
+                <%= key %> 
+            </th>
+        <div >
+            <td>
+                <div >
+                    <span >
+                        <%= reader.ho_ten %>                
+                    </span>
+                </div>  
+            </td>
+  
+            <div >
+                <td>
+                    <a href="/librarian/reader/<%= reader.id %>" >View</a>
+                </td>
+                <td>
+                    <a href="/librarian/reader/<%= reader.id %>/edit" >Edit</a>
+                </td>
+                <td>
+                    <form action="/librarian/reader/<%= reader.id %>?_method=DELETE" method="POST">
+                        <button type="submit" >Delete</button>
+                    </form>  
+                </td>
+
+            </div>   
+
+        </div>
+        </tr>
+    <% }); %> 
+    </tbody>
+    </table>
+</div>
+<%- contentFor('head') %> 

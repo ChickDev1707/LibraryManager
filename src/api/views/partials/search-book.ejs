@@ -1,0 +1,52 @@
+<div>
+    <h1>Search Books</h1>
+    <form action="/" method="get">
+        <div class="row">
+            <div class="col-sm-10 .col-md-8">
+                <input class="form-control" type="text"  placeholder="Search..."  name="searchBox" value="<%= searchOptions.searchBox %>">
+            </div>
+            <div class="col-1 .col-md-4">
+                <button class="btn btn-primary" type="submit">Search</button>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col">
+                <select class="form-select" name="option" >
+                    <option label="-- Seacrch Option --" value="default">
+                    <option label="Title" value="title">
+                    <option label="Book Id" value="bookId">
+                    <option label="Publisher " value="publisher">
+                </select>
+            </div>
+            <div class="col">
+                <select class="form-select" name="bookType">
+                    <option label="-- Book Type --" value="default"></option>
+                    <% bookTypes.forEach(bookType => { %>
+                        <option label="<%= bookType.ten_the_loai %>" value="<%= bookType.id %>">
+                    <% }) %>
+                </select>
+            </div>   
+            <div class="col">
+                <select class="form-select" name="sortBy" onchange="this.form.submit()">
+                    <option label="-- Sort By --" value="default">
+                    <option label="Earliest Publication" value="earliestPublication">
+                    <option label="Latest Publication" value="latestPublication">
+                </select>
+            </div>
+        </div>
+    </form>
+</div>
+<h1>Books</h1>
+<div>
+    <div class="row">
+        <% bookHeads.forEach(bookHead => { %>
+            <div class="col">
+                <a href="/book-head/<%= bookHead.id %>">
+                    <img width="200" height="300" src="../../../public/assets/images/default-book-cover.png">
+                </a>
+                <div><%= bookHead.ten_dau_sach %></div> 
+            </div>                
+        <% }) %>  
+    </div>
+</div>
