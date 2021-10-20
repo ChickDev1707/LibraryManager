@@ -1,0 +1,80 @@
+<%- contentFor('head') %> 
+<title>Book Details</title>
+
+<%- contentFor('body') %> 
+<h1 class="container">Book Details</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-4">
+            <img class="card-img-top"  height="600" width="400" src="../../../public/assets/images/default-book-cover.png">
+            <br>
+            <br>
+            <button class="btn btn-primary" type="button">Boorow Book</button>
+        </div>
+        <div class="col-8">
+            <div>
+                <label> <b>Boook Head Id:</b></label>
+                <%= bookHead.ma_dau_sach %>
+            </div>
+            <div>
+                <label><b>Title:</b></label>
+                <%= bookHead.ten_dau_sach %>
+            </div>
+            <div>
+                <label><b>Author:</b></label>
+                
+                <%= bookHead.tac_gia %>
+            </div>
+            <div>
+                <label><b>Publisher:</b></label>
+                <%= bookHead.nha_xuat_ban %>
+            </div>
+            <div>
+                <label><b>Published Year:</b></label>
+                <%= bookHead.nam_xuat_ban %>
+            </div>
+            <div>
+                <label><b>Price:</b></label>
+                <%= bookHead.gia %>
+            </div>
+            <div>
+                <label><b>Description:</b></label>
+                <%= bookHead.tom_tat %>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="container">
+    <div>
+        <br>
+        <h3>Comment</h3>
+        <div>
+            <form action="/comment/<%= bookHead.id %>" method="post">
+                <div class="row">
+                    <div class="col-9">
+                        <input class="form-control" type="text"  placeholder="comment here..." name="commentInput">
+                    </div>
+                    <div class="col-1">
+                        <button class="btn btn-primary" type="submit">Comment</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <br>
+    </div>
+    <div>
+        <% comment.forEach(comment => { %>
+            <div>
+                <span>
+                    <b><%= comment.ma_doc_gia %></b>
+                    <i><small><%= comment.ngay_dang.toLocaleDateString("VN", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %></small></i>
+                </span>
+                <br>
+                <span><%= comment.noi_dung %></span>
+            </div>
+            <br>
+        <% }) %>    
+    </div>
+</div>
