@@ -1,0 +1,296 @@
+<%- contentFor('head') %> 
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.6.1/font/bootstrap-icons.css">
+<style>
+    .img_icon {
+       height: 1.5em;
+       padding-right: 0.5em;
+    }
+
+    #image-icon {
+        font-size: 2rem;
+        transition: font-size 0.3s ease-out;
+        opacity: 0;
+        cursor: pointer;
+        
+    }
+
+    #image-icon:hover {
+        font-size: 1.5rem;
+        opacity: 1
+    }
+
+    #img_container:hover .image-icon {
+        opacity: 1;
+        
+    }
+</style>
+<%- contentFor('body') %> 
+
+<div class="container">
+    <div class="row justify-content-center my-3">
+        <h3 class="text-center"> 
+            <strong>
+            THÊM ĐẦU SÁCH MỚI
+            </strong>
+        </h3> 
+    </div>
+    <form  
+        action="/librarian/books" 
+        method="POST" 
+        enctype="multipart/form-data" 
+        class="row flex-md-row justify-content-center flex-column-reverse needs-validation"
+        novalidate
+    >
+        
+        <div class="col-sm-12 col-md-6 col-xl-7">
+
+            <div class="input-group input-group-lg mb-3">
+
+                <input 
+                    name="ten_dau_sach" 
+                    id="ten_dau_sach" 
+                    class="form-control text-truncate" 
+                    type="text"   
+                    required 
+                    placeholder="Tên đầu sách"
+                />
+                <div class="invalid-feedback">
+                    Vui lòng nhập tên đầu sách
+                </div>
+            </div>
+
+            <hr style="width: 100%; height: 3px;">
+            
+            <div class="input-group input-group-lg mb-3">
+                <label for="the_loai" class="input-group-text">
+                    <h4 class="mb-0"> 
+                        <img class="img_icon" src="\public\assets\images\book-icon\categories-icon.png"/>
+                        Thể loại: 
+                    </h4 class="mb-0">  
+                </label>
+                <select 
+                    name="the_loai" 
+                    id="the_loai"
+                    type="text" 
+                    required
+                    class="form-select"                    
+                >
+                    <% bookCategories.forEach(category => { %>
+                    <option value=<%= category._id %>
+
+                    > 
+                        <%= category.ten_the_loai %>  
+                    </option>
+                <% }) %>
+                </select>
+                <div class="invalid-feedback">
+                    Vui lòng chọn thể loại sách
+                 </div>
+            </div>    
+
+            <div class="input-group input-group-lg mb-3">
+                <label for="tac_gia" class="input-group-text">
+                    <h4 class="mb-0"> 
+                        <img class="img_icon" src="\public\assets\images\book-icon\author_icon.png" />
+                        Tác giả:
+                    </h4>
+                </label>
+                <input 
+                    name="tac_gia" 
+                    id="tac_gia" 
+                    type="text" 
+                    required 
+                    class="form-control text-truncate"
+                    placeholder="Tác giả"           
+                />
+                <div class="invalid-feedback">
+                    Vui lòng nhập tác giả
+                </div>
+            </div>
+
+            <div class="input-group input-group-lg mb-3">
+                <label for="nam_xuat_ban" class="input-group-text">
+                    <h4 class="mb-0"> 
+                        <img class="img_icon" src="\public\assets\images\book-icon\release-icon.png" />
+                        Năm xuất bản: 
+                    </h4 class="mb-0">
+                </label>
+                <input 
+                    name="nam_xuat_ban" 
+                    id="nam_xuat_ban" 
+                    type="number" 
+                    required
+                    class="form-control text-truncate"
+                    placeholder="Năm xuất bản"
+                     
+                />
+                <div class="invalid-feedback">
+                    Vui lòng nhập năm xuất bản
+                </div>
+            </div>
+
+            <div class="input-group input-group-lg mb-3">
+                <label for="nha_xuat_ban" class="input-group-text">
+                    <h4 class="mb-0"> 
+                        <img class="img_icon" src="\public\assets\images\book-icon\publisher-icon.png" />
+                        Nhà xuất bản: 
+                    </h4 class="mb-0">
+                </label>
+                <input 
+                    name="nha_xuat_ban" 
+                    id= "nha_xuat_ban" 
+                    type="text"  
+                    required
+                    class="form-control text-truncate"
+                    placeholder="Nhà xuất bản"    
+                />
+                <div class="invalid-feedback">
+                    Vui lòng nhập nhà xuất bản
+                </div>
+            </div>
+
+            <div class="input-group input-group-lg mb-3">
+                <label for="ngay_nhap" class="input-group-text">     
+                    <h4 class="mb-0"> 
+                        <img class="img_icon" src="\public\assets\images\book-icon\receive-icon.png"/>
+                        Ngày nhập:  
+                    </h4 class="mb-0">
+                </label>
+                <input 
+                    name="ngay_nhap" 
+                    id="ngay_nhap" 
+                    type="date" 
+                    required
+                    class="form-control text-truncate"
+                     
+                />
+                <div class="invalid-feedback">
+                    Vui lòng chọn ngày nhập sách
+                </div>
+            </div>
+
+            <div class="input-group input-group-lg mb-3">
+                <label for="gia" class="input-group-text"> 
+                    <h4 class="mb-0">
+                        <img class="img_icon" src="\public\assets\images\book-icon\price-icon.png"/> 
+                        Giá:  
+                    </h4 >
+                </label>
+                <input 
+                    name="gia" 
+                    id="gia" 
+                    type="number" 
+                    required
+                    class="form-control text-truncate"
+                    placeholder="Giá"
+                />
+                <div class="invalid-feedback">
+                    Vui lòng nhập giá sách
+                </div>
+            </div>
+
+            <div class="input-group input-group-lg mb-3">
+                <label for="so_luong" class="input-group-text">
+                    <h4 class="mb-0"> 
+                        <img class="img_icon" src="\public\assets\images\book-icon\quantity-icon.png"/>
+                        Số lượng: 
+                    </h4 >  
+                </label>
+                <input 
+                    name="so_luong" 
+                    id="so_luong"  
+                    type="number"  
+                    required
+                    class="form-control text-truncate" 
+                    placeholder="Số lượng"     
+                />
+                <div class="invalid-feedback">
+                    Vui lòng nhập số lượng sách
+                </div>
+            </div>
+
+            <hr style="width: 100%; height: 3px; margin: 1rem 0 0.5rem;">
+
+            <div class="summary-container" >
+                <label for="tom_tat" class="input-group-text">
+                    <h4 class="mb-0"> 
+                        Tóm tắt: 
+                    </h4>
+                </label>
+                <textarea 
+                    id="autoresizing"
+                    name="tom_tat" 
+                    id="tom_tat"
+                    class="form-control text-truncate"
+                    required
+                ></textarea>
+                <div class="invalid-feedback">
+                    Vui lòng nhập tóm tắt nội dung sách
+                </div>
+            </div>
+
+            <div class="mt-3 d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary" style="min-width: 10rem;">
+                    <i class="bi bi-check2"></i>
+                    Lưu
+                </button>
+            </div>
+            
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-xl-5 position-relative" id="img_container">
+            <label for="anh_bia"  class="opacity-100 position-absolute top-50 start-50 translate-middle btn-lg rounded-pill" id="image-icon">
+                <img src="\public\assets\images\book-icon\image-icon.png" style="width: 2em;"/>
+            </label>
+            <input 
+                class="form-control" 
+                id="anh_bia" 
+                name="anh_bia" 
+                type="file" 
+                accept="image/*" 
+                style="display: none;"
+                required    
+            >
+            <img class="rounded " id="preview-img" src="" style="max-width: 100%;"/>
+            <div class="invalid-feedback">
+                Vui lòng chọn ảnh bìa của sách
+            </div>  
+        </div>
+
+    </form>
+</div>
+
+<script type="text/javascript">
+    textarea = document.querySelector("#autoresizing");
+    textarea.addEventListener('input', autoResize, false);
+
+    function autoResize() {
+        this.style.height = 'auto';
+        this.style.height = this.scrollHeight + 5 + 'px';
+    }
+</script>
+
+<script type="text/javascript">
+    var input  = document.querySelectorAll('input#anh_bia')[0];
+    input.onchange = function changePreviewImage(){
+        var file    = document.querySelectorAll('input#anh_bia')[0].files[0];
+        var preview = document.querySelectorAll('img#preview-img')[0] ; 
+        var icon = document.querySelectorAll('label#image-icon')[0]
+        icon.classList.remove('opacity-100');
+        preview.src = URL.createObjectURL(file);
+    }          
+</script>
+
+<script type="text/javascript">
+    var form = document.querySelectorAll('.needs-validation')[0]
+    form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+    }, false)
+</script>
