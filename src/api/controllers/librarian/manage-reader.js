@@ -129,6 +129,8 @@ async function editReader(req,res){
     const account=await taiKhoan.findById(reader.id_account)
 
     const checkEmail=await docGia.find({"email":req.body.email})
+
+
     const Data={
         id:reader.id,
         ho_ten:reader.ho_ten,
@@ -170,7 +172,18 @@ async function editReader(req,res){
             })
         }
         else{
-            res.redirect('/librarian/doc_gia')   
+            reader.ho_ten=req.body.ho_ten
+            reader.email=req.body.email
+            reader.gioi_tinh=req.body.gioi_tinh
+            reader.ngay_sinh=req.body.ngay_sinh
+            reader.dia_chi=req.body.dia_chi
+            reader.ngay_lap_the=req.body.ngay_lap_the
+            await reader.save()
+            
+            account.ten_tai_khoan=req.body.email
+            await account.save()
+            
+            res.redirect('/librarian/doc_gia')     
         }
     }
     else{  
@@ -181,7 +194,7 @@ async function editReader(req,res){
         reader.dia_chi=req.body.dia_chi
         reader.ngay_lap_the=req.body.ngay_lap_the
         await reader.save()
-        
+
         account.ten_tai_khoan=req.body.email
         await account.save()
         
