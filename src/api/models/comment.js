@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const CommentSchema = new mongoose.Schema({
-    ma_doc_gia: {
+    ma_reader: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'Reader'
@@ -21,4 +21,4 @@ const CommentSchema = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model('Comment', CommentSchema)
+module.exports = mongoose.model('Comment', CommentSchema, "NhanXet")

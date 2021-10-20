@@ -43,4 +43,4 @@ const BookHeadSchema = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model('BookHead', BookHeadSchema)
+module.exports = mongoose.model('BookHead', BookHeadSchema, "DauSach")

@@ -3,7 +3,6 @@ const router = express.Router();
 const authController = require('../controllers/librarian/auth.js')
 const userAuth = require('../middlewares/user-auth.js')
 
-const authController = require('../controllers/librarian/auth.js')
 const readerController=require('../controllers/librarian/manage-reader')
 // index
 router.route('/').get(userAuth.checkAuthenticatedAsLibrarian, (req, res)=>{
@@ -12,19 +11,21 @@ router.route('/').get(userAuth.checkAuthenticatedAsLibrarian, (req, res)=>{
 // auth
 router.delete('/logout', authController.logOut)
 
-router.get('/doc_gia',readerController.getAllReader)
+// manage reader
+router.route('/reader')
+      .get(readerController.getAllReader)
+      .post(readerController.addReader)
 
-router.get('/doc_gia/new',readerController.newReader)
+router.get('/reader/new', readerController.newReader)
 
-router.post('/doc_gia',readerController.addReader)
+router.route('/reader/:id')
+      .get(readerController.getReader)
+      .delete(readerController.deleteReader)
 
-router.get('/doc_gia/:id',readerController.getReader)
+router.route('/reader/:id/edit')
+      .get(readerController.formEditReader)
+      .put(readerController.editReader)
 
-router.get('/doc_gia/:id/edit',readerController.formEditReader)
-
-router.put('/doc_gia/:id/edit',readerController.editReader)
-
-router.delete('/doc_gia/:id',readerController.deleteReader)
 
 module.exports = router
 

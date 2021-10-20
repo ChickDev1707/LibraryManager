@@ -2,7 +2,7 @@
   <div class="container">
     <ul class="nav nav-pills">
       <li class="nav-item">
-        <a class="nav-link" aria-current="page" href="/librarian/doc_gia">Độc giả</a>
+        <a class="nav-link" aria-current="page" href="/librarian/reader">Độc giả</a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Sách</a>
@@ -28,4 +28,6 @@
       </li>
     </ul>
   </div>
+  <%- include('../log-out-button.ejs', {url: '/reader/logout'}) %> 
+  
 </header>

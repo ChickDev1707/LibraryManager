@@ -1,13 +1,9 @@
 const mongoose = require('mongoose')
 
-const ReaderSchema = new mongoose.Schema({
-    ma_doc_gia: {
-        type: Number,
-        required: true
-    },
-    ho_ten: {
-        type: String,
-        required: true
+const Reader=new mongoose.Schema({ 
+    ho_ten:{
+        type:String, 
+        required:true, 
     },
     email:{
         type:String,
@@ -15,27 +11,24 @@ const ReaderSchema = new mongoose.Schema({
     },
     gioi_tinh:{
         type:String,
-        required: true
+        require:true
     },
     ngay_sinh:{
         type:Date,
-        required: true,
-        default: Date.now
+        require:true
     },
     dia_chi:{
         type:String,
-        required: true
+        require:true
     },
     ngay_lap_the:{
         type:Date,
-        required: true,
-        default: Date.now
+        require:true
     },
-    tien_no:{
-        type: Number,
-        required: true,
-        default: 0
+    id_account:{
+        type:mongoose.Schema.Types.ObjectId,    
+        require:true
     }
 })
 
-module.exports = mongoose.model('Reader', ReaderSchema)
+module.exports =mongoose.model("Reader", Reader, "TheDocGia")

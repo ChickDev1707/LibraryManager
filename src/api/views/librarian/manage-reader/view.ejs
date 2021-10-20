@@ -13,20 +13,20 @@
         </thead>
         <tbody>
             <tr>
-                <td><%= docGia.ho_ten %></td>
-                <td><%= docGia.email %></td>
-                <td><%= docGia.gioi_tinh %></td>
-                <td><%= docGia.ngay_sinh.toDateString() %></td>
-                <td><%= docGia.dia_chi %></td>
-                <td><%= docGia.ngay_lap_the.toDateString() %></td>
+                <td><%= reader.ho_ten %></td>
+                <td><%= reader.email %></td>
+                <td><%= reader.gioi_tinh %></td>
+                <td><%= reader.ngay_sinh.toDateString() %></td>
+                <td><%= reader.dia_chi %></td>
+                <td><%= reader.ngay_lap_the.toDateString() %></td>
             </tr>
         </tbody>
     </table>
 
     <div >
-        <a href="/librarian/doc_gia" >Cancel</a>
-        <a href="/librarian/doc_gia/<%= docGia.id %>/edit" >Edit</a>
-        <form action="/librarian/doc_gia/<%= docGia.id %>?_method=DELETE" method="post">
+        <a href="/librarian/reader" >Cancel</a>
+        <a href="/librarian/reader/<%= reader.id %>/edit" >Edit</a>
+        <form action="/librarian/reader/<%= reader.id %>?_method=DELETE" method="post">
             <button type="submit">Delete</button>
         </form>
     </div>

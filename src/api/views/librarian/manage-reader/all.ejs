@@ -1,13 +1,13 @@
 
 
-<a href="/librarian/doc_gia/new">Thêm độc giả</a><br>
+<a href="/librarian/reader/new">Thêm độc giả</a><br>
 <div >
 
     <div >
         <span >Tất cả độc giả</span>
     </div>
 
-    <form action="/librarian/doc_gia" method="GET">
+    <form action="/librarian/reader" method="GET">
         <div >
             <span >
                 Tìm kiếm độc giả
@@ -31,7 +31,7 @@
           </tr>
         </thead>
         <tbody>
-    <% docGia.forEach((docGia,key)=>{ %> 
+    <% reader.forEach((reader,key)=>{ %> 
         <tr>
             <th>
                 <%= key %> 
@@ -40,20 +40,20 @@
             <td>
                 <div >
                     <span >
-                        <%= docGia.ho_ten %>                
+                        <%= reader.ho_ten %>                
                     </span>
                 </div>  
             </td>
   
             <div >
                 <td>
-                    <a href="/librarian/doc_gia/<%= docGia.id %>" >View</a>
+                    <a href="/librarian/reader/<%= reader.id %>" >View</a>
                 </td>
                 <td>
-                    <a href="/librarian/doc_gia/<%= docGia.id %>/edit" >Edit</a>
+                    <a href="/librarian/reader/<%= reader.id %>/edit" >Edit</a>
                 </td>
                 <td>
-                    <form action="/librarian/doc_gia/<%= docGia.id %>?_method=DELETE" method="POST">
+                    <form action="/librarian/reader/<%= reader.id %>?_method=DELETE" method="POST">
                         <button type="submit" >Delete</button>
                     </form>  
                 </td>

@@ -11,4 +11,4 @@ const BookTypeSchema = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model('BookType', BookTypeSchema)
+module.exports = mongoose.model('BookType', BookTypeSchema, "TheLoaiSach")
