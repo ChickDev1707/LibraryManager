@@ -25,7 +25,10 @@ const docGia=new mongoose.Schema({
         type:Date,
         require:true
     },
-
+    id_account:{
+        type:mongoose.Schema.Types.ObjectId,    
+        require:true
+    }
 })
 
 module.exports =mongoose.model("doc-gia",docGia)
