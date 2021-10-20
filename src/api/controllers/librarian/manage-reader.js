@@ -1,4 +1,4 @@
-const docGia=require('../../models/doc_gia')
+const docGia=require('../../models/reader')
 const taiKhoan=require('../../models/user-account')
 
 async function getAllReader(req,res){
@@ -75,7 +75,6 @@ async function addReader(req,res){
             ngay_lap_the:req.body.ngay_lap_the,
             id_account:addAccount.id,
         })
-        console.log(reader.id_account)
         try {
 
         const newDocGia= await reader.save()
