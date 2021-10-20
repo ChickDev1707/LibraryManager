@@ -13,7 +13,8 @@ const passportConfig = require('./config/passport-config.js')
 const path = require('path')
 global.appRoot = path.resolve(__dirname, "..");
 // includes routes
-const librarianRoute = require('./api/routes/librarian.js')
+// const librarianRoute = require('./api/routes/librarian.js')
+const librarianRoute=require('./api/routes/librarian')
 const readerRoute = require('./api/routes/reader.js')
 const userRoute = require('./api/routes/user.js')
 

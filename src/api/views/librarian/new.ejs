@@ -1,0 +1,40 @@
+
+<% if(errorMessage){ %> 
+    <%= errorMessage %> 
+    <% } %> 
+<div>
+    <form action="/librarian/doc_gia" method="post">
+        <span>Nhập thông tin độc giả</span>
+        <div>
+            <span>Nhập họ tên</span>
+            <input type="text" name="ho_ten" value="<%= docGia.ho_ten %>" >
+        </div>
+        <div>
+            <span>Nhập email</span>
+            <input type="email" name="email" value="<%= docGia.email %>" >
+        </div>
+        <div>
+            <span>Nhập gioi tinh</span>
+            <select name="gioi_tinh">
+                <option value="nam"  label="nam"></option>
+                <option value="nữ"  label="nữ"></option>
+                <option value="khác"  label="khác"></option>
+            </select>
+        </div>
+        <div>
+            <span>Nhập ngày sinh</span>
+            <input type="date" name="ngay_sinh" value="<%= docGia.ngay_sinh %>" >
+        </div>
+        <div>
+            <span>Nhập địa chỉ</span>
+            <input type="text" name="dia_chi" value="<%= docGia.dia_chi %>" >
+        </div>
+        <div>
+            <span>Ngày lập thẻ</span>
+            <input type="date" name="ngay_lap_the" value="<%= docGia.ngay_lap_the %>" >
+        </div>
+        <button type="submit">Tạo độc giả</button>
+        <a href="/librarian/doc_gia">Cancel</a>
+    </form>
+</div>
+<%- contentFor('head') %> 

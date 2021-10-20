@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const authController = require('../controllers/librarian/auth.js')
 
+const authController = require('../controllers/librarian/auth.js')
+const readerController=require('../controllers/librarian/manage-reader')
 // index
 router.route('/').get((req, res)=>{
   res.render('librarian/index.ejs')
@@ -9,4 +10,19 @@ router.route('/').get((req, res)=>{
 // auth
 router.delete('/logout', authController.logOut)
 
-module.exports = router;
+router.get('/doc_gia',readerController.getAllReader)
+
+router.get('/doc_gia/new',readerController.newReader)
+
+router.post('/doc_gia',readerController.addReader)
+
+router.get('/doc_gia/:id',readerController.getReader)
+
+router.get('/doc_gia/:id/edit',readerController.formEditReader)
+
+router.put('/doc_gia/:id/edit',readerController.editReader)
+
+router.delete('/doc_gia/:id',readerController.deleteReader)
+
+module.exports = router
+
