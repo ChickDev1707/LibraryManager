@@ -1,4 +1,7 @@
-
+<%- contentFor('head') %> 
+<title>Readers</title>
+<%- contentFor('body') %> 
+<%- include('../../partials/header/librarian-header.ejs') %> 
 <div class="edit">
     <% if(error!=null||error!=""){ %> 
         <%= error %> 
@@ -9,30 +12,30 @@
         </span>
     </div>
 
-    <form action="/librarian/doc_gia/<%= docGia.id %>/edit?_method=put" method="post">
+    <form action="/librarian/reader/<%= reader.id %>/edit?_method=put" method="post">
 
         <div>
             <span>Nhập họ tên</span>
-            <input type="text" name="ho_ten" value="<%= docGia.ho_ten %>" >
+            <input type="text" name="ho_ten" value="<%= reader.ho_ten %>" >
         </div>
         <div>
             <span>Nhập email</span>
-            <input type="email" name="email" value="<%= docGia.email %>" >
+            <input type="email" name="email" value="<%= reader.email %>" >
         </div>
         <div>
             <span>Nhập gioi tinh</span>
             <select name="gioi_tinh">
-                <% if(docGia.gioi_tinh=="nam"){ %> 
+                <% if(reader.gioi_tinh=="nam"){ %> 
                     <option selected value="nam" label="nam"></option>
                     <option value="nữ" label="nữ"></option>
                     <option value="khác" label="khác"></option>
                 <% } %> 
-                <% if(docGia.gioi_tinh=="nữ"){ %> 
+                <% if(reader.gioi_tinh=="nữ"){ %> 
                     <option value="nam" label="nam"></option>
                     <option selected value="nữ" label="nữ"></option>
                     <option value="khác" label="khác"></option>
                 <% } %> 
-                <% if(docGia.gioi_tinh=="khác"){ %> 
+                <% if(reader.gioi_tinh=="khác"){ %> 
                     <option value="nam" label="nam"></option>
                     <option value="nữ" label="nữ"></option>
                     <option selected value="khác" label="khác"></option>
@@ -42,18 +45,18 @@
         </div>
         <div>
             <span>Nhập ngày sinh</span>
-            <input type="date" name="ngay_sinh" value="<%= docGia.ngay_sinh %>" >
+            <input type="date" name="ngay_sinh" value="<%= reader.ngay_sinh %>" >
         </div>
         <div>
             <span>Nhập địa chỉ</span>
-            <input type="text" name="dia_chi" value="<%= docGia.dia_chi %>" >
+            <input type="text" name="dia_chi" value="<%= reader.dia_chi %>" >
         </div>
         <div>
             <span>Ngày lập thẻ</span>
-            <input type="date" name="ngay_lap_the" value="<%= docGia.ngay_lap_the %>" >
+            <input type="date" name="ngay_lap_the" value="<%= reader.ngay_lap_the %>" >
         </div>
 
-        <a href="/librarian/doc_gia" >Cancel</a>
+        <a href="/librarian/reader" >Cancel</a>
         <button type="submit" >Update</button>
     </form>
 </div>

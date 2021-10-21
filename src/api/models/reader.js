@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const docGia=new mongoose.Schema({ 
+const Reader=new mongoose.Schema({ 
     ho_ten:{
         type:String, 
         required:true, 
@@ -31,4 +31,4 @@ const docGia=new mongoose.Schema({
     }
 })
 
-module.exports =mongoose.model("doc-gia",docGia)
+module.exports =mongoose.model("Reader", Reader, "TheDocGia")

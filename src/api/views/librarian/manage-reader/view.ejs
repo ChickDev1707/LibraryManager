@@ -1,0 +1,38 @@
+<%- contentFor('head') %> 
+<title>Readers</title>
+<%- contentFor('body') %> 
+<%- include('../../partials/header/librarian-header.ejs') %> 
+<div >
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tên độc giả</th>
+                <th>Email</th>
+                <th>Giới tính</th>
+                <th>Ngày sinh</th>
+                <th>Địa chỉ</th>
+                <th>Ngày lập thẻ</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><%= reader.ho_ten %></td>
+                <td><%= reader.email %></td>
+                <td><%= reader.gioi_tinh %></td>
+                <td><%= reader.ngay_sinh.toDateString() %></td>
+                <td><%= reader.dia_chi %></td>
+                <td><%= reader.ngay_lap_the.toDateString() %></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div >
+        <a href="/librarian/reader" >Cancel</a>
+        <a href="/librarian/reader/<%= reader.id %>/edit" >Edit</a>
+        <form action="/librarian/reader/<%= reader.id %>?_method=DELETE" method="post">
+            <button type="submit">Delete</button>
+        </form>
+    </div>
+   
+</div>
+<%- contentFor('head') %>

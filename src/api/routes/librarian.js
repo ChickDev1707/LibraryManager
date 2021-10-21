@@ -1,28 +1,44 @@
 const express = require('express');
 const router = express.Router();
 
-const authController = require('../controllers/librarian/auth.js')
+const authController = require('../controllers/librarian/auth.js');
+const bookController = require('../controllers/librarian/manage-book')
+const bookMiddleWares = require('../middlewares/book-check')
+const userAuth = require('../middlewares/user-auth.js')
+
 const readerController=require('../controllers/librarian/manage-reader')
 // index
-router.route('/').get((req, res)=>{
-  res.render('librarian/index.ejs')
-})
+router.route('/').get(userAuth.checkAuthenticatedAsLibrarian)
 // auth
 router.delete('/logout', authController.logOut)
 
-router.get('/doc_gia',readerController.getAllReader)
+// manage-book
+router.route('/books')
+      .get(bookController.all)
+      .post(bookController.upload.single('anh_bia'), bookMiddleWares.checkNewBook, bookController.saveBook)
 
-router.get('/doc_gia/new',readerController.newReader)
+router.get('/books/new', bookController.newBookForm)
 
-router.post('/doc_gia',readerController.addReader)
+router.route('/books/:id')
+      .get(bookController.bookDetail)
+      .put(bookController.upload.single('anh_bia'), bookMiddleWares.checkUpdateBook, bookController.updateBook)
+      .delete(bookController.deleteBook)
 
-router.get('/doc_gia/:id',readerController.getReader)
+router.get('/books/:id/edit', bookController.updateBookForm)
 
-router.get('/doc_gia/:id/edit',readerController.formEditReader)
+// manage reader
+router.route('/reader')
+      .get(readerController.getAllReader)
+      .post(readerController.addReader)
 
-router.put('/doc_gia/:id/edit',readerController.editReader)
+router.get('/reader/new', readerController.newReader)
 
-router.delete('/doc_gia/:id',readerController.deleteReader)
+router.route('/reader/:id')
+      .get(readerController.getReader)
+      .delete(readerController.deleteReader)
+
+router.route('/reader/:id/edit')
+      .get(readerController.formEditReader)
+      .put(readerController.editReader)
 
 module.exports = router
-

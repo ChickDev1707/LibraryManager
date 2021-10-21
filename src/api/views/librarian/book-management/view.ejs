@@ -1,0 +1,59 @@
+<%- contentFor('head') %> 
+    <style>
+        .img_icon {
+       height: 1.5em;
+       padding-right: 0.5em;
+    }
+    </style>
+<%- contentFor('body') %>
+<%- include('../../partials/header/librarian-header.ejs') %> 
+
+<div class="container">
+    <div class="row justify-content-center my-3"> 
+        <h3 class="text-center"> 
+            <strong>
+            THÔNG TIN SÁCH
+            </strong>
+        </h3>
+    </div>
+    <div class="row flex-md-row justify-content-center flex-column-reverse">
+        <div class="col-sm-12 col-md-6 col-xl-7">
+            <h2 scope="col" class="font-weight-bold text-uppercase" ><%= book.ten_dau_sach%></h2>
+            <hr style="width: 100%; height: 3px;">
+            <h4 scope="col" class="" >
+                <img class="img_icon" src="\public\assets\images\book-icon\categories-icon.png"/>
+                Thể loại: <%= book.the_loai %>
+            </h4>
+            <h4 scope="col" >
+                <img class="img_icon" src="\public\assets\images\book-icon\author_icon.png" />
+                Tác giả: <%= book.tac_gia %>
+            </h4>
+            <h4 scope="col" class="">
+                <img class="img_icon" src="\public\assets\images\book-icon\release-icon.png" />
+                Năm xuất bản: <%= book.nam_xuat_ban %></h4>
+            <h4 scope="col" class="">
+                <img class="img_icon" src="\public\assets\images\book-icon\publisher-icon.png" />
+                Nhà xuất bản: <%= book.nha_xuat_ban %></h4>
+            <h4 scope="col" class="">
+                <img class="img_icon" src="\public\assets\images\book-icon\receive-icon.png"/>
+                Ngày nhập sách: <%= book.ngay_nhap.toLocaleDateString('en-GB')%>
+            </h4>
+            <h4 scope="col" class="">
+                <img class="img_icon" src="\public\assets\images\book-icon\price-icon.png"/>
+                Giá: <%= Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(book.gia) %>
+            </h4>
+            <h4 scope="col" class="">
+                <img class="img_icon" src="\public\assets\images\book-icon\quantity-icon.png"/>
+                Số lượng: <%= Intl.NumberFormat('vi-VN').format(book.so_luong) %>
+            </h4>
+            <hr style="width: 100%; height: 3px;">
+            <h4 scope="col" class="">Tóm tắt nội dung:</h4>
+            <p><%= book.tom_tat %></p>
+        </div>
+    
+        <div class="col-sm-12 col-md-6 col-xl-5" >
+            <img class="image" src="<%=book.anh_bia%>" style="max-width: 100%;"/>   
+        </div>
+             
+    </div>
+</div>

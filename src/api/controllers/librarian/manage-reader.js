@@ -1,21 +1,21 @@
-const docGia=require('../../models/reader')
-const taiKhoan=require('../../models/user-account')
+const Reader=require('../../models/reader')
+const Account=require('../../models/user-account')
 
 async function getAllReader(req,res){
     const search={}
     if(req.query.ho_ten!=null || req.query.ho_ten!=""){
       search.ho_ten=new RegExp(req.query.ho_ten,"i")
     }
-    const reader=await docGia.find(search)
-    res.render('librarian/all.ejs',{
-      docGia:reader,
+    const reader=await Reader.find(search)
+    res.render('librarian/manage-reader/all.ejs',{
+      reader:reader,
       search:req.query
     })
 }
 
 function newReader(req,res){
-    res.render('librarian/new.ejs',{
-        docGia:new docGia(),
+    res.render('librarian/manage-reader/new.ejs',{
+        reader:new Reader(),
         errorMessage:""
     })
 }
@@ -25,7 +25,7 @@ async function addReader(req,res){
     const today=new Date()
     const checkAge=today.getFullYear()-nam_sinh.getFullYear()
 
-    const checkEmail=await docGia.find({"email":req.body.email})
+    const checkEmail=await Reader.find({"email":req.body.email})
 
     let reader=""
 
@@ -36,37 +36,37 @@ async function addReader(req,res){
         req.body.dia_chi==""||
         req.body.ngay_lap_the==""
     ){
-        res.render('librarian/new',{
-            docGia:reader,
+        res.render('librarian/manage-reader/new',{
+            reader:reader,
             errorMessage:"Thiếu thông tin"
         })
     }
     else if(checkAge<18){
-        res.render('librarian/new',{
-            docGia:reader,
+        res.render('librarian/manage-reader/new',{
+            reader:reader,
             errorMessage:"Không đủ tuổi đăng ký"
         })
     }
     else if(checkAge>55){
-        res.render('librarian/new',{
-            docGia:reader,
+        res.render('librarian/manage-reader/new',{
+            reader:reader,
             errorMessage:"Vượt quá độ tuổi đăng ký"
         })
     }
     else if(checkEmail.toString()!=''){
-        res.render('librarian/new',{
-            docGia:reader,
+        res.render('librarian/manage-reader/new',{
+            reader:reader,
             errorMessage:"Email đã được sử dụng!!!"
         })
     }
     else{
-        const addAccount=new taiKhoan({
+        const addAccount=new Account({
             ten_tai_khoan:req.body.email,
             mat_khau:"reader",
             vai_tro:"reader"
         })
 
-        reader=new docGia({
+        reader=new Reader({
             ho_ten:req.body.ho_ten,
             email:req.body.email,
             gioi_tinh:req.body.gioi_tinh,
@@ -77,12 +77,12 @@ async function addReader(req,res){
         })
         try {
 
-        const newDocGia= await reader.save()
+        const newreader= await reader.save()
         const newAccount=await addAccount.save()
-        res.redirect('/librarian/doc_gia')
+        res.redirect('/librarian/reader')
         } catch (error) {
-            res.render('librarian/new',{
-                docGia:reader,
+            res.render('librarian/manage-reader/new',{
+                reader:reader,
                 errorMessage:""
             })
         }
@@ -93,15 +93,15 @@ async function addReader(req,res){
 
 async function getReader(req,res){
     try {
-        const reader=await docGia.findById(req.params.id)
-        res.render('librarian/view',{docGia:reader})
+        const reader=await Reader.findById(req.params.id)
+        res.render('librarian/manage-reader/view',{reader:reader})
     } catch (error) {
         
     }
 }
 
 async function formEditReader(req,res){
-    const reader= await docGia.findById(req.params.id)
+    const reader= await Reader.findById(req.params.id)
 
     const Data={
       id:reader.id,
@@ -112,8 +112,8 @@ async function formEditReader(req,res){
       dia_chi:reader.dia_chi,
       ngay_lap_the:reader.ngay_lap_the.toISOString().split('T')[0],
   }
-  res.render('librarian/edit',{
-      docGia:Data,
+  res.render('librarian/manage-reader/edit',{
+      reader:Data,
       error:'',
   })
 } 
@@ -123,11 +123,11 @@ async function editReader(req,res){
     const today=new Date()
     const checkAge=today.getFullYear()-nam_sinh.getFullYear()
 
-    let reader= await docGia.findById(req.params.id)
+    let reader= await Reader.findById(req.params.id)
 
-    const account=await taiKhoan.findById(reader.id_account)
+    const account=await Account.findById(reader.id_account)
 
-    const checkEmail=await docGia.find({"email":req.body.email})
+    const checkEmail=await Reader.find({"email":req.body.email})
 
 
     const Data={
@@ -146,27 +146,27 @@ async function editReader(req,res){
         req.body.dia_chi==""||
         req.body.ngay_lap_the==""
     ){
-        res.render('librarian/edit',{
-            docGia:Data,
+        res.render('librarian/manage-reader/edit',{
+            reader:Data,
             error:"Thiếu thông tin"
         })
     }
     else if(checkAge<18){
-        res.render('librarian/edit',{
-            docGia:Data,
+        res.render('librarian/manage-reader/edit',{
+            reader:Data,
             error:"Không đủ độ tuổi"
         })
     }
     else if(checkAge>55){
-        res.render('librarian/edit',{
-            docGia:Data,
+        res.render('librarian/manage-reader/edit',{
+            reader:Data,
             error:"Vượt quá tuổi đăng ký"
         })
     }
     else if(checkEmail.toString()!='' ){
         if(checkEmail[0]._id != req.params.id){
-            res.render('librarian/edit',{
-                docGia:Data,
+            res.render('librarian/manage-reader/edit',{
+                reader:Data,
                 error:"Email đã đăng ký"
             })
         }
@@ -182,7 +182,7 @@ async function editReader(req,res){
             account.ten_tai_khoan=req.body.email
             await account.save()
             
-            res.redirect('/librarian/doc_gia')     
+            res.redirect('/librarian/reader')     
         }
     }
     else{  
@@ -197,23 +197,23 @@ async function editReader(req,res){
         account.ten_tai_khoan=req.body.email
         await account.save()
         
-        res.redirect('/librarian/doc_gia')   
+        res.redirect('/librarian/reader')   
 
     }
 }
 
 async function deleteReader(req,res){
     try {
-        const reader= await docGia.findById(req.params.id)
-        const readerAccount=await taiKhoan.findById(reader.id_account)
+        const reader= await Reader.findById(req.params.id)
+        const readerAccount=await Account.findById(reader.id_account)
 
         await reader.remove()
         await readerAccount.remove()
 
         
-        res.redirect('/librarian/doc_gia')
+        res.redirect('/librarian/reader')
     } catch (error) {
-        res.redirect('/librarian/doc_gia')
+        res.redirect('/librarian/reader')
     }
 }
 
