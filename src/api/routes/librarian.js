@@ -3,44 +3,29 @@ const router = express.Router();
 
 const authController = require('../controllers/librarian/auth.js');
 const bookController = require('../controllers/librarian/manage-book')
-
 const bookMiddleWares = require('../middlewares/book-check')
 const userAuth = require('../middlewares/user-auth.js')
 
-
 const readerController=require('../controllers/librarian/manage-reader')
 // index
-router.route('/').get(userAuth.checkAuthenticatedAsLibrarian, (req, res)=>{
-  res.render('librarian/index.ejs')
-})
+router.route('/').get(userAuth.checkAuthenticatedAsLibrarian)
 // auth
 router.delete('/logout', authController.logOut)
 
-//all book
-router.get('/books', bookController.all)
+// manage-book
+router.route('/books')
+      .get(bookController.all)
+      .post(bookController.upload.single('anh_bia'), bookMiddleWares.checkNewBook, bookController.saveBook)
 
-
-//new book
 router.get('/books/new', bookController.newBookForm)
 
-//book detail
-router.get('/books/:id', bookController.bookDetail)
+router.route('/books/:id')
+      .get(bookController.bookDetail)
+      .put(bookController.upload.single('anh_bia'), bookMiddleWares.checkUpdateBook, bookController.updateBook)
+      .delete(bookController.deleteBook)
 
-
-//edit book
 router.get('/books/:id/edit', bookController.updateBookForm)
 
-//save new book
-router.post('/books',bookController.upload.single('anh_bia'), bookMiddleWares.checkNewBook, bookController.saveBook)
-
-//Update book
-router.put('/books/:id', bookController.upload.single('anh_bia'), bookMiddleWares.checkUpdateBook, bookController.updateBook)
-
-//Delete book
-router.delete('/books/:id', bookController.deleteBook)
-
-module.exports = router;
-=======
 // manage reader
 router.route('/reader')
       .get(readerController.getAllReader)
@@ -56,6 +41,4 @@ router.route('/reader/:id/edit')
       .get(readerController.formEditReader)
       .put(readerController.editReader)
 
-
 module.exports = router
-

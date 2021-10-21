@@ -1,61 +1,61 @@
 const BookHead = require('../../models/book-head.js')
-const BookType = require('../../models/book-type.js')
+const BookCategory = require('../../models/book-category.js')
 const Comment = require('../../models/comment.js')
 
 //search book 
 async function searchBook(req, res){
-    let query = BookHead.find()
-    //option filter
-    if(req.query.searchBox != null && req.query.searchBox != ''){
-        let stringSearchBox = req.query.searchBox.replace(/[&\/\\#,+()$~%.'":*?<>{}[]/g, '')
-        switch (req.query.option) {
-            case 'default':{
-                query = query.regex('ten_dau_sach', new RegExp(stringSearchBox, 'i')) 
+    //try-catch
+    try{
+        let query = BookHead.find()
+        //option filter
+        if(req.query.searchBox != null && req.query.searchBox != ''){
+            let stringSearchBox = req.query.searchBox.replace(/[&\/\\#,+()$~%.'":*?<>{}[]/g, '')
+            switch (req.query.option) {
+                case 'default':{
+                    query = query.regex('ten_dau_sach', new RegExp(stringSearchBox, 'i')) 
+                    break;
+                }
+                case 'title':{
+                    query = query.regex('ten_dau_sach', new RegExp(stringSearchBox, 'i')) 
+                    break;
+                }
+                case 'bookId':{
+                    query = query.find({ma_dau_sach: stringSearchBox})
+                    break;
+                }
+                case 'publisher':{
+                    query = query.regex('nha_xuat_ban', new RegExp(stringSearchBox, 'i')) 
+                    break;
+                }
+                default:
+                    break;  
+            }
+        }
+        //type filter
+        if (req.query.bookType != null && req.query.bookType != '' && req.query.bookType != 'default') { 
+            query = query.find({the_loai: req.query.bookType})
+        }
+        //sort filter
+        switch (req.query.sortBy) {
+            case 'earliestPublication':{
+                query = query.sort({nam_xuat_ban: 1})
                 break;
             }
-            case 'title':{
-                query = query.regex('ten_dau_sach', new RegExp(stringSearchBox, 'i')) 
-                break;
-            }
-            case 'bookId':{
-                query = query.find({ma_dau_sach: stringSearchBox})
-                break;
-            }
-            case 'publisher':{
-                query = query.regex('nha_xuat_ban', new RegExp(stringSearchBox, 'i')) 
+            case 'latestPublication':{
+                query = query.sort({nam_xuat_ban: -1})
                 break;
             }
             default:
-                break;  
+                break;
         }
-    }
-    //type filter
-    if (req.query.bookType != null && req.query.bookType != '' && req.query.bookType != 'default') { 
-        query = query.find({the_loai: req.query.bookType})
-    }
-    //sort filter
-    switch (req.query.sortBy) {
-        case 'earliestPublication':{
-            query = query.sort({nam_xuat_ban: 1})
-            break;
-        }
-        case 'latestPublication':{
-            query = query.sort({nam_xuat_ban: -1})
-            break;
-        }
-        default:
-            break;
-    }
-    //try-catch
-    try{
-        const bookTypes = await BookType.find({})
+        const bookTypes = await BookCategory.find({})
         const bookHeads = await query.exec()   
         res.render(req.userPage, {
             bookTypes: bookTypes,
             bookHeads: bookHeads,
             searchOptions: req.query
         })
-    }catch{
+    }catch(error){
         res.redirect('/')
         console.log(error)
     }
@@ -70,7 +70,7 @@ async function showBookDetail(req, res){
             bookHead: bookHead, 
             comment: comment
         })
-    } catch {
+    } catch(error){
       res.redirect('/')
       console.log(error)
     }
@@ -93,7 +93,7 @@ async function comment(req, res){
                 res.redirect('back')
             })
         }
-    }catch{
+    }catch(error){
         console.log(error)
         res.redirect('back')
     }
