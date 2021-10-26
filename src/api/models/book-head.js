@@ -12,7 +12,7 @@ const BookHeadSchema = new mongoose.Schema({
     the_loai:{
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        ref: 'BookType'
+        ref: 'TheLoaiSach'
     },
     tac_gia:{
         type: String
