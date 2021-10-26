@@ -70,7 +70,8 @@ async function showBookDetail(req, res){
         const bookDetailView = getBookDetailView(currentUser)
         res.render(bookDetailView, { 
             bookHead: bookHead, 
-            comment: comment
+            comment: comment,
+            errorMessage: req.query.errorMessage
         })
     } catch(error){
       res.redirect('/')

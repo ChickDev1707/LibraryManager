@@ -25,6 +25,8 @@ async function addNewBookHeadToCart(req, res){
     await currentUserAccount.gio_sach.push(req.body.bookHeadId)
     await currentUserAccount.save()
     res.redirect('/book-head/'+ req.body.bookHeadId)
+  }else{
+    res.redirect('/book-head/'+ req.body.bookHeadId +'?errorMessage='+ encodeURIComponent(errorMessage))
   }
 }
 
