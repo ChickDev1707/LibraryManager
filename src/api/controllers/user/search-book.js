@@ -67,7 +67,7 @@ async function showBookDetail(req, res){
         const bookHead = await BookHead.findById(req.params.id).exec()
         const comment = await Comment.find({ma_dau_sach: req.params.id}).sort({ngay_dang: -1})
         const currentUser = await req.user
-        const bookDetailView = getBookDetailView(currentUser.vai_tro)
+        const bookDetailView = getBookDetailView(currentUser)
         res.render(bookDetailView, { 
             bookHead: bookHead, 
             comment: comment
@@ -78,11 +78,12 @@ async function showBookDetail(req, res){
     }
 }
 
-function getBookDetailView(userRole){
+function getBookDetailView(user){
     let viewDir;
-    if(userRole == "librarian") viewDir = "librarian/book-detail.ejs"
-    else if(userRole == "reader") viewDir = "reader/book-detail.ejs"
-    else viewDir=  "user/book-detail.ejs"
+    if(user!= undefined){
+        if(user.vai_tro == "librarian") viewDir = "librarian/book-detail.ejs"
+        else if(user.vai_tro == "reader") viewDir = "reader/book-detail.ejs"     
+    }else viewDir=  "user/book-detail.ejs"
     return viewDir;
 }
 
