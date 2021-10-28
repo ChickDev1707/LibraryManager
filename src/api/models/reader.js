@@ -23,7 +23,8 @@ const Reader=new mongoose.Schema({
     },
     ngay_lap_the:{
         type:Date,
-        require:true
+        require:true,
+        default:Date.now
     },
     id_account:{
         type:mongoose.Schema.Types.ObjectId,    

@@ -6,6 +6,8 @@ const bookController = require('../controllers/librarian/manage-book')
 const bookMiddleWares = require('../middlewares/book-check')
 const userAuth = require('../middlewares/user-auth.js')
 
+const confirmBook=require('../controllers/librarian/confirm-book.js')
+
 const readerController=require('../controllers/librarian/manage-reader')
 // index
 router.route('/').get(userAuth.checkAuthenticatedAsLibrarian)
@@ -40,5 +42,11 @@ router.route('/reader/:id')
 router.route('/reader/:id/edit')
       .get(readerController.formEditReader)
       .put(readerController.editReader)
+
+router.route('/xacnhantrasach')
+      .get(confirmBook.searchPhieuMuonTra)
+      .post(confirmBook.themPhieuMuonTra)
+router.route('/xemketqua')
+      .post(confirmBook.xemKetQua)
 
 module.exports = router

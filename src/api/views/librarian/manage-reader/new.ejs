@@ -5,6 +5,11 @@
 <% if(errorMessage){ %> 
     <%= errorMessage %> 
     <% } %> 
+    
+<% const today=new Date() %>
+<% const month=((today.getMonth()+1)<10)?('0'+(today.getMonth()+1)):(today.getMonth()+1) %> 
+<% const ngay_lap_the=today.getFullYear()+'-'+month+'-'+today.getDate() %> 
+
 <div>
     <form action="/librarian/reader" method="post">
         <span>Nhập thông tin độc giả</span>
@@ -34,7 +39,7 @@
         </div>
         <div>
             <span>Ngày lập thẻ</span>
-            <input type="date" name="ngay_lap_the" value="<%= reader.ngay_lap_the %>" >
+            <input type="date" name="ngay_lap_the" value="<%= ngay_lap_the %>" >
         </div>
         <button type="submit">Tạo độc giả</button>
         <a href="/librarian/reader">Cancel</a>
