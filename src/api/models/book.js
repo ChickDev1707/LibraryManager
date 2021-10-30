@@ -43,7 +43,11 @@ const bookSchema = new mongoose.Schema({
     tom_tat: {
         type: String, 
         required: true
-    } 
+    } ,
+    so_luong_kha_dung:{
+        type:Number,
+        require:true
+    }
 })
 
 // bookSchema.virtual('coverImagePath').get(function() {

@@ -1,0 +1,22 @@
+<%- contentFor('head') %> 
+<%- include('../../partials/header/librarian-header') %> 
+
+<script type="text/javascript" src="/public/js/handler-submit-borrow-return-card.js">
+</script>
+
+<form action="/librarian/xacnhantrasach" method="get">
+    <input type="text" name="email"><br>
+    <button type='submit'>tìm kiếm</button>
+</form>
+
+<% if(borrowReturnCard){ %> 
+    <% borrowReturnCard.forEach(card=>{ %>
+        <input type="checkbox" name="borrowReturnCard" value="<%= card._id %>">
+        <label>mã phiếu: <%= card._id %></label><br>
+    <% }) %> 
+<% } %> 
+
+<form action="/librarian/xacnhantrasach?_method=put" method="post" name="formSubmit">
+    <input type="hidden" name="selectBorrowReturnCard"><br>
+    <button type="submit" onclick="DoSubmit()">Xác nhận</button>
+</form>

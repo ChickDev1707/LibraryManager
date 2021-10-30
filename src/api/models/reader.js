@@ -26,6 +26,9 @@ const Reader=new mongoose.Schema({
         require:true,
         default:Date.now
     },
+    tien_no:{
+        type:Number
+    },
     id_account:{
         type:mongoose.Schema.Types.ObjectId,    
         require:true
