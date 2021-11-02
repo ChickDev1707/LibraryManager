@@ -19,4 +19,7 @@ router.post('/cart/register', registerBorrowController.registerBorrowBook)
 router.delete('/cart/register-tickets/:id', registerBorrowController.deleteBookHeadFromCart)
 router.delete('/cart/register-tickets', registerBorrowController.deleteSelectedBookHeadFromCart)
 
+// watch register borrow card
+router.route('/register-tickets')
+      .get(registerBorrowController.showViewRegisterPage)
 module.exports = router;

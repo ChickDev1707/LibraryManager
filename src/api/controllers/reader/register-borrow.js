@@ -131,9 +131,19 @@ async function getCurrentUserAccount(req){
   return currentUserAccount
 }
 
+async function showViewRegisterPage(req, res){
+  const currentUserAccount = await getCurrentUserAccount(req)
+  const currentReader = await Reader.findOne({email: currentUserAccount.ten_tai_khoan})
+  const registerCards = await RegisterBorrowCard.find({ma_doc_gia: currentReader._id}).populate('cac_dau_sach').exec()
+  console.log(registerCards);
+  
+  res.render('reader/view-register-card.ejs', {registerCards})
+}
+
 module.exports = {
   showCartPage,
   addNewBookHeadToCart,
+  showViewRegisterPage,
   registerBorrowBook,
   deleteBookHeadFromCart,
   deleteSelectedBookHeadFromCart
