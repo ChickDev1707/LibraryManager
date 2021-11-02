@@ -7,24 +7,23 @@
 <div class="container">
     <div class="row">
         <div class="col-4">
-            <img class="card-img-top"  height="600" width="400" src="../../../public/assets/images/default-book-cover.png">
+            <img class="img-fluid"  height="600" width="400" src="../../../public/assets/images/default-book-cover.png">
             <br>
             <br>
-            <button class="btn btn-primary" type="button">Boorow Book</button>
+            <button class="btn btn-primary" type="button">Borrow Book</button>
         </div>
         <div class="col-8">
-            <div>
-                <label> <b>Boook Head Id:</b></label>
-                <%= bookHead.ma_dau_sach %>
-            </div>
             <div>
                 <label><b>Title:</b></label>
                 <%= bookHead.ten_dau_sach %>
             </div>
             <div>
                 <label><b>Author:</b></label>
-                
                 <%= bookHead.tac_gia %>
+            </div>
+            <div>
+                <label><b>Category:</b></label>
+                <%= bookHead.the_loai.ten_the_loai %>
             </div>
             <div>
                 <label><b>Publisher:</b></label>
@@ -68,7 +67,7 @@
         <% comment.forEach(comment => { %>
             <div>
                 <span>
-                    <b><%= comment.ma_reader %></b>
+                    <b><%= comment.ma_reader.ho_ten %></b>
                     <i><small><%= comment.ngay_dang.toLocaleDateString("VN", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %></small></i>
                 </span>
                 <br>

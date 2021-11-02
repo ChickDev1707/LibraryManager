@@ -1,6 +1,10 @@
 const mongoose = require('mongoose')
 
 const Reader=new mongoose.Schema({ 
+    id_account:{
+        type:mongoose.Schema.Types.ObjectId,    
+        require:true
+    },
     ho_ten:{
         type:String, 
         required:true, 
@@ -25,9 +29,8 @@ const Reader=new mongoose.Schema({
         type:Date,
         require:true
     },
-    id_account:{
-        type:mongoose.Schema.Types.ObjectId,    
-        require:true
+    tien_no:{
+        type: Number
     }
 })
 

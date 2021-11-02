@@ -1,0 +1,44 @@
+<%- contentFor('head') %> 
+<title>Book Registration</title>
+<%- contentFor('body') %> 
+<%- include('../../partials/header/librarian-header.ejs') %> 
+
+<div>
+    <table class="table align-middle text-center table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Độc giả</th>
+            <th scope="col">Đầu sách</th>
+            <th scope="col">Ngày đăng ký</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+</div>
+<tbody>
+    <% bookRegistration.forEach(bookRegistration => { %>
+        <tr key= <%= bookRegistration._id %> > 
+            <td scope="col" class="text-wrap">
+                <a href="/librarian/reader/<%= bookRegistration.ma_doc_gia._id %>"><%= bookRegistration.ma_doc_gia.ho_ten %></a>
+            </td>
+            <td scope="col" class="text-wrap">
+                <% bookRegistration.cac_dau_sach.forEach(cac_dau_sach => { %>
+                    <div>
+                        <a href="/librarian/books/<%= cac_dau_sach._id %>"><%= cac_dau_sach.ten_dau_sach %></a>
+                    </div>              
+                <% }) %>  
+            </td>
+            <td scope="col" class="text-wrap"><%= bookRegistration.ngay_dang_ky.toLocaleDateString("VN", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %></td>
+            <td scope="col">
+                <form action="/librarian/book-registration/<%= bookRegistration.id %>/confirm/<%= bookRegistration.cac_dau_sach %>/reader/<%= bookRegistration.ma_doc_gia %>" method="post">
+                    <button class="btn-primary" type="submit">Confirm</button>
+                </form> 
+            </td>
+            <td scope="col">
+                <form action="/librarian/book-registration/<%= bookRegistration.id %>?_method=DELETE" method="post">
+                    <button class="btn-primary btn-danger" type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+    <% }) %>
+</tbody>

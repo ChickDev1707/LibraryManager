@@ -4,23 +4,22 @@ const Comment = require('../../models/comment.js')
 
 //search book 
 async function searchBook(req, res){
-    //try-catch
     try{
-        let query = BookHead.find()
-        //option filter
+        let query = BookHead.find().populate('the_loai')
+        
+        //search option 
         if(req.query.searchBox != null && req.query.searchBox != ''){
-            let stringSearchBox = req.query.searchBox.replace(/[&\/\\#,+()$~%.'":*?<>{}[]/g, '')
+            let stringSearchBox = req.query.searchBox.replace(/[&\/\\#,+()$~%.'":*?<>{}[]/g, '') 
             switch (req.query.option) {
-                case 'default':{
-                    query = query.regex('ten_dau_sach', new RegExp(stringSearchBox, 'i')) 
-                    break;
-                }
                 case 'title':{
                     query = query.regex('ten_dau_sach', new RegExp(stringSearchBox, 'i')) 
                     break;
                 }
-                case 'bookId':{
-                    query = query.find({ma_dau_sach: stringSearchBox})
+                case 'category':{
+                    let tempCategorys = await BookCategory.find().regex('ten_the_loai', new RegExp(stringSearchBox, 'i'))
+                    for await (const tempCategory of tempCategorys){
+                        query = query.find({the_loai: tempCategory._id})
+                    }
                     break;
                 }
                 case 'publisher':{
@@ -31,27 +30,9 @@ async function searchBook(req, res){
                     break;  
             }
         }
-        //type filter
-        if (req.query.bookType != null && req.query.bookType != '' && req.query.bookType != 'default') { 
-            query = query.find({the_loai: req.query.bookType})
-        }
-        //sort filter
-        switch (req.query.sortBy) {
-            case 'earliestPublication':{
-                query = query.sort({nam_xuat_ban: 1})
-                break;
-            }
-            case 'latestPublication':{
-                query = query.sort({nam_xuat_ban: -1})
-                break;
-            }
-            default:
-                break;
-        }
-        const bookTypes = await BookCategory.find({})
-        const bookHeads = await query.exec()   
+
+        const bookHeads = await query.exec()  
         res.render(req.userPage, {
-            bookTypes: bookTypes,
             bookHeads: bookHeads,
             searchOptions: req.query
         })
@@ -64,8 +45,8 @@ async function searchBook(req, res){
 //show book details page
 async function showBookDetail(req, res){
     try {
-        const bookHead = await BookHead.findById(req.params.id).exec()
-        const comment = await Comment.find({ma_dau_sach: req.params.id}).sort({ngay_dang: -1})
+        const bookHead = await BookHead.findById(req.params.id).populate('the_loai').exec()
+        const comment = await Comment.find({ma_dau_sach: req.params.id}).populate('ma_reader').sort({ngay_dang: -1}).exec()
         res.render('user/book-detail.ejs', { 
             bookHead: bookHead, 
             comment: comment
@@ -83,14 +64,15 @@ async function comment(req, res){
         {
             const comment = new Comment(
             {
-                ma_doc_gia: '616c4a77e506972ea49eab7a',
+                ma_reader: '616c4a77e506972ea49eab7a',
                 ma_dau_sach: req.params.id,
                 noi_dung: req.body.commentInput,
-                ngay_dang: 0
+                ngay_dang: Date.now()
             })
             comment
             .save(()=>{
                 res.redirect('back')
+                console.log(comment)
             })
         }
     }catch(error){

@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 
 const authController = require('../controllers/librarian/auth.js');
-const bookController = require('../controllers/librarian/manage-book')
+const bookController = require('../controllers/librarian/manage-book.js')
+const bookRegistrationController = require('../controllers/librarian/book-registration.js')
 const bookMiddleWares = require('../middlewares/book-check')
 const userAuth = require('../middlewares/user-auth.js')
 
@@ -40,5 +41,16 @@ router.route('/reader/:id')
 router.route('/reader/:id/edit')
       .get(readerController.formEditReader)
       .put(readerController.editReader)
+
+// manage book registration
+router.route('/book-registration')
+      .get(bookRegistrationController.getAllBookRegistration)
+
+router.route('/book-registration/:id')
+      .delete(bookRegistrationController.deleteBookRegistration)
+
+router.route('/book-registration/:id/confirm/:bookHeadIds/reader/:readerId')
+      .post(bookRegistrationController.confirmBookRegistration)
+
 
 module.exports = router
