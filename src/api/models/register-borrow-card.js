@@ -14,6 +14,11 @@ const RegisterBorrowCard = new mongoose.Schema({
   cac_dau_sach:{
     type: Array,
     required: true,
+  },
+  tinh_trang:{
+    type: Boolean,
+    required: true,
+    default: false
   }
 })
 

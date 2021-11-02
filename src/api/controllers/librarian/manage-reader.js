@@ -64,7 +64,6 @@ async function addReader(req,res){
             ten_tai_khoan:req.body.email,
             mat_khau:"reader",
             vai_tro:"reader",
-            gio_sach: []
         })
 
         reader=new Reader({

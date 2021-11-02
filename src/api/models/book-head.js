@@ -40,6 +40,9 @@ const BookHeadSchema = new mongoose.Schema({
     },
     anh_bia:{
         type: String
+    },
+    so_luong_kha_dung:{
+        type: Number,
     }
 })
 

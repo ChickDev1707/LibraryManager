@@ -16,7 +16,11 @@ const UseAccount = new mongoose.Schema({
   },
   gio_sach:{
     type: Array,
-    require: true
+    default: []
+  },
+  lich_su_dk:{
+    type: Array,
+    default: []
   }
 })
 
