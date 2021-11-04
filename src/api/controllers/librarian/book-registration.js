@@ -6,8 +6,8 @@ const BookHead = require('../../models/book-head.js')
 // get all book-registration
 async function getAllBookRegistration(req, res){
     try{
-        // delete overdue book-registration (3 day and not confirmed)
-        deleteOverdueBookRegistrationFunction()
+        // delete overdue book-registration (over 3 days and not confirmed)
+        await deleteOverdueBookRegistrationFunction()
 
         //get all book-registration
         const bookRegistration = await BookRegistration.find({tinh_trang: false})
@@ -28,51 +28,49 @@ async function getAllBookRegistration(req, res){
 // delete book-registration
 async function deleteBookRegistration(req, res){
     try{
-        let bookRegistration = await BookRegistration.findByIdAndRemove(req.params.id, {useFindAndModify: false}).exec();
-        if(!bookRegistration)
-        {
-            // popup error message
+        //update quantity available of book-head
+        let bookRegistration = await BookRegistration.findById(req.params.id)
+        for await(const bookHeadId of bookRegistration.cac_dau_sach){
+            let bookHead = await BookHead.findOneAndUpdate({_id: bookHeadId}, {$inc: {so_luong_kha_dung: 1} }, {useFindAndModify: false})
         }
+
+        //delete book-registration
+        await BookRegistration.findByIdAndRemove(req.params.id, {useFindAndModify: false}).exec();
+
         res.redirect('/librarian/book-registration/')
     }catch{
         console.log(error)
         res.redirect('/librarian/book-registration/')
     }
 }
-// confirm book-registration = create-borrow-return card --> update book status --> delete book-registration
+// confirm book-registration = create-borrow-return card --> update book status --> update book-registration status
 async function confirmBookRegistration(req, res){
-    const id = req.params.id
-    const readerId = req.params.readerId
-    const bookHeadIds = req.params.bookHeadIds.split(',')
-    
+    const bookRegistration = await BookRegistration.findById(req.params.bookRegistrationId)
     try{
-        for await (const bookHeadId of bookHeadIds){
+        for await (const bookHeadId of bookRegistration.cac_dau_sach){
             let bookHead = await BookHead.findById(bookHeadId)
             for await (const book of bookHead.cac_quyen_sach){
-                if(book.tinh_trang == true) 
-                {
+                if(book.tinh_trang == true){ 
                     // create borrow-return-card
                     let borrowReturnCard = new BorrowReturnCard({
-                        ma_doc_gia: readerId,
+                        ma_doc_gia: bookRegistration.ma_doc_gia,
                         ma_sach: book._id,
                         ngay_muon: null, 
                         ngay_tra: null,
                         so_ngay_tra_tre: 0,
                         tinh_trang: 0, // chưa lấy sách
                     })
-                    let temp = await borrowReturnCard.save()
+                    await borrowReturnCard.save()
 
                     // update book status
                     updateBookStatusFunction(bookHeadId, book._id)
 
-                    // update book-registration status
-                    updateBookRegistrationStatusFunction(id)
-
-                    //break loop
                     break
                 }
             }
         }
+        // update book-registration status
+        updateBookRegistrationStatusFunction(req.params.bookRegistrationId)
 
         res.redirect('/librarian/book-registration/')
     }catch{
@@ -91,7 +89,7 @@ module.exports = {
 /*========subfunction========*/
 // update book status function
 async function updateBookStatusFunction(bookHeadId, bookId){
-    let temp = await BookHead.findOneAndUpdate(
+    await BookHead.findOneAndUpdate(
         {_id: bookHeadId, "cac_quyen_sach._id": bookId},
         {
             "cac_quyen_sach.$.tinh_trang": false
@@ -101,22 +99,27 @@ async function updateBookStatusFunction(bookHeadId, bookId){
 }
 
 // update book-registration status function
-async function updateBookRegistrationStatusFunction(id){
-    let temp = await BookRegistration.findOneAndUpdate(id, {tinh_trang: true},{useFindAndModify: false}).exec()
+async function updateBookRegistrationStatusFunction(bookRegistrationId){
+    await BookRegistration.findOneAndUpdate({_id: bookRegistrationId}, {tinh_trang: true}, {useFindAndModify: false})
 }
 
-// delete book-registration function
-async function deleteBookRegistrationFunction(id){
-    let temp = await BookRegistration.findByIdAndRemove(id, {useFindAndModify: false}).exec()
-}
-
-// delete overdue book-registration function
+// delete overdue book-registration function (over 3 days and not confirmed)
 async function deleteOverdueBookRegistrationFunction(){
     let date = new Date();
     date.setDate(date.getDate()-3)
 
-    // find book-registrations have status "false" and delete them
-    let temp = await BookRegistration.find({ngay_dang_ky: {$lte: date}, tinh_trang: false}).deleteMany().exec()
+    //update all quantity available of book-head before delete overdue book-registration
+    let bookRegistrations = await BookRegistration.find({ngay_dang_ky: {$lte: date}, tinh_trang: false})
+
+    for await (const bookRegistration of bookRegistrations){
+        for await (const bookHeadId of bookRegistration.cac_dau_sach){
+            await BookHead.findOneAndUpdate({_id: bookHeadId}, {$inc: {so_luong_kha_dung: 1} }, {useFindAndModify: false})
+        }
+    }
+
+    // delete all overdue book-registration
+    await BookRegistration.find({ngay_dang_ky: {$lte: date}, tinh_trang: false}).deleteMany().exec()
+
 }
 
 

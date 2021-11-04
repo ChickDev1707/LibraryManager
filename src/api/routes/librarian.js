@@ -46,10 +46,10 @@ router.route('/reader/:id/edit')
 router.route('/book-registration')
       .get(bookRegistrationController.getAllBookRegistration)
 
-router.route('/book-registration/:id')
+router.route('/book-registration/delete/:id')
       .delete(bookRegistrationController.deleteBookRegistration)
 
-router.route('/book-registration/:id/confirm/:bookHeadIds/reader/:readerId')
+router.route('/book-registration/confirm/:bookRegistrationId')
       .post(bookRegistrationController.confirmBookRegistration)
 
 

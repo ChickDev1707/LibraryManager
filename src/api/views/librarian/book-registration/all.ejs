@@ -30,12 +30,12 @@
             </td>
             <td scope="col" class="text-wrap"><%= bookRegistration.ngay_dang_ky.toLocaleDateString("VN", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %></td>
             <td scope="col">
-                <form action="/librarian/book-registration/<%= bookRegistration.id %>/confirm/<%= bookRegistration.cac_dau_sach %>/reader/<%= bookRegistration.ma_doc_gia %>" method="post">
+                <form action="/librarian/book-registration/confirm/<%= bookRegistration.id %>" method="post">
                     <button class="btn-primary" type="submit">Confirm</button>
                 </form> 
             </td>
             <td scope="col">
-                <form action="/librarian/book-registration/<%= bookRegistration.id %>?_method=DELETE" method="post">
+                <form action="/librarian/book-registration/delete/<%= bookRegistration.id %>?_method=DELETE" method="post">
                     <button class="btn-primary btn-danger" type="submit">Delete</button>
                 </form>
             </td>
