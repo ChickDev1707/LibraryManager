@@ -5,15 +5,19 @@
 </script>
 
 <form action="/librarian/xacnhantrasach" method="get">
-    <input type="text" name="email"><br>
+    <input type="text" name="email" placeholder="nhập email"><br>
     <button type='submit'>tìm kiếm</button>
 </form>
 
 <% if(borrowReturnCard){ %> 
-    <% borrowReturnCard.forEach(card=>{ %>
-        <input type="checkbox" name="borrowReturnCard" value="<%= card._id %>">
-        <label>mã phiếu: <%= card._id %></label><br>
-    <% }) %> 
+    <% const lengOfCard=borrowReturnCard.length %> 
+
+    <% for(let i=0;i<lengOfCard;i++){ %> 
+        <input type="checkbox" name="borrowReturnCard" value="<%= borrowReturnCard[i]._id %>">
+        <label>mã phiếu: <%= borrowReturnCard[i]._id %></label>
+        <label>Tên độc giả: <%= allNameReader[i] %></label><br>
+    <% } %> 
+
 <% } %> 
 
 <form action="/librarian/xacnhantrasach?_method=put" method="post" name="formSubmit">

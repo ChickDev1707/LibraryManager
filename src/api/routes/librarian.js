@@ -43,10 +43,6 @@ router.route('/reader/:id/edit')
       .get(readerController.formEditReader)
       .put(readerController.editReader)
 
-router.route('/phieumuon')
-      .get(confirmBook.getBorrowCard)
-      .post(confirmBook.postBorrowCard)
-
 router.route('/xacnhantrasach')
       .get(confirmBook.getConfirmReturnBook)
       .put(confirmBook.putConfirmReturnBook)
