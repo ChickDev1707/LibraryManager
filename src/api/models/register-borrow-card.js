@@ -13,7 +13,7 @@ const RegisterBorrowCard = new mongoose.Schema({
   },
   cac_dau_sach: [{ type: mongoose.Schema.Types.ObjectId, ref: 'BookHead' }],
   tinh_trang:{
-    type: Boolean,
+    type: Number,
     required: true,
     default: false
   }

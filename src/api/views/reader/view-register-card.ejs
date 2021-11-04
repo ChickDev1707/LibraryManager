@@ -13,7 +13,6 @@
   .item .top{
     position: relative;
     padding: .5rem 1rem 2.5rem;
-    background-color: #ff9f43;
     color: white;
   }
   .item .top .content .icon{
@@ -23,7 +22,8 @@
     border-radius: 50%;
     line-height: 2.5rem;
     font-size: 1.2rem;
-    background-color: #feca57;
+    color: white;
+    background-color: gray;
     margin-right: .5rem;
   }
   .item p{
@@ -41,31 +41,65 @@
     background-color: rgba(42, 42, 42, .4);
     color: white;
   }
+  .pending{
+    background-color: #ff9f43;
+  }
+  .confirmed{
+    background-color: #1dd1a1;
+  }
+  .canceled{
+    background-color: #ee5253;
+  }
 </style>
 <%- contentFor('body') %> 
 <%- include('../partials/header/reader-header.ejs') %> 
 
 <div class="container">
-  <h2>Giỏ đăng ký mượn sách của bạn</h2>
+  <h2>Các phiếu đăng ký mượn sách của bạn</h2>
   <div class="d-flex justify-content-end" style="margin: 2rem 0 1rem 0">
-    
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="sort-register-card" data-bs-toggle="dropdown" aria-expanded="false">
+        Tùy chọn
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="sort-register-card">
+        <li><a class="dropdown-item" href="/reader/register-tickets">Tất cả</a></li>
+        <li><a class="dropdown-item" href="/reader/register-tickets?status=0">Đang chờ</a></li>
+        <li><a class="dropdown-item" href="/reader/register-tickets?status=1">Đã xác nhận</a></li>
+        <li><a class="dropdown-item" href="/reader/register-tickets?status=2">Bị hủy</a></li>
+      </ul>
+    </div>
   </div>
   <div class="container">
     <div class="item-container">
       <% registerCards.forEach(card =>{ %>
         <div class="item">
-          <div class="top">
+          <div class="top 
+            <% if(card.tinh_trang == 0){ %>
+              <%= 'pending' %> 
+            <% }else if(card.tinh_trang == 1){ %>
+              <%= 'confirmed' %>   
+            <% }else{ %>
+              <%= 'canceled' %> 
+            <% } %>">
             <div class="content d-flex">
               <div class="icon"><i class="fas fa-book"></i></div>
               <div>
                 <p><i class="fas fa-calendar-alt"></i> <%= card.ngay_dang_ky %> </p>
                 <p>Đầu sách: <%= card.cac_dau_sach.length %> </p>
-                <p>Tình trạng: <%= card.tinh_trang %> </p>
+                <p>Tình trạng: 
+                  <% if(card.tinh_trang == 0){ %>
+                    <%= 'Đang chờ' %> 
+                  <% }else if(card.tinh_trang == 1){ %>
+                    <%= 'Đã xác nhận' %>   
+                  <% }else{ %>
+                    <%= 'Bị hủy' %> 
+                  <% } %> 
+                </p>
               </div>
             </div>
-            <button type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample1">More-info</button>
+            <button type="button" data-bs-toggle="collapse" data-bs-target="#<%= card._id %>" aria-expanded="false" aria-controls="collapseExample1">More-info</button>
           </div>
-          <div class="collapse" id="collapseExample1">
+          <div class="collapse" id="<%= card._id %>">
             <div class="card card-body">
               <% card.cac_dau_sach.forEach(bookHead=>{ %>
                 <p><%= bookHead.ten_dau_sach %> </p>

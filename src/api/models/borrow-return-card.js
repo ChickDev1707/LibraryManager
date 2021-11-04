@@ -4,7 +4,12 @@ const BorrowReturnCardSchema = new mongoose.Schema({
   ma_doc_gia: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: 'TheDocGia'
+    ref: 'Reader'
+  },
+  dau_sach: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: 'Book'
   },
   ma_sach: {
     type: mongoose.Schema.Types.ObjectId,
