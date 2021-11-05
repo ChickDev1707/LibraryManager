@@ -2,20 +2,23 @@
   <div class="container">
     <ul class="nav nav-pills">
       <li class="nav-item">
-        <a class="nav-link" aria-current="page" href="#">tra cứu sách</a>
+        <a class="nav-link" aria-current="page" href="/">tra cứu sách</a>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Sách</a>
+        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Mượn sách</a>
         <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">Sách đang mượn</a></li>
-          <li><a class="dropdown-item" href="#">Phiếu đăng ký mượn sách</a></li>
+          <li><a class="dropdown-item" href="/reader/borrow-cards">Sách đang mượn</a></li>
+          <li><a class="dropdown-item" href="/reader/register-tickets">Phiếu đăng ký mượn sách</a></li>
         </ul>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#">Sách yêu thích</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/reader/cart">Giỏ mượn</a>
+      </li>
     </ul>
   </div>
-  <%- include('../log-out-button.ejs', {url: '/librarian/logout'}) %> 
+  <%- include('../log-out-button.ejs', {url: '/reader/logout'}) %> 
 
 </header>

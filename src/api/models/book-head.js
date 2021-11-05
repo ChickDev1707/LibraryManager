@@ -1,10 +1,6 @@
 const mongoose = require('mongoose')
 
 const BookHeadSchema = new mongoose.Schema({
-    ma_dau_sach: {
-        type: Number,
-        required: true
-    },
     ten_dau_sach:{
         type: String,
         required: true,
@@ -12,7 +8,7 @@ const BookHeadSchema = new mongoose.Schema({
     the_loai:{
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        ref: 'BookType'
+        ref: 'BookCategory'
     },
     tac_gia:{
         type: String
@@ -40,7 +36,21 @@ const BookHeadSchema = new mongoose.Schema({
     },
     anh_bia:{
         type: String
-    }
+    },
+    so_luong_kha_dung:{
+        type: Number,
+        required: true
+    },
+    cac_quyen_sach: [{
+        _id: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true
+        },
+        tinh_trang: {
+            type: Boolean, // true: khả dụng (sẳn sàng cho mượn), fasle: không khả dụng( đã có người mượn rồi)
+            required: true
+        }
+    }]
 })
 
 module.exports = mongoose.model('BookHead', BookHeadSchema, "DauSach")

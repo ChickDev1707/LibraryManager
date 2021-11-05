@@ -17,7 +17,8 @@ const CommentSchema = new mongoose.Schema({
     },
     ngay_dang:{
         type: Date,
-        default: Date.now
+        required: true,
+        default: Date.now()
     }
 })
 

@@ -1,0 +1,49 @@
+
+<%- contentFor('head') %>
+<title>Borrow Card</title>
+
+<%- contentFor('body') %> 
+<%- include('../partials/header/reader-header.ejs') %> 
+<div class="container">
+  <h2>Các phiếu mượn sách của bạn</h2>
+  <div class="d-flex justify-content-start" style="margin: 2rem 0 1rem 0">
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="sort-borrow-card" data-bs-toggle="dropdown" aria-expanded="false">
+        Tùy chọn
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="sort-borrow-card">
+        <li><a class="dropdown-item" href="/reader/borrow-cards">Tất cả</a></li>
+        <li><a class="dropdown-item" href="/reader/borrow-cards?status=1">Chưa trả</a></li>
+        <li><a class="dropdown-item" href="/reader/borrow-cards?status=2">Đã trả</a></li>
+      </ul>
+    </div>
+  </div>
+  <table class="table">
+    <thead class="table-dark">
+      <tr>
+        <td>STT</td>
+        <td>Tên sách</td>
+        <td>Ngày mượn</td>
+        <td>Thời hạn còn lại</td>
+        <td>Tình trạng</td>
+      </tr>
+    </thead>
+    <tbody>
+      <% borrowCards.forEach((card, index)=>{ %>
+        <tr>
+          <td><%= index + 1 %> </td>
+          <td><%= card.dau_sach.ten_dau_sach %> </td>
+          <td><%= card.ngay_muon %> </td>
+          <td><%= card.remainDay %> </td>
+          <td>
+            <% if(card.tinh_trang == 1){ %>
+              <%= 'Chưa trả' %>   
+            <% }else{ %>
+              <%= 'Đã trả' %> 
+            <% } %> 
+          </td>
+        </tr>
+      <% }) %> 
+    </tbody>
+  </table>
+</div>

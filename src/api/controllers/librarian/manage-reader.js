@@ -64,7 +64,7 @@ async function addReader(req,res){
         const addAccount=new Account({
             ten_tai_khoan:req.body.email,
             mat_khau:"reader",
-            vai_tro:"reader"
+            vai_tro:"reader",
         })
 
         reader=new Reader({
