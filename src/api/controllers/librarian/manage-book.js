@@ -101,9 +101,14 @@ async function saveBook(req, res){
             ngay_nhap: req.body.ngay_nhap,
             gia: req.body.gia,
             so_luong: req.body.so_luong,
-            tom_tat: req.body.tom_tat
+            tom_tat: req.body.tom_tat,
+            so_luong_kha_dung: req.body.so_luong
         })
-    
+        
+        for(let i=0;i<req.body.so_luong;i++)
+        {
+            book.cac_quyen_sach.push({tinh_trang: true})
+        }
         //try-catch
         try {
            book.save();
@@ -190,6 +195,7 @@ async function updateBook(req, res){
             ngay_nhap: req.body.ngay_nhap,
             gia: req.body.gia,
             so_luong: req.body.so_luong,
+            so_luong_kha_dung:req.body.so_luong,
             tom_tat: req.body.tom_tat
         };
     
