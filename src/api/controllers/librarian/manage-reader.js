@@ -1,5 +1,6 @@
 const Reader=require('../../models/reader')
 const Account=require('../../models/user-account')
+const BorrowReturnCard=require('../../models/borrow-return-card')
 
 async function getAllReader(req,res){
     const search={}
@@ -63,7 +64,7 @@ async function addReader(req,res){
         const addAccount=new Account({
             ten_tai_khoan:req.body.email,
             mat_khau:"reader",
-            vai_tro:"reader"
+            vai_tro:"reader",
         })
 
         reader=new Reader({
@@ -75,7 +76,6 @@ async function addReader(req,res){
             ngay_lap_the:req.body.ngay_lap_the,
             id_account:addAccount.id,
         })
-        console.log(reader.id_account)
         try {
 
         const newreader= await reader.save()
@@ -210,6 +210,13 @@ async function deleteReader(req,res){
 
         await reader.remove()
         await readerAccount.remove()
+
+        const borrowReturnCard=await BorrowReturnCard.find({ma_doc_gia:req.params.id})
+        const length=borrowReturnCard.length
+        for(let i=0;i<length;i++){
+            await borrowReturnCard[i].remove()          //xóa phiếu mượn trả của độc giả 
+        }
+        
 
         
         res.redirect('/librarian/reader')

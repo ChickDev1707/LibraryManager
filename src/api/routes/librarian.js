@@ -2,11 +2,14 @@ const express = require('express');
 const router = express.Router();
 
 const authController = require('../controllers/librarian/auth.js');
-const bookController = require('../controllers/librarian/manage-book')
+const bookController = require('../controllers/librarian/manage-book.js')
+const bookRegistrationController = require('../controllers/librarian/book-registration.js')
 const bookMiddleWares = require('../middlewares/book-check')
 const userAuth = require('../middlewares/user-auth.js')
 const borrowController = require('../controllers/librarian/borrow-book')
 const fineController = require('../controllers/librarian/fine')
+
+const confirmBook=require('../controllers/librarian/confirm-return-book.js')
 
 const readerController=require('../controllers/librarian/manage-reader')
 // index
@@ -55,4 +58,18 @@ router.route('/borrow/confirm')
 router.route('/fine')
       .get(fineController.getAllFine)
       .post(fineController.saveFine)
+
+router.route('/xacnhantrasach')
+      .get(confirmBook.getConfirmReturnBook)
+      .put(confirmBook.putConfirmReturnBook)
+// manage book registration
+router.route('/book-registration')
+      .get(bookRegistrationController.getAllBookRegistration)
+
+router.route('/book-registration/delete/:id')
+      .delete(bookRegistrationController.deleteBookRegistration)
+
+router.route('/book-registration/confirm/:bookRegistrationId')
+      .post(bookRegistrationController.confirmBookRegistration)
+
 module.exports = router

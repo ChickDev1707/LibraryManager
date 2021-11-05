@@ -1,36 +1,33 @@
-const mongoose = require('mongoose')
 
-const CallCardSchema = new mongoose.Schema({
-    ma_doc_gia: {
-        type: mongoose.Schema.Types.ObjectId,
-        require: true,
-        ref: "Reader"
-    },
-    dau_sach: {
+// const BookHead = require('../models/book-head.js')
+
+
+const BorrowReturnCardSchema = new mongoose.Schema({
+    ma_doc_gia:{
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        ref: "Book"
+        ref: 'Reader'
     },
-    ma_sach: {
+    ma_sach:{
         type: mongoose.Schema.Types.ObjectId,
         required: true,
+        //ref: ''
     },
-    ngay_muon: {
-        type: mongoose.Schema.Types.Date,
-        require: true,
+    ngay_muon:{
+        type: Date,
         default: Date.now
     },
-    ngay_tra: {
-        type: mongoose.Schema.Types.ObjectId,
+    ngay_tra:{
+        type: Date,
+        default: null
     },
-    so_ngay_tre: {
-        type: mongoose.Schema.Types.Number
+    so_ngay_tra_tre:{
+        type: Number
     },
     tinh_trang:{
-        type: Number,
-        require: true
+        type: Number, //0: chưa lấy sách, 1: đã lấy sách, 2: đã trả sách
+        required: true
     }
 })
 
-
-module.exports = mongoose.model("CallCard", CallCardSchema, "PhieuMuonTra")
+module.exports = mongoose.model('BorrowReturnCard', BorrowReturnCardSchema, 'PhieuMuonTra' )

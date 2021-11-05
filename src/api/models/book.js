@@ -51,6 +51,7 @@ const bookSchema = new mongoose.Schema({
         type: Number,
         required:true
     } 
+
 })
 
 // bookSchema.virtual('coverImagePath').get(function() {
