@@ -13,6 +13,14 @@ const UseAccount = new mongoose.Schema({
   vai_tro:{
     type: String,
     require: true
+  },
+  gio_sach:{
+    type: Array,
+    default: []
+  },
+  lich_su_dk:{
+    type: Array,
+    default: []
   }
 })
 

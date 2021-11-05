@@ -22,12 +22,22 @@ async function showBookDetail(req, res){
 
         res.render('user/book-detail.ejs', { 
             bookHead: bookHead, 
-            comment: comment
+            comment: comment,
+            errorMessage: req.query.errorMessage
         })
     } catch(error){
       res.redirect('/')
       console.log(error)
     }
+}
+
+function getBookDetailView(user){
+    let viewDir;
+    if(user!= undefined){
+        if(user.vai_tro == "librarian") viewDir = "librarian/book-detail.ejs"
+        else if(user.vai_tro == "reader") viewDir = "reader/book-detail.ejs"     
+    }else viewDir=  "user/book-detail.ejs"
+    return viewDir;
 }
 
 //comment book
