@@ -1,15 +1,10 @@
 const mongoose = require('mongoose')
 
 const CommentSchema = new mongoose.Schema({
-    ma_reader: {
+    doc_gia: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'Reader'
-    },
-    ma_dau_sach:{
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: 'BookHead'
     },
     noi_dung: {
         type: String,

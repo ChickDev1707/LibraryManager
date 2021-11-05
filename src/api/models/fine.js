@@ -1,10 +1,10 @@
 const mongoose = require('mongoose')
 
 const fineSchema = new mongoose.Schema({
-    ma_doc_gia: {
+    doc_gia: {
         type: mongoose.SchemaTypes.ObjectId,
         require: true,
-        ref: "TheDocGia"
+        ref: "Reader"
     },
     so_tien_thu:{
         type: Number,

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-
+const path = require('path')
 const BookHeadSchema = new mongoose.Schema({
     ten_dau_sach:{
         type: String,
@@ -11,13 +11,16 @@ const BookHeadSchema = new mongoose.Schema({
         ref: 'BookCategory'
     },
     tac_gia:{
-        type: String
+        type: String,
+        required: true,
     },
     nam_xuat_ban:{
-        type: Number
+        type: Number,
+        required: true,
     },
     nha_xuat_ban:{
-        type: String
+        type: String,
+        required: true
     },
     ngay_nhap:{
         type: Date,
@@ -25,7 +28,8 @@ const BookHeadSchema = new mongoose.Schema({
         default: Date.now
     },
     gia:{
-        type: Number
+        type: Number,
+        required: true
     },
     so_luong:{
         type: Number,
@@ -50,7 +54,9 @@ const BookHeadSchema = new mongoose.Schema({
             type: Boolean, // true: khả dụng (sẳn sàng cho mượn), fasle: không khả dụng( đã có người mượn rồi)
             required: true
         }
-    }]
+    }],
+    cac_nhan_xet: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }]
 })
 
 module.exports = mongoose.model('BookHead', BookHeadSchema, "DauSach")
+module.exports.coverImageBasePath = coverImageBasePath

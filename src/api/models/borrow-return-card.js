@@ -1,20 +1,23 @@
-
-// const BookHead = require('../models/book-head.js')
-
+const mongoose = require('mongoose')
 
 const BorrowReturnCardSchema = new mongoose.Schema({
-    ma_doc_gia:{
+    doc_gia:{
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'Reader'
     },
+    dau_dach:{
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'BookHead'
+    },
     ma_sach:{
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        //ref: ''
     },
     ngay_muon:{
         type: Date,
+        required: true,
         default: Date.now
     },
     ngay_tra:{
@@ -22,7 +25,9 @@ const BorrowReturnCardSchema = new mongoose.Schema({
         default: null
     },
     so_ngay_tra_tre:{
-        type: Number
+        type: Number,
+        required: true,
+        default: 0
     },
     tinh_trang:{
         type: Number, //0: chưa lấy sách, 1: đã lấy sách, 2: đã trả sách

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const Reader= new mongoose.Schema({ 
+const ReaderSchema= new mongoose.Schema({ 
     ho_ten:{
         type:String, 
         required:true, 
@@ -36,13 +36,4 @@ const Reader= new mongoose.Schema({
     }
 })
 
-
-Reader.virtual('account', {
-    ref: 'ReaderAccount',
-    localField: 'email',
-    foreignField: 'ten_tai_khoan',
-    justOne: true
-  })
-
-
-module.exports =mongoose.model("Reader", Reader, "TheDocGia")
+module.exports =mongoose.model("Reader", ReaderSchema, "TheDocGia")
