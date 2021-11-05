@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 const path = require('path')
+const bookChild = require('./book-child')
 const coverImageBasePath = 'uploads/bookCovers'
+const BookChild = require('./book-child')
 
 const bookSchema = new mongoose.Schema({
     ten_dau_sach: {
@@ -43,10 +45,13 @@ const bookSchema = new mongoose.Schema({
     tom_tat: {
         type: String, 
         required: true
-    }, 
+    },
+    cac_quyen_sach:[bookChild],
     so_luong_kha_dung:{
         type: Number,
-    }
+        required:true
+    } 
+
 })
 
 // bookSchema.virtual('coverImagePath').get(function() {

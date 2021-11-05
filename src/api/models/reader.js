@@ -1,17 +1,13 @@
 const mongoose = require('mongoose')
 
-const Reader=new mongoose.Schema({ 
-    id_account:{
-        type:mongoose.Schema.Types.ObjectId,    
-        require:true
-    },
+const Reader= new mongoose.Schema({ 
     ho_ten:{
         type:String, 
         required:true, 
     },
     email:{
         type:String,
-        require:true
+        require:true,
     },
     gioi_tinh:{
         type:String,
@@ -30,12 +26,23 @@ const Reader=new mongoose.Schema({
         require:true,
         default:Date.now
     },
-    tien_no:{
-        type:Number
+    id_account:{
+        type:mongoose.Schema.Types.ObjectId,    
+        require:true
     },
     tien_no:{
-        type: Number
+        type:Number,
+        default: 0
     }
 })
+
+
+Reader.virtual('account', {
+    ref: 'ReaderAccount',
+    localField: 'email',
+    foreignField: 'ten_tai_khoan',
+    justOne: true
+  })
+
 
 module.exports =mongoose.model("Reader", Reader, "TheDocGia")

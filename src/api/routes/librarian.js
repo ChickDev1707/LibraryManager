@@ -6,6 +6,8 @@ const bookController = require('../controllers/librarian/manage-book.js')
 const bookRegistrationController = require('../controllers/librarian/book-registration.js')
 const bookMiddleWares = require('../middlewares/book-check')
 const userAuth = require('../middlewares/user-auth.js')
+const borrowController = require('../controllers/librarian/borrow-book')
+const fineController = require('../controllers/librarian/fine')
 
 const confirmBook=require('../controllers/librarian/confirm-return-book.js')
 
@@ -44,6 +46,19 @@ router.route('/reader/:id/edit')
       .get(readerController.formEditReader)
       .put(readerController.editReader)
 
+//borow books
+router.route('/borrow')
+      .get(borrowController.borrowForm)
+      .post(borrowController.saveBorrowCard)
+
+router.route('/borrow/confirm')
+      .get(borrowController.confirmForm)
+      .post(borrowController.updateBorrowForm)
+
+router.route('/fine')
+      .get(fineController.getAllFine)
+      .post(fineController.saveFine)
+
 router.route('/xacnhantrasach')
       .get(confirmBook.getConfirmReturnBook)
       .put(confirmBook.putConfirmReturnBook)
@@ -56,6 +71,5 @@ router.route('/book-registration/delete/:id')
 
 router.route('/book-registration/confirm/:bookRegistrationId')
       .post(bookRegistrationController.confirmBookRegistration)
-
 
 module.exports = router

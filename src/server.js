@@ -35,6 +35,7 @@ app.use(expressLayout)
 app.use(express.urlencoded({extended: true}))
 app.use('/public', express.static(__dirname+ '/public'))
 app.use(methodOverride('_method'))
+app.use(express.json())
 
 // authentication
 passportConfig.init(passport)
