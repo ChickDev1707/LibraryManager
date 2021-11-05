@@ -27,7 +27,11 @@ const Reader=new mongoose.Schema({
     },
     ngay_lap_the:{
         type:Date,
-        require:true
+        require:true,
+        default:Date.now
+    },
+    tien_no:{
+        type:Number
     },
     tien_no:{
         type: Number

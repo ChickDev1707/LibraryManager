@@ -5,16 +5,22 @@
 <% if(errorMessage){ %> 
     <%= errorMessage %> 
     <% } %> 
+    
+<% const today=new Date() %>
+<% const month=((today.getMonth()+1)<10)?('0'+(today.getMonth()+1)):(today.getMonth()+1) %> 
+<% const day=(today.getDate()<10)?('0'+today.getDate()):(today.getDate()) %> 
+<% const ngay_lap_the=today.getFullYear()+'-'+month+'-'+day %> 
+
 <div>
     <form action="/librarian/reader" method="post">
         <span>Nhập thông tin độc giả</span>
         <div>
             <span>Nhập họ tên</span>
-            <input type="text" name="ho_ten" value="<%= reader.ho_ten %>">
+            <input type="text" name="ho_ten" value="<%= reader.ho_ten %>" required>
         </div>
         <div>
             <span>Nhập email</span>
-            <input type="email" name="email" value="<%= reader.email %>" >
+            <input type="email" name="email" value="<%= reader.email %>" required>
         </div>
         <div>
             <span>Nhập gioi tinh</span>
@@ -26,15 +32,15 @@
         </div>
         <div>
             <span>Nhập ngày sinh</span>
-            <input type="date" name="ngay_sinh" value="<%= reader.ngay_sinh %>" >
+            <input type="date" name="ngay_sinh" value="<%= reader.ngay_sinh %>" required>
         </div>
         <div>
             <span>Nhập địa chỉ</span>
-            <input type="text" name="dia_chi" value="<%= reader.dia_chi %>" >
+            <input type="text" name="dia_chi" value="<%= reader.dia_chi %>" required>
         </div>
         <div>
             <span>Ngày lập thẻ</span>
-            <input type="date" name="ngay_lap_the" value="<%= reader.ngay_lap_the %>" >
+            <input type="date" name="ngay_lap_the" value="<%= ngay_lap_the %>" required>
         </div>
         <button type="submit">Tạo độc giả</button>
         <a href="/librarian/reader">Cancel</a>
