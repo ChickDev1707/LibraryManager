@@ -7,27 +7,23 @@
 <div class="container">
     <div class="row">
         <div class="col-4">
-            <img class="card-img-top"  height="600" width="400" src="../../../public/assets/images/default-book-cover.png">
+            <img class="img-fluid"  height="600" width="400" src="../../../public/assets/images/default-book-cover.png">
             <br>
             <br>
-            <form action="/reader/cart" method="POST">
-                <input name="bookHeadId" type="text" hidden value="<%= bookHead._id%>">
-                <button class="btn btn-primary" type="submit">Boorow Book</button>
-            </form>
+            <button class="btn btn-primary" type="button">Borrow Book</button>
         </div>
         <div class="col-8">
-            <div>
-                <label> <b>Boook Head Id:</b></label>
-                <%= bookHead.ma_dau_sach %>
-            </div>
             <div>
                 <label><b>Title:</b></label>
                 <%= bookHead.ten_dau_sach %>
             </div>
             <div>
                 <label><b>Author:</b></label>
-                
                 <%= bookHead.tac_gia %>
+            </div>
+            <div>
+                <label><b>Category:</b></label>
+                <%= bookHead.the_loai.ten_the_loai %>
             </div>
             <div>
                 <label><b>Publisher:</b></label>
@@ -68,16 +64,16 @@
         <br>
     </div>
     <div>
-        <% comment.forEach(comment => { %>
+        <% bookHead.cac_nhan_xet.forEach(comment => { %>
             <div>
                 <span>
-                    <b><%= comment.ma_reader %></b>
+                    <b><%= comment.doc_gia.ho_ten %></b>
                     <i><small><%= comment.ngay_dang.toLocaleDateString("VN", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %></small></i>
                 </span>
                 <br>
                 <span><%= comment.noi_dung %></span>
             </div>
             <br>
-        <% }) %>    
+        <% }) %>   
     </div>
 </div>

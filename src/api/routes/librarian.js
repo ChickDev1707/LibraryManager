@@ -3,7 +3,7 @@ const router = express.Router();
 
 const authController = require('../controllers/librarian/auth.js');
 const bookController = require('../controllers/librarian/manage-book.js')
-const bookRegistrationController = require('../controllers/librarian/book-registration.js')
+const registerBorrowCardController = require('../controllers/librarian/register-borrow-card.js')
 const bookMiddleWares = require('../middlewares/book-check')
 const userAuth = require('../middlewares/user-auth.js')
 const borrowController = require('../controllers/librarian/borrow-book')
@@ -62,14 +62,14 @@ router.route('/fine')
 router.route('/xacnhantrasach')
       .get(confirmBook.getConfirmReturnBook)
       .put(confirmBook.putConfirmReturnBook)
-// manage book registration
-router.route('/book-registration')
-      .get(bookRegistrationController.getAllBookRegistration)
+//manage register-borrow-card
+router.route('/register-borrow-card')
+      .get(registerBorrowCardController.getAllRegisterBorrowCard)
 
-router.route('/book-registration/delete/:id')
-      .delete(bookRegistrationController.deleteBookRegistration)
+router.route('/register-borrow-card/delete/:id')
+      .delete(registerBorrowCardController.deleteRegisterBorrowCard)
 
-router.route('/book-registration/confirm/:bookRegistrationId')
-      .post(bookRegistrationController.confirmBookRegistration)
+router.route('/register-borrow-card/confirm/:registerBorrowCardId')
+      .post(registerBorrowCardController.confirmRegisterBorrowCard)
 
 module.exports = router

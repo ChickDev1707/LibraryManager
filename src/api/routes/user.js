@@ -22,7 +22,7 @@ module.exports = function(passport){
   router.route('/book-head/:id').get(searchBookController.showBookDetail)
   
   //comment book route
-  router.route('/comment/:id').post(searchBookController.comment)
+  router.route('/comment/:bookHeadId').post(searchBookController.comment)
   
   return router
 }

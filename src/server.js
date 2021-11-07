@@ -50,7 +50,7 @@ app.use(passport.session())
 
 // routes
 app.use('/librarian', librarianRoute)
-app.use('/reader', readerRoute)
+//app.use('/reader', readerRoute)
 app.use('/', userRoute(passport))
 
 // database

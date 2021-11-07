@@ -34,21 +34,25 @@ async function searchBook(searchBox, option){
 
 //show book details
 async function showBookDetail(id){
-    const bookHead = await BookHead.findById(id).populate('the_loai').exec()
-    const comment = await Comment.find({ma_dau_sach: id}).populate('ma_reader').sort({ngay_dang: -1}).exec()
+    const bookHead = await BookHead.findById(id)
+    .populate({path: 'cac_nhan_xet', populate: {path: 'doc_gia'}})
+    .populate('the_loai')
+    .exec()
 
-    return {bookHead, comment}
+    return bookHead
 }
 
 //post comment 
-async function comment(id, commentInput){
+async function comment(bookHeadId, commentInput){
     let comment = new Comment({
-        ma_reader: '616c4a77e506972ea49eab7a',
-        ma_dau_sach: id,
+        doc_gia: '616c44514e57c83c08c957b2',
         noi_dung: commentInput,
         ngay_dang: Date.now()
     })
     await comment.save()
+
+    const update = {$push: {cac_nhan_xet: comment.id}}
+    await BookHead.findByIdAndUpdate(bookHeadId, update, {useFindAndModify: false}).exec()
 }
 
 module.exports = {
