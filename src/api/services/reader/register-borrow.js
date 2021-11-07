@@ -1,5 +1,5 @@
 
-const BookHead = require('../../models/book.js')
+const BookHead = require('../../models/book-head.js')
 const Reader = require('../../models/reader.js')
 const RegisterBorrowCard = require('../../models/register-borrow-card.js')
 const accountServices = require('../../services/account.js')
@@ -78,7 +78,7 @@ async function handleSuccessWithCart(account, bookHeadIds){
 
 async function addNewRegisterBorrowCard(readerId, bookHeads){
   const newCard = new RegisterBorrowCard({
-    ma_doc_gia: readerId,
+    doc_gia: readerId,
     cac_dau_sach: bookHeads,
   })
   await newCard.save();
