@@ -6,7 +6,7 @@ const BorrowReturnCardSchema = new mongoose.Schema({
         required: true,
         ref: 'Reader'
     },
-    dau_dach:{
+    dau_sach:{
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'BookHead'
@@ -17,7 +17,6 @@ const BorrowReturnCardSchema = new mongoose.Schema({
     },
     ngay_muon:{
         type: Date,
-        required: true,
         default: Date.now
     },
     ngay_tra:{

@@ -18,11 +18,10 @@ async function searchBook(req, res){
 //show book details page
 async function showBookDetail(req, res){
     try {
-        const {bookHead, comment} = await searchBookService.showBookDetail(req.params.id)
+        const bookHead = await searchBookService.showBookDetail(req.params.id)
 
         res.render('user/book-detail.ejs', { 
-            bookHead: bookHead, 
-            comment: comment,
+            bookHead: bookHead,
             errorMessage: req.query.errorMessage
         })
     } catch(error){
@@ -44,7 +43,8 @@ function getBookDetailView(user){
 async function comment(req, res){
     try{
         if(req.body.commentInput != null){
-            await searchBookService.comment(req.params.id, req.body.commentInput)
+            await searchBookService.comment(req.params.bookHeadId, req.body.commentInput)
+            
         }
         res.redirect('back')
     }catch(error){
