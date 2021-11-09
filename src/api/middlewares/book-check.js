@@ -1,26 +1,26 @@
-async function checkUpdateBook(req, res, next){
+async function checkNewBook(req, res, next){
     
     if(!req.file)
     {
-        req.error = true;
-        req.message = 'Vui lòng chọn ảnh bìa cho sách'
+        return res.json({success: false, message: "Vui lòng chọn ảnh bìa cho sách!"})
     }
     else
     {
         let result = checkBody(req.body)
-        req.error = result.error;
-        req.message = result.message;
-            
-    }
-    return next() 
+        if(result.error)
+            return res.json({success: false, message: result.message})
+        else
+        return next()       
+    } 
         
 }
 
-async function checkNewBook(req, res, next){
+async function checkUpdateBook(req, res, next){
     let result = checkBody(req.body)
-    req.error = result.error;
-    req.message = result.message;
-    return next()    
+    if(result.error)
+        return res.json({success: false, message: result.message})
+    else
+        return next()    
 }
 
 function checkBody(body)
