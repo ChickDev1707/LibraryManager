@@ -60,4 +60,4 @@ const BookHeadSchema = new mongoose.Schema({
 })
 
 module.exports = mongoose.model('BookHead', BookHeadSchema, "DauSach")
-//module.exports.coverImageBasePath = coverImageBasePath
+module.exports.coverImageBasePath = coverImageBasePath

@@ -1,6 +1,6 @@
 const BorrowReturnCard=require('../../models/borrow-return-card')
 const Reader=require('../../models/reader')
-const Book=require('../../models/book')
+const Book=require('../../models/book-head')
 
 const servicesConfirmReturnBook=require('../../services/librarian/confirm-book-return-services')
 
