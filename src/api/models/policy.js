@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 const policySchema = new mongoose.Schema({
-    ten_qui_dinh:{
+    ten_quy_dinh:{
         type: String,
         require: true
     },

@@ -76,6 +76,7 @@ router.route('/register-borrow-card/confirm/:registerBorrowCardId')
 
 router.route('/policy')
       .get(policyController.getPolicyMainPage)
+      .post(policyController.updateReaderPolicies)
 router.route('/policy/book')
       .get(policyController.getPolicyBookPage)
 router.route('/policy/borrow-book')

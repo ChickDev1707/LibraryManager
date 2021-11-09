@@ -9,23 +9,23 @@
       <%- include('./nav.ejs', {inputIndex: 0}) %> 
     </div>
     <div class="col-9">
-      <form style="border: 1px solid black; padding: 2rem;">
+      <form action="/librarian/policy" method="POST" style="border: 1px solid black; padding: 2rem;">
         <div class="mb-3">
           <div class="form-text">Độ tuổi (năm)</div>
           <div class="row">
             <div class="col">
               <label class="form-label">Tuổi tối thiểu</label>
-              <input type="number" min="1" class="form-control">
+              <input type="number" name="minAge" min="1" value="<%= readerPolicies.minAge.toString()%>" class="form-control">
             </div>
             <div class="col">
               <label class="form-label">Tuổi tối đa</label>
-              <input type="number" min="1" class="form-control" >
+              <input type="number" name="maxAge" min="1" value="<%= readerPolicies.maxAge.toString()%>" class="form-control" >
             </div>
           </div>
         </div>
         <div class="mb-3">
           <label class="form-label">Thời hạn thẻ (tháng)</label>
-          <input type="number" class="form-control">
+          <input type="number" name="cardExpireLimit" value="<%= readerPolicies.cardExpireLimit.toString()%>" class="form-control">
         </div>
         <button type="submit" class="btn btn-primary">Lưu</button>
       </form>
