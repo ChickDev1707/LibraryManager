@@ -39,6 +39,7 @@
         method="POST" 
         enctype="multipart/form-data" 
         class="row flex-md-row justify-content-center flex-column-reverse needs-validation"
+        id="insert_form"
         novalidate
     >
         
@@ -218,7 +219,6 @@
                     </h4>
                 </label>
                 <textarea 
-                    id="autoresizing"
                     name="tom_tat" 
                     id="tom_tat"
                     class="form-control text-truncate"
@@ -249,7 +249,8 @@
                 type="file" 
                 accept="image/*" 
                 style="display: none;"
-                required    
+                required
+                onchange="changePreviewImage()"    
             >
             <img class="rounded " id="preview-img" src="" style="max-width: 100%;"/>
             <div class="invalid-feedback">
@@ -259,36 +260,4 @@
 
     </form>
 </div>
-
-<script type="text/javascript">
-    textarea = document.querySelector("#autoresizing");
-    textarea.addEventListener('input', autoResize, false);
-
-    function autoResize() {
-        this.style.height = 'auto';
-        this.style.height = this.scrollHeight + 5 + 'px';
-    }
-</script>
-
-<script type="text/javascript">
-    var input  = document.querySelectorAll('input#anh_bia')[0];
-    input.onchange = function changePreviewImage(){
-        var file    = document.querySelectorAll('input#anh_bia')[0].files[0];
-        var preview = document.querySelectorAll('img#preview-img')[0] ; 
-        var icon = document.querySelectorAll('label#image-icon')[0]
-        icon.classList.remove('opacity-100');
-        preview.src = URL.createObjectURL(file);
-    }          
-</script>
-
-<script type="text/javascript">
-    var form = document.querySelectorAll('.needs-validation')[0]
-    form.addEventListener('submit', function (event) {
-        if (!form.checkValidity()) {
-        event.preventDefault()
-        event.stopPropagation()
-        }
-
-        form.classList.add('was-validated')
-    }, false)
-</script>
+<script src="../../../../public/js/book-management.js"></script>

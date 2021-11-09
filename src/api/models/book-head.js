@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const path = require('path')
+const coverImageBasePath = 'uploads/bookCovers'
 const BookHeadSchema = new mongoose.Schema({
     ten_dau_sach:{
         type: String,
