@@ -1,0 +1,25 @@
+<%- contentFor('head') %> 
+<title>Policy of fine</title>
+<%- contentFor('body') %> 
+<%- include('../../partials/header/librarian-header.ejs') %>
+<h2>Thay doi quy dinh</h2>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-3">
+      <%- include('./nav.ejs', {inputIndex: 3}) %> 
+    </div>
+    <div class="col-9">
+      <form style="border: 1px solid black; padding: 2rem;">
+        <div class="mb-3">
+          <label class="form-label">Số tiền phạt trả trễ (vnđ)</label>
+          <input min="0" type="number" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Tiền nợ tối đa (vnđ)</label>
+          <input min="0" type="number" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">Lưu</button>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+<%- contentFor('head') %> 
+<title>Policy of borrow book</title>
+<%- contentFor('body') %> 
+<%- include('../../partials/header/librarian-header.ejs') %>
+<h2>Thay doi quy dinh</h2>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-3">
+      <%- include('./nav.ejs', {inputIndex: 2}) %> 
+    </div>
+    <div class="col-9">
+      <form style="border: 1px solid black; padding: 2rem;">
+        <div class="mb-3">
+          <label class="form-label">Thời hạn mượn sách (Ngày)</label>
+          <input min="1" type="number" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Số sách tối đa được mượn/đăng ký (cuốn)</label>
+          <input min="1" type="number" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">Lưu</button>
+      </form>
+    </div>
+  </div>
+</div>
