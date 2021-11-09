@@ -1,6 +1,6 @@
 const BorrowReturnCard = require('../../models/borrow-return-card')
 const Reader = require('../../models/reader')
-const Book = require('../../models/book')
+const Book = require('../../models/book-head')
 const mongoose = require('mongoose');
 const { findReader, findBookById, checkReader, findBook, saveBorrowData, getBorrowCardOf, updateBorrowData } = require('../../services/librarian/borrow');
 

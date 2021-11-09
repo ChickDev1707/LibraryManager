@@ -22,7 +22,7 @@
             <hr style="width: 100%; height: 3px;">
             <h4 scope="col" class="" >
                 <img class="img_icon" src="\public\assets\images\book-icon\categories-icon.png"/>
-                Thể loại: <%= book.the_loai %>
+                Thể loại: <%= book.the_loai.ten_the_loai %>
             </h4>
             <h4 scope="col" >
                 <img class="img_icon" src="\public\assets\images\book-icon\author_icon.png" />
@@ -52,7 +52,7 @@
         </div>
     
         <div class="col-sm-12 col-md-6 col-xl-5" >
-            <img class="image" src="../../../../public/assets/images/default-book-cover.png" style="max-width: 100%;"/>   
+            <img class="image" src="<%=book.anh_bia%>" style="max-width: 100%;"/>   
         </div>
              
     </div>
