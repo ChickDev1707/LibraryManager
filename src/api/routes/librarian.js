@@ -4,6 +4,7 @@ const router = express.Router();
 const authController = require('../controllers/librarian/auth.js');
 const bookController = require('../controllers/librarian/manage-book.js')
 const registerBorrowCardController = require('../controllers/librarian/register-borrow-card.js')
+const reportController = require('../controllers/librarian/report')
 const bookMiddleWares = require('../middlewares/book-check')
 const userAuth = require('../middlewares/user-auth.js')
 const borrowController = require('../controllers/librarian/borrow-book')
@@ -72,5 +73,11 @@ router.route('/register-borrow-card/deny/:id')
 
 router.route('/register-borrow-card/confirm/:registerBorrowCardId')
       .post(registerBorrowCardController.confirmRegisterBorrowCard)
+
+//report
+router.route('/month-report')
+      .get(reportController.getMonthReportPage)
+router.route('/day-report')
+      .get(reportController.getDayReportPage)
 
 module.exports = router
