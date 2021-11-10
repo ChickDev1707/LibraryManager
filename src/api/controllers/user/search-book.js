@@ -18,9 +18,11 @@ async function searchBook(req, res){
 //show book details page
 async function showBookDetail(req, res){
     try {
+        const user = await req.user
+        const bookDetailView = getBookDetailView(user)
         const bookHead = await searchBookService.showBookDetail(req.params.id)
 
-        res.render('user/book-detail.ejs', { 
+        res.render(bookDetailView, { 
             bookHead: bookHead,
             errorMessage: req.query.errorMessage
         })

@@ -95,7 +95,7 @@ async function updateAvailableAmountOfBookHeads(bookHeadIds){
 async function searchRegisterCards(req){
   const currentUserAccount = await accountServices.getCurrentUserAccount(req)
   const currentReader = await Reader.findOne({email: currentUserAccount.ten_tai_khoan})
-  let searchOptions = {ma_doc_gia: currentReader._id}
+  let searchOptions = {doc_gia: currentReader._id}
   let reqStatus = req.query.status == undefined? -1: Number(req.query.status)
 
   if(reqStatus>= 0) searchOptions.tinh_trang = reqStatus

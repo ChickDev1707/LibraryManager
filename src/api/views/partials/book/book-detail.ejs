@@ -1,8 +1,8 @@
-<%# contentFor('head') %> 
-<!-- <title>Book Details</title> -->
-
-<%# contentFor('body') %> 
-<!-- <h1 class="container">Book Details</h1> -->
+<% contentFor('head') %> 
+<title>Book Details</title>
+<script src="/public/js/register-borrow-book.js"></script>
+<% contentFor('body') %> 
+<h1 class="container">Book Details</h1>
 
 <div class="container">
     <div class="row">
@@ -10,7 +10,10 @@
             <img class="img-fluid"  height="600" width="400" src="../../../public/assets/images/default-book-cover.png">
             <br>
             <br>
-            <button class="btn btn-primary" type="button">Borrow Book</button>
+            <form action="/reader/cart" method="POST">
+                <input name="bookHeadId" type="text" hidden value="<%= bookHead._id%>">
+                <button class="btn btn-primary" type="submit">Boorow Book</button>
+            </form>
         </div>
         <div class="col-8">
             <div>
