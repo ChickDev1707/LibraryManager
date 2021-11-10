@@ -67,8 +67,8 @@ router.route('/xacnhantrasach')
 router.route('/register-borrow-card')
       .get(registerBorrowCardController.getAllRegisterBorrowCard)
 
-router.route('/register-borrow-card/delete/:id')
-      .delete(registerBorrowCardController.deleteRegisterBorrowCard)
+router.route('/register-borrow-card/deny/:id')
+      .put(registerBorrowCardController.denyRegisterBorrowCard)
 
 router.route('/register-borrow-card/confirm/:registerBorrowCardId')
       .post(registerBorrowCardController.confirmRegisterBorrowCard)

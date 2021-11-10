@@ -42,11 +42,17 @@ function getBookDetailView(user){
 }
 
 //comment book
+const accountService = require('../../services/account')
+const readerService = require('../../services/reader/general')
+
+
+
 async function comment(req, res){
     try{
-        if(req.body.commentInput != null){
-            await searchBookService.comment(req.params.bookHeadId, req.body.commentInput)
-            
+        const currentAccount = await accountService.getCurrentUserAccount(req)
+        const currentReader = await readerService.getCurrentReader(currentAccount.ten_tai_khoan)
+        if(req.body.commentInput != null && req.body.commentInput != ''){
+            await searchBookService.comment(currentReader._id, req.params.bookHeadId, req.body.commentInput) 
         }
         res.redirect('back')
     }catch(error){

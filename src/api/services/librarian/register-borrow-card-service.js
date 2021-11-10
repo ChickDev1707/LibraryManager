@@ -4,11 +4,11 @@ const BorrowReturnCard = require('../../models/borrow-return-card.js')
 const BookHead = require('../../models/book-head.js');
 
 
-// delete overdue RegisterBorrowCard
-async function deleteOverdueRegisterBorrowCard(){
+// deny overdue RegisterBorrowCard
+async function denyOverdueRegisterBorrowCard(){
     let date = new Date();
     date.setDate(date.getDate()-3)
-    //update all quantity available of book-head before delete overdue RegisterBorrowCard
+    //update all quantity available of book-head before deny overdue RegisterBorrowCard
     let registerBorrowCards = await RegisterBorrowCard.find({ngay_dang_ky: {$lte: date}, tinh_trang: 0})
     for await (const registerBorrowCard of registerBorrowCards){
         for await (const bookHeadId of registerBorrowCard.cac_dau_sach){
@@ -17,9 +17,10 @@ async function deleteOverdueRegisterBorrowCard(){
             await BookHead.findOneAndUpdate(filter, update, {useFindAndModify: false})
         }
     }
-    // delete all overdue RegisterBorrowCard
+    // deny all overdue RegisterBorrowCard
     const filter = {ngay_dang_ky: {$lte: date}, tinh_trang: 0}
-    await RegisterBorrowCard.find(filter).deleteMany().exec()
+    const update = {tinh_trang: 2}
+    await RegisterBorrowCard.find(filter).updateMany(update).exec()
 }
 
 //get all RegisterBorrowCard
@@ -32,8 +33,8 @@ async function getAllRegisterBorrowCard(){
     return registerBorrowCard
 }
 
-// delete RegisterBorrowCard
-async function deleteRegisterBorrowCard(registerBorrowCardId){
+// deny RegisterBorrowCard
+async function denyRegisterBorrowCard(registerBorrowCardId){
     //update quantity available of book-head
     let registerBorrowCard = await RegisterBorrowCard.findById(registerBorrowCardId)
     for await(const bookHeadId of registerBorrowCard.cac_dau_sach){
@@ -41,7 +42,7 @@ async function deleteRegisterBorrowCard(registerBorrowCardId){
         const update = {$inc: {so_luong_kha_dung: 1}}
         let bookHead = await BookHead.findOneAndUpdate(filter, update , {useFindAndModify: false})
     }
-    //delete RegisterBorrowCard
+    //deny RegisterBorrowCard
     await RegisterBorrowCard.findByIdAndRemove(registerBorrowCardId, {useFindAndModify: false}).exec();
 }
 
@@ -70,9 +71,9 @@ async function createBorrowReturnCard(registerBorrowCardId){
 }
 
 module.exports={
-    deleteOverdueRegisterBorrowCard,
+    denyOverdueRegisterBorrowCard,
     getAllRegisterBorrowCard,
-    deleteRegisterBorrowCard,
+    denyRegisterBorrowCard,
     updateRegisterBorrowCardStatus,
     createBorrowReturnCard
 }

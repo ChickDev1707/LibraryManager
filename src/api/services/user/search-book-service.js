@@ -43,9 +43,9 @@ async function showBookDetail(id){
 }
 
 //post comment 
-async function comment(bookHeadId, commentInput){
+async function comment(readerId, bookHeadId, commentInput){
     let comment = new Comment({
-        doc_gia: '616c44514e57c83c08c957b2',
+        doc_gia: readerId,
         noi_dung: commentInput,
         ngay_dang: Date.now()
     })

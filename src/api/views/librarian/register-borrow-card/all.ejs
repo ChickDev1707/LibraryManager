@@ -35,8 +35,8 @@
                 </form> 
             </td>
             <td scope="col">
-                <form action="/librarian/register-borrow-card/delete/<%= registerBorrowCard.id %>?_method=DELETE" method="post">
-                    <button class="btn-primary btn-danger" type="submit">Delete</button>
+                <form action="/librarian/register-borrow-card/deny/<%= registerBorrowCard.id %>?_method=PUT" method="post">
+                    <button class="btn-primary btn-danger" type="submit">Deny</button>
                 </form>
             </td>
         </tr>
