@@ -84,9 +84,10 @@ router.route('/policy/book-category')
 router.route('/policy/book-category/:id')
       .put(policyController.editBookCategory)
       .delete(policyController.deleteBookCategory)
-
 router.route('/policy/borrow-book')
       .get(policyController.getPolicyBorrowBookPage)
+      .post(policyController.updatePolicyBorrowBook)
+     
 router.route('/policy/fine')
       .get(policyController.getPolicyFinePage)
 module.exports = router

@@ -9,14 +9,14 @@
       <%- include('./nav.ejs', {inputIndex: 2}) %> 
     </div>
     <div class="col-9">
-      <form style="border: 1px solid black; padding: 2rem;">
+      <form action="/librarian/policy/borrow-book" method="POST" style="border: 1px solid black; padding: 2rem;">
         <div class="mb-3">
           <label class="form-label">Thời hạn mượn sách (Ngày)</label>
-          <input min="1" type="number" class="form-control">
+          <input min="1" type="number" name="borrowLimit" value="<%= borrowBookPolicies.borrowLimit %>" class="form-control">
         </div>
         <div class="mb-3">
           <label class="form-label">Số sách tối đa được mượn/đăng ký (cuốn)</label>
-          <input min="1" type="number" class="form-control">
+          <input min="1" type="number" name="maxAllowedBorrowBook" value="<%= borrowBookPolicies.maxAllowedBorrowBook %>" class="form-control">
         </div>
         <button type="submit" class="btn btn-primary">Lưu</button>
       </form>

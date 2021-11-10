@@ -32,15 +32,26 @@ async function editBookCategory(req, res){
   await policyService.editBookCategory(category)
   res.redirect('/librarian/policy/book-category')
 }
+// delete
 async function deleteBookCategory(req, res){
   const categoryId = req.params['id']
   await policyService.deleteBookCategory(categoryId)
   res.redirect('/librarian/policy/book-category')
 }
 
-function getPolicyBorrowBookPage(req, res){
-  res.render('librarian/policy/borrow-book.ejs')
+// borrow book
+async function getPolicyBorrowBookPage(req, res){
+  const borrowBookPolicies = await policyService.getBorrowBookPolicies()
+  res.render('librarian/policy/borrow-book.ejs', {borrowBookPolicies})
 }
+async function updatePolicyBorrowBook(req, res){
+  const policiesInput = req.body
+  Object.keys(policiesInput).forEach((key, index)=>{policiesInput[key] = Number(policiesInput[key])})
+  // parse form field policies to number
+  await policyService.updateBorrowBookPolicies(policiesInput)
+  res.redirect('/librarian/policy/borrow-book')
+}
+
 function getPolicyFinePage(req, res){
   res.render('librarian/policy/fine.ejs')
 }
@@ -54,5 +65,7 @@ module.exports ={
   deleteBookCategory,
   
   getPolicyBorrowBookPage,
+  updatePolicyBorrowBook,
+
   getPolicyFinePage
 }

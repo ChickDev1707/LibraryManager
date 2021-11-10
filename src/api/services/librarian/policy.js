@@ -66,6 +66,40 @@ async function deleteBookCategory(categoryId){
   await dbCategory.remove()
 }
 
+// borrow book
+async function getBorrowBookPolicies(){
+  const borrowLimit = await Policy.findOne({ten_quy_dinh: 'thoi_han_muon_sach'})
+  const maxAllowedBorrowBook = await Policy.findOne({ten_quy_dinh: 'so_sach_muon_toi_da'})
+  return {
+    borrowLimit: borrowLimit != null? borrowLimit.gia_tri: '', 
+    maxAllowedBorrowBook: maxAllowedBorrowBook != null? maxAllowedBorrowBook.gia_tri: '',
+  }
+}
+
+async function updateBorrowBookPolicies(policiesInput){
+  await handleUpdateBorrowLimitPolicy(policiesInput.borrowLimit)
+  await handleUpdateMaxAllowedBorrowBookPolicy(policiesInput.maxAllowedBorrowBook)
+}
+async function handleUpdateBorrowLimitPolicy(borrowLimit){
+  let borrowLimitPol = await Policy.findOne({ten_quy_dinh: 'thoi_han_muon_sach'})
+  if(borrowLimitPol == null){
+    borrowLimitPol = new Policy({ten_quy_dinh: 'thoi_han_muon_sach', gia_tri: borrowLimit})
+  }else{
+    borrowLimitPol.gia_tri = borrowLimit
+  }
+  await borrowLimitPol.save()
+}
+async function handleUpdateMaxAllowedBorrowBookPolicy(maxAllowedBorrowBook){
+  let maxAllowedBorrowBookPol = await Policy.findOne({ten_quy_dinh: 'so_sach_muon_toi_da'})
+  if(maxAllowedBorrowBookPol == null){
+    maxAllowedBorrowBookPol = new Policy({ten_quy_dinh: 'so_sach_muon_toi_da', gia_tri: maxAllowedBorrowBook})
+  }else{
+    maxAllowedBorrowBookPol.gia_tri = maxAllowedBorrowBook
+  }
+  await maxAllowedBorrowBookPol.save()
+}
+
+
 module.exports={
   getReaderPolicies,
   updateReaderPolicies,
@@ -73,5 +107,8 @@ module.exports={
   getBookCategories,
   addNewBookCategory,
   editBookCategory,
-  deleteBookCategory
+  deleteBookCategory,
+
+  getBorrowBookPolicies,
+  updateBorrowBookPolicies
 }
