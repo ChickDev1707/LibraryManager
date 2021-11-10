@@ -51,9 +51,18 @@ async function updatePolicyBorrowBook(req, res){
   await policyService.updateBorrowBookPolicies(policiesInput)
   res.redirect('/librarian/policy/borrow-book')
 }
+// fine
 
-function getPolicyFinePage(req, res){
-  res.render('librarian/policy/fine.ejs')
+async function getPolicyFinePage(req, res){
+  const finePolicies = await policyService.getFinePolicies()
+  res.render('librarian/policy/fine.ejs', {finePolicies})
+}
+async function updateFinePolicies(req, res){
+  const policiesInput = req.body
+  Object.keys(policiesInput).forEach((key, index)=>{policiesInput[key] = Number(policiesInput[key])})
+  
+  await policyService.updateFinePolicies(policiesInput)
+  res.redirect('/librarian/policy/fine')
 }
 module.exports ={
   getPolicyMainPage,
@@ -67,5 +76,6 @@ module.exports ={
   getPolicyBorrowBookPage,
   updatePolicyBorrowBook,
 
-  getPolicyFinePage
+  getPolicyFinePage,
+  updateFinePolicies
 }

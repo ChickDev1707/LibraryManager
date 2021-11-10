@@ -90,4 +90,5 @@ router.route('/policy/borrow-book')
      
 router.route('/policy/fine')
       .get(policyController.getPolicyFinePage)
+      .post(policyController.updateFinePolicies)
 module.exports = router
