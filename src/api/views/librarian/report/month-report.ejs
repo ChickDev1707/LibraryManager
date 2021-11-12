@@ -1,34 +1,35 @@
 <%- contentFor('head') %> 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js" ></script>
 <title>Month Report</title>
-<script src="../../../../public/js/pie-chart-report.js"></script>
+<!-- Global src -->
+<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js" ></script>
+
+<!-- Local src -->
+<script src="../../../../public/js/chart-report.js"></script>
+<script src="../../../../public/js/export-report.js"></script>
 
 <%- contentFor('body') %> 
 <%- include('../../partials/header/librarian-header.ejs') %> 
 
 <body onload="onLoad('<%= data %>', '<%= label %>')">
-    <div>month report pages</div>
-
     <div class="container">
         <form class="row" action="/librarian/month-report" method="get" >
-            <input class="col-lg form-control" type="month" name="month" value="<%= month %>">
-            <button class=" col-lg btn btn-primary" type="submit" >submit</button>
+            <input class="col-lg-6 form-control" type="month" name="month" value="<%= month %>">
+            <button class=" col-lg-3 btn btn-primary" type="submit" >submit</button>
+            <button class=" col-lg-3 btn btn-success" type="button" id="btnExport" onclick="fnExportToExcel('xlsx')">export</button>
         </form>
     </div>
-    <h3>
-        Báo cáo tình hình mượn sách theo thể loại
-    </h3>
-
-
+    <h3 class="text-center">THỐNG KÊ TÌNH HÌNH MƯỢN SÁCH THEO THỂ LOẠI</h3>
     <div class="row">
         <div class="col-lg-6">
-            <table class="table align-middle text-center table-striped">
+            <canvas id="myBarChart"></canvas>
+            <table id="reportTable" class="table align-middle text-center table-striped">
                 <thead>
                     <tr>
-                    <th scope="col">STT</th>
-                    <th scope="col">Thể Loại</th>
-                    <th scope="col">Lượt Mượn</th>
-                    <th scope="col">Tỷ Lệ</th>
+                        <th scope="col">STT</th>
+                        <th scope="col">Thể Loại</th>
+                        <th scope="col">Lượt Mượn</th>
+                        <th scope="col">Tỷ Lệ</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -52,10 +53,9 @@
             </table>
         </div>
         <div class="col-lg-6" >
-            <canvas id="myChart"></canvas>
+            <canvas id="myPieChart"></canvas>
         </div>
     </div>
-
 </body>
 
 

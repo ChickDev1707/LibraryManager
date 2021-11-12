@@ -3,10 +3,11 @@ const BookCategory = require('../../models/book-category')
 const BookHead = require('../../models/book-head')
 const Reader = require('../../models/reader')
 
+
 //get month report array
 async function getMonthReportArray(month){
     const reportArray = new Array()
-    if(month != '' && month != undefined){
+    if(month){
         const bookCategorys = await BookCategory.find()
         for await(const bookCategory of bookCategorys){
             let reportCategory = {
@@ -46,18 +47,22 @@ async function getChartValue(reportArray){
 
 //get day report array
 async function getDayReportArray(date){
-    const borrowReturnCards = await BorrowReturnCard.find({
-        tinh_trang: 2,
-        ngay_tra: {
-            $gte: date + "T00:00:00.000Z",
-            $lt: date + "T23:59:59.000Z"
-        }
-    })
-    .populate('doc_gia')
-    .populate('dau_sach')
-    .sort({so_ngay_tra_tre: -1})
-    .exec()
-    return borrowReturnCards
+    if(date){
+        const borrowReturnCards = await BorrowReturnCard.find({
+            tinh_trang: 2,
+            ngay_tra: {
+                $gte: date + "T00:00:00.000Z",
+                $lt: date + "T23:59:59.000Z"
+            }
+        })
+        .populate('doc_gia')
+        .populate('dau_sach')
+        .sort({so_ngay_tra_tre: -1})
+        .exec()
+
+        return borrowReturnCards
+    }
+    return []
 }
 module.exports={
     getMonthReportArray,

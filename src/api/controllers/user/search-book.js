@@ -48,8 +48,18 @@ const readerService = require('../../services/reader/general')
 
 
 async function comment(req, res){
+    const currentAccount = await accountService.getCurrentUserAccount(req)
+    if(!currentAccount) {
+        console.log("bạn chưa đăng nhập")
+        res.redirect('/login')
+        return
+    }
+    if(currentAccount.vai_tro == 'librarian'){
+        console.log("bạn đang là thủ thư mà !")
+        res.redirect('back')
+        return
+    }
     try{
-        const currentAccount = await accountService.getCurrentUserAccount(req)
         const currentReader = await readerService.getCurrentReader(currentAccount.ten_tai_khoan)
         if(req.body.commentInput != null && req.body.commentInput != ''){
             await searchBookService.comment(currentReader._id, req.params.bookHeadId, req.body.commentInput) 
