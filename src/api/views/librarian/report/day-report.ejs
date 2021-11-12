@@ -4,3 +4,45 @@
 <%- include('../../partials/header/librarian-header.ejs') %> 
 
 <div>day report pages</div>
+
+<div class="container">
+    <form class="row" action="" method="get" >
+        <input class="col form-control" type="date" name="date" value="<%= date %>">
+        <button class=" col btn btn-primary" type="submit" >submit</button>
+    </form>
+</div>
+
+<div>
+    <h3>Báo cáo sách trả trễ <%= date %></h3>
+    <table class="table align-middle text-center table-striped">
+        <thead>
+          <tr>
+            <th scope="col">STT</th>
+            <th scope="col">Độc Giả</th>
+            <th scope="col">Đầu Sách</th>
+            <th scope="col">Ngày Mượn</th>
+            <th scope="col">Số Ngày Trả Trễ</th>
+          </tr>
+        </thead>
+        <tbody>
+            <% borrowReturnCards.forEach((borrowReturnCard, i) => { %>
+                <tr key= <%= borrowReturnCards._id %> >
+                    <td scope="col" class="text-wrap">
+                        <%= i + 1 %>
+                    </td>
+                    <td scope="col" class="text-wrap">
+                        <%= borrowReturnCard.doc_gia.ho_ten %>
+                    </td>
+                    <td scope="col" class="text-wrap">
+                        <%= borrowReturnCard.dau_sach.ten_dau_sach %>
+                    </td>
+                    <td scope="col" class="text-wrap">
+                        <%= borrowReturnCard.ngay_muon.toLocaleDateString("VN", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %>
+                    </td>
+                    <td scope="col" class="text-wrap">
+                        <%= borrowReturnCard.so_ngay_tra_tre %>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+</div>

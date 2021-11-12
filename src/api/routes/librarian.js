@@ -77,6 +77,7 @@ router.route('/register-borrow-card/confirm/:registerBorrowCardId')
 //report
 router.route('/month-report')
       .get(reportController.getMonthReportPage)
+      
 router.route('/day-report')
       .get(reportController.getDayReportPage)
 

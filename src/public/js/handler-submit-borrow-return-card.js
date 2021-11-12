@@ -14,6 +14,4 @@ function DoSubmit(){
     else{
         document.formSubmit.selectBorrowReturnCard.value=""
     }
-    
-    
 }

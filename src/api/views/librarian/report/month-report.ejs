@@ -1,8 +1,62 @@
 <%- contentFor('head') %> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js" ></script>
 <title>Month Report</title>
+<script src="../../../../public/js/pie-chart-report.js"></script>
+
 <%- contentFor('body') %> 
 <%- include('../../partials/header/librarian-header.ejs') %> 
 
-<div>month report pages</div>
+<body onload="onLoad('<%= data %>', '<%= label %>')">
+    <div>month report pages</div>
+
+    <div class="container">
+        <form class="row" action="/librarian/month-report" method="get" >
+            <input class="col-lg form-control" type="month" name="month" value="<%= month %>">
+            <button class=" col-lg btn btn-primary" type="submit" >submit</button>
+        </form>
+    </div>
+    <h3>
+        Báo cáo tình hình mượn sách theo thể loại
+    </h3>
+
+
+    <div class="row">
+        <div class="col-lg-6">
+            <table class="table align-middle text-center table-striped">
+                <thead>
+                    <tr>
+                    <th scope="col">STT</th>
+                    <th scope="col">Thể Loại</th>
+                    <th scope="col">Lượt Mượn</th>
+                    <th scope="col">Tỷ Lệ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% reportArray.forEach((reportArray, i) => { %>
+                        <tr key= <%=reportArray.bookCategory%> >
+                            <td scope="col" class="text-wrap">
+                                <%= i + 1 %>
+                            </td>
+                            <td scope="col" class="text-wrap">
+                                <%= reportArray.bookCategory.ten_the_loai %>
+                            </td>
+                            <td scope="col" class="text-wrap">
+                                <%= reportArray.count %>
+                            </td>
+                            <td scope="col" class="text-wrap">
+                                <%= 100*(reportArray.count/ sum ).toFixed(3) %>%
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-6" >
+            <canvas id="myChart"></canvas>
+        </div>
+    </div>
+
+</body>
+
 
 
