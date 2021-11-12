@@ -12,7 +12,12 @@
             <br>
             <form action="/reader/cart" method="POST">
                 <input name="bookHeadId" type="text" hidden value="<%= bookHead._id%>">
-                <button class="btn btn-primary" type="submit">Boorow Book</button>
+                <button class="btn btn-primary" type="submit">Borrow Book</button>
+            </form>
+
+            <form action="/reader/favorite-books" method="POST">
+                <input name="bookHeadIdFavorite" type="text" hidden value="<%= bookHead._id%>">
+                <button class="btn btn-primary" type="submit">Add Favorite Book</button>
             </form>
         </div>
         <div class="col-8">
