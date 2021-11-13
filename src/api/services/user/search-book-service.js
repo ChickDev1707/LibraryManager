@@ -28,7 +28,6 @@ async function searchBook(searchBox, option){
         }
     }
     const bookHeads = await query.exec() 
-
     return bookHeads
 }
 
@@ -38,20 +37,23 @@ async function showBookDetail(id){
     .populate({path: 'cac_nhan_xet', populate: {path: 'doc_gia'}})
     .populate('the_loai')
     .exec()
-
     return bookHead
 }
 
 //post comment 
-async function comment(bookHeadId, commentInput){
+async function comment(readerId, bookHeadId, commentInput){
     let comment = new Comment({
-        doc_gia: '616c44514e57c83c08c957b2',
+        doc_gia: readerId,
         noi_dung: commentInput,
         ngay_dang: Date.now()
     })
     await comment.save()
-
-    const update = {$push: {cac_nhan_xet: comment.id}}
+    const update = {$push:{
+        cac_nhan_xet: {
+            $each: [comment.id],
+            $position: 0
+        }
+    }}
     await BookHead.findByIdAndUpdate(bookHeadId, update, {useFindAndModify: false}).exec()
 }
 

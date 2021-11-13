@@ -3,8 +3,8 @@ const registerBorrowCardService = require('../../services/librarian/register-bor
 // get all RegisterBorrowCard
 async function getAllRegisterBorrowCard(req, res){
     try{
-        //delete overdue RegisterBorrowCards
-        await registerBorrowCardService.deleteOverdueRegisterBorrowCard()
+        //deny overdue RegisterBorrowCards
+        await registerBorrowCardService.denyOverdueRegisterBorrowCard()
         //get RegisterBorrowCard
         const registerBorrowCard = await registerBorrowCardService.getAllRegisterBorrowCard()
 
@@ -17,10 +17,10 @@ async function getAllRegisterBorrowCard(req, res){
     }
 }
 
-// delete RegisterBorrowCard
-async function deleteRegisterBorrowCard(req, res){
+// deny RegisterBorrowCard
+async function denyRegisterBorrowCard(req, res){
     try{
-        await registerBorrowCardService.deleteRegisterBorrowCard(req.params.id)
+        await registerBorrowCardService.denyRegisterBorrowCard(req.params.id)
         
         res.redirect('/librarian/register-borrow-card/')
     }catch{
@@ -45,7 +45,7 @@ async function confirmRegisterBorrowCard(req, res){
 
 module.exports = {
     getAllRegisterBorrowCard,
-    deleteRegisterBorrowCard,
+    denyRegisterBorrowCard,
     confirmRegisterBorrowCard
 }
 

@@ -1,0 +1,62 @@
+<%- contentFor('head') %> 
+<title>Month Report</title>
+<!-- Global src -->
+<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js" ></script>
+
+<!-- Local src -->
+<script src="../../../../public/js/chart-report.js"></script>
+<script src="../../../../public/js/export-report.js"></script>
+
+<%- contentFor('body') %> 
+<%- include('../../partials/header/librarian-header.ejs') %> 
+
+<body onload="onLoad('<%= data %>', '<%= label %>')">
+    <div class="container">
+        <form class="row" action="/librarian/month-report" method="get" >
+            <input class="col-lg-6 form-control" type="month" name="month" value="<%= month %>">
+            <button class=" col-lg-3 btn btn-primary" type="submit" >submit</button>
+            <button class=" col-lg-3 btn btn-success" type="button" id="btnExport" onclick="fnExportToExcel('xlsx')">export</button>
+        </form>
+    </div>
+    <h3 class="text-center">THỐNG KÊ TÌNH HÌNH MƯỢN SÁCH THEO THỂ LOẠI</h3>
+    <div class="row">
+        <div class="col-lg-6">
+            <canvas id="myBarChart"></canvas>
+            <table id="reportTable" class="table align-middle text-center table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">STT</th>
+                        <th scope="col">Thể Loại</th>
+                        <th scope="col">Lượt Mượn</th>
+                        <th scope="col">Tỷ Lệ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% reportArray.forEach((reportArray, i) => { %>
+                        <tr key= <%=reportArray.bookCategory%> >
+                            <td scope="col" class="text-wrap">
+                                <%= i + 1 %>
+                            </td>
+                            <td scope="col" class="text-wrap">
+                                <%= reportArray.bookCategory.ten_the_loai %>
+                            </td>
+                            <td scope="col" class="text-wrap">
+                                <%= reportArray.count %>
+                            </td>
+                            <td scope="col" class="text-wrap">
+                                <%= 100*(reportArray.count/ sum ).toFixed(3) %>%
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-6" >
+            <canvas id="myPieChart"></canvas>
+        </div>
+    </div>
+</body>
+
+
+

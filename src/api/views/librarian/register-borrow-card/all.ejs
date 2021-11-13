@@ -19,12 +19,12 @@
     <% registerBorrowCard.forEach(registerBorrowCard => { %>
         <tr key= <%= registerBorrowCard._id %> > 
             <td scope="col" class="text-wrap">
-                <a href=""><%= registerBorrowCard.doc_gia.ho_ten %></a>
+                <a href="/librarian/reader/<%= registerBorrowCard.doc_gia.id %>"><%= registerBorrowCard.doc_gia.ho_ten %></a>
             </td>
             <td scope="col" class="text-wrap">
                 <% registerBorrowCard.cac_dau_sach.forEach(cac_dau_sach => { %>
                     <div>
-                        <a href=""><%= cac_dau_sach.ten_dau_sach %></a>
+                        <a href="/librarian/books/<%= cac_dau_sach.id %>"><%= cac_dau_sach.ten_dau_sach %></a>
                     </div>              
                 <% }) %>  
             </td>
@@ -35,8 +35,8 @@
                 </form> 
             </td>
             <td scope="col">
-                <form action="/librarian/register-borrow-card/delete/<%= registerBorrowCard.id %>?_method=DELETE" method="post">
-                    <button class="btn-primary btn-danger" type="submit">Delete</button>
+                <form action="/librarian/register-borrow-card/deny/<%= registerBorrowCard.id %>?_method=PUT" method="post">
+                    <button class="btn-primary btn-danger" type="submit">Deny</button>
                 </form>
             </td>
         </tr>
