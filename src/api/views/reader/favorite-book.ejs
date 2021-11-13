@@ -1,0 +1,42 @@
+<%- contentFor('head') %>
+<%- include('../partials/header/reader-header.ejs') %> 
+
+<table class="table align-middle text-center table-striped position-relative">
+    <thead>
+        <tr>
+            <th scope="col">ảnh bìa</th>
+            <th scope="col">tên đầu sách</th>
+            <th scope="col">tác giả</th>
+            <th scope="col">tóm tắt</th>
+            <th scope="col">Xóa</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <% favoriteBook.forEach((book)=>{ %>
+            <tr>
+                <td scope="col" class="text-wrap">
+                    <a  
+                    href="/book-head/<%= book._id %>"
+                    >
+                    <img height="100" width="100" class="rounded" src="<%= book.anh_bia %>"/>
+                    </a>
+                </td>
+                <td scope="col" class="text-wrap">
+                    <%= book.ten_dau_sach %> 
+                </td>
+                <td scope="col" class="text-wrap"><%= book.tac_gia %></td>
+                <td scope="col" class="text-wrap"><%= book.tom_tat %></td>
+                <td>
+                    <form action="/reader/favorite-books?_method=put" method="post">
+                        <input type="text" name="deleteFavoriteBook" hidden value="<%= book._id %>">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+
+            </tr>
+
+            <% }) %>        
+    </tbody>
+</table>
+  
