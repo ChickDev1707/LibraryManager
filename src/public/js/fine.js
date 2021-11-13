@@ -1,4 +1,3 @@
-
 function search(){
     var option = $("#search-book-option").val();
     var key = $("#search_book_string").val();

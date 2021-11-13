@@ -1,6 +1,10 @@
 const Reader=require('../../models/reader')
 const Account=require('../../models/user-account')
 const BorrowReturnCard=require('../../models/borrow-return-card')
+const multer=require('multer')
+const fs=require('fs')
+
+
 async function searchReader(Query){
     const search={}
     if(Query!=null || Query!=""){
@@ -51,6 +55,9 @@ async function handleAddReader(reqBody){
     }
     return data
 }
+
+
+
 async function editReader(reqParam){
     const reader= await Reader.findById(reqParam.id)
 
@@ -148,6 +155,8 @@ async function handleDeleteReader(reqParam){
         await card[i].remove()
     }
 }
+
+
 
 module.exports={
     searchReader,

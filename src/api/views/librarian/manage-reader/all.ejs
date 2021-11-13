@@ -3,7 +3,22 @@
 <%- contentFor('body') %> 
 <%- include('../../partials/header/librarian-header.ejs') %> 
 <a href="/librarian/reader/new">Thêm độc giả</a><br>
+<button 
+    type="button"
+    data-bs-toggle="modal" 
+    data-bs-target="#addReader" 
+    class="btn btn-primary"
+    >
+    Thêm độc giả
+</button>
 <div >
+    <div>
+        <span>Thêm độc giả bằng file excel</span>
+    </div>
+    <form action="/librarian/reader" enctype="multipart/form-data" method="post">
+        <input type="file" name="uploadfile" accept='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel' >
+        <input type="submit" value="Upload Excel">
+    </form> 
 
     <div >
         <span >Tất cả độc giả</span>
@@ -46,7 +61,6 @@
                     </span>
                 </div>  
             </td>
-  
             <div >
                 <td>
                     <a href="/librarian/reader/<%= reader.id %>" >View</a>
@@ -67,4 +81,61 @@
     <% }); %> 
     </tbody>
     </table>
+</div>
+
+<% const today=new Date() %>
+<% const month=((today.getMonth()+1)<10)?('0'+(today.getMonth()+1)):(today.getMonth()+1) %> 
+<% const day=(today.getDate()<10)?('0'+today.getDate()):(today.getDate()) %> 
+<% const ngay_lap_the=today.getFullYear()+'-'+month+'-'+day %> 
+
+
+<div class="modal fade " id="addReader" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-fullscreen-xs-down" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>Nhập thông tin độc giả</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+
+                    <form action="/librarian/reader" method="post">
+                        <span>Nhập thông tin độc giả</span>
+                        <div>
+                            <span>Nhập họ tên</span>
+                            <input type="text" name="ho_ten" value="<%= reader.ho_ten %>" required>
+                        </div>
+                        <div>
+                            <span>Nhập email</span>
+                            <input type="email" name="email" value="<%= reader.email %>" required>
+                        </div>
+                        <div>
+                            <span>Nhập gioi tinh</span>
+                            <select name="gioi_tinh">
+                                <option value="nam"  label="nam"></option>
+                                <option value="nữ"  label="nữ"></option>
+                                <option value="khác"  label="khác"></option>
+                            </select>
+                        </div>
+                        <div>
+                            <span>Nhập ngày sinh</span>
+                            <input type="date" name="ngay_sinh" value="<%= reader.ngay_sinh %>" required>
+                        </div>
+                        <div>
+                            <span>Nhập địa chỉ</span>
+                            <input type="text" name="dia_chi" value="<%= reader.dia_chi %>" required>
+                        </div>
+                        <div>
+                            <span>Ngày lập thẻ</span>
+                            <input type="date" name="ngay_lap_the" value="<%= ngay_lap_the %>" required>
+                        </div>
+                        <button type="submit">Tạo độc giả</button>
+                        
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
 </div>
