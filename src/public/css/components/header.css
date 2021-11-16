@@ -1,0 +1,27 @@
+/* header */
+header{
+  background-color: var(--secondary);
+  padding: 1rem 0;
+}
+header .d-flex{
+  align-items: center;
+}
+header ul{
+  background-color: var(--secondary) !important;
+}
+header ul li a{
+  color: white !important;
+}
+header button{
+  background-color: var(--primary);
+  border: none;
+  padding: .75rem 2rem;
+  color: white;
+  border-radius: .2rem;
+}
+header .control-btn-container{
+  display: flex;
+}
+header .control-btn-container button{
+  margin-right: 1rem;
+}
