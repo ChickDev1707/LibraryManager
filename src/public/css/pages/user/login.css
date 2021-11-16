@@ -1,0 +1,93 @@
+@import url('../../components/user-header.css');
+
+.login-form-main{
+  display: flex;
+  max-width: 1000px;
+  margin: 0 auto;
+  margin-top: 50px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+  border-radius: .75rem;
+  overflow: hidden;
+}
+.login-form-main .left{
+  background-color: var(--secondary);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 0 4rem;
+  text-align: center;
+}
+.login-form-main .left img{
+  width: 75%;
+}
+.login-form-main .left p{
+  padding: 0 2rem;
+}
+.form-container{
+  background-color: white;
+}
+.form-container form{
+  padding: 5rem 5rem 2rem;
+}
+.form-container form .row{
+  margin-bottom: 1rem;
+}
+.form-container form .row .col{
+  display: flex;
+  flex-direction: column;
+}
+.form-container form h2{
+  font-weight: bold;
+  text-align: center;
+
+}
+.form-container .row .col label{
+  font-weight: bold;
+  color: #333;
+  margin-bottom: .25rem;
+}
+.form-container form .row .col input{
+  padding: .5rem 1rem;
+  font-size: .9rem;
+  outline: none;
+  border: none;
+  background-color: rgb(241, 241, 241);
+  border-radius: .25rem;
+  border: 1px solid transparent;
+}
+.form-container form .row .col input:focus{
+  border: 1px solid var(--primary);
+}
+.form-container form a{
+  text-decoration: none;
+  text-align: right;
+}
+.form-container form button{
+  padding: .75rem;
+  border: none;
+  border-radius: .25rem;
+  font-weight: bold;
+  color: white;
+}
+.form-container form .login-btn{
+  background-color: var(--primary);
+}
+.form-container form .login-facebook{
+  background-color: #2e86de;
+}
+.form-container form .login-google{
+  background-color: #ee5253;
+}
+/* .form-container form .back-home-link{
+  display: block;
+  width: 4rem;
+  height: 4rem;
+  margin-top: 1rem;
+  border-radius: 50%;
+  line-height: 4rem;
+  font-size: 1.5rem;
+  text-align: center;
+  color: white;
+  background-color: var(--secondary);
+} */
