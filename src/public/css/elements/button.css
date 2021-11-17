@@ -1,0 +1,29 @@
+.btn{
+  border: none;
+  padding: 12px 16px;
+  font-size: 17px;
+  cursor: pointer;
+}
+.btn:hover {
+  background-color: rgb(148, 169, 231);
+}
+.link{
+  color:white;
+  text-decoration: none;
+}
+.link:hover{
+  text-decoration: none;
+}
+.label{
+  cursor: pointer;
+  width: 146px;
+  height: 49px;
+  text-align: center;
+  border: none;
+  border-radius: 4px;
+  padding-top: 10px;
+}
+.label:hover{
+  background-color: rgb(224, 99, 26);
+}
+

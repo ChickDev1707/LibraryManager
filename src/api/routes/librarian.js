@@ -9,13 +9,8 @@ const bookMiddleWares = require('../middlewares/book-check')
 const userAuth = require('../middlewares/user-auth.js')
 const borrowController = require('../controllers/librarian/borrow-book')
 const fineController = require('../controllers/librarian/fine')
-const path=require('path')
 const {upload} = require('../services/librarian/manage-book-service')
-
-const multer=require('multer')
-
 const confirmBook=require('../controllers/librarian/confirm-return-book.js')
-
 const readerController=require('../controllers/librarian/manage-reader')
 // index
 router.route('/').get(userAuth.checkAuthenticatedAsLibrarian)
@@ -36,26 +31,10 @@ router.route('/books/:id')
 
 router.get('/books/:id/edit', bookController.updateBookForm)
 
-// manage reader
-const uploadPath = path.join('./src/public', '/uploads/addReader')
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, uploadPath)
-    },
-    filename: function (req, file, cb) {
-      cb(null, file.originalname)
-    }
-  })
-
-const uploadReader = multer({ storage: storage })
-
-
 router.route('/reader')
       .get(readerController.getAllReader)
-      .post(uploadReader.single('uploadfile'),readerController.addReader)
-
-//
-router.get('/reader/new', readerController.newReader)
+      .post(readerController.uploadReader.single('uploadfile'),readerController.addReader)
+// router.get('/reader/new', readerController.newReader)
 
 router.route('/reader/:id')
       .get(readerController.getReader)
