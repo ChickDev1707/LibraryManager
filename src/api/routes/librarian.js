@@ -82,7 +82,6 @@ router.route('/month-report')
 router.route('/day-report')
       .get(reportController.getDayReportPage)
 
-const accountServices = require('../services/account')
 router.route('/api/notification')
       .get(notificationController.returnNotifications)
       .post(notificationController.clientSideReadNotEvent)

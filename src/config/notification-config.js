@@ -6,12 +6,6 @@ function init(io){
     socket.on("disconnect", function () {
       console.log("Made socket disconnected");
     });
-  
-    // socket.on("send-notification", async function (data) {
-    //   let notification = JSON.parse(data)
-    //   io.emit("new-notification", notification);
-    // });
-  
   });
 }
 

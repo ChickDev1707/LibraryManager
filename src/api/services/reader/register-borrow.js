@@ -65,13 +65,13 @@ async function existBookHeadWithNoAvailable(bookHeadIds){
 
 async function handleRegisterSuccess(req){
   const account = await accountServices.getCurrentUserAccount(req)
-  // const bookHeadIds = JSON.parse(req.body.bookHeads)
+  const bookHeadIds = JSON.parse(req.body.bookHeads)
   const reader = await Reader.findOne({email: account.ten_tai_khoan})
-  // await handleSuccessWithCart(account, bookHeadIds)
-  // await addNewRegisterBorrowCard(reader._id, bookHeadIds)
+  await handleSuccessWithCart(account, bookHeadIds)
+  await addNewRegisterBorrowCard(reader._id, bookHeadIds)
   await saveNewNotification(reader.ho_ten)
   var io = req.app.get('socket-io');
-  io.emit("new-notification", 'hi!');
+  io.emit("new-notification", 'new notification');
 }
 async function handleSuccessWithCart(account, bookHeadIds){
   removeRegisterTicketsWithAccount(account, bookHeadIds)

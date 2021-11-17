@@ -32,15 +32,13 @@ async function deleteSelectedBookHeadFromCart(req, res){
 // register borrow
 // ------------------------------
 async function registerBorrowBook(req, res){
-  // let errorMessage = await registerBorrowServices.getRegisterErrorMessage(req)
-  // if(errorMessage == ''){
+  let errorMessage = await registerBorrowServices.getRegisterErrorMessage(req)
+  if(errorMessage == ''){
     await registerBorrowServices.handleRegisterSuccess(req)
-  //   res.redirect('/reader/cart')
-  // }else{
-  //   console.log(errorMessage)
-  // }
-  
-  res.redirect('/reader/cart')
+    res.redirect('/reader/cart')
+  }else{
+    console.log(errorMessage)
+  }
   
 }
 async function showViewRegisterPage(req, res){
