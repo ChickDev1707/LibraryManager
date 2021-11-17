@@ -1,0 +1,88 @@
+<%- contentFor('head') %> 
+<title>Policy of book category</title>
+<script defer src="/public/js/edit-book-category.js"></script>
+
+<%- contentFor('body') %> 
+<%- include('../../partials/header/librarian-header.ejs') %>
+<h2>Thay doi quy dinh</h2>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-3">
+      <%- include('./nav.ejs', {inputIndex: 1}) %> 
+    </div>
+    <div class="col-9">
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#new-category-modal">Thêm </button>
+
+      <!-- add Modal -->
+      <div class="modal fade" id="new-category-modal" tabindex="-1" aria-labelledby="new-category-modal-label" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <form action="/librarian/policy/book-category" method="POST">
+              <div class="modal-header">
+                <h5 class="modal-title" id="new-category-modal-label">Thêm thể loại</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="mb-3">
+                  <label class="form-label">Tên thể loại sách</label>
+                  <input type="text" name="categoryName" required class="form-control">
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Thêm</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <br>
+      <br>  
+      <table class="table">
+        <thead class="table-dark">
+          <tr>
+            <th>STT</th>
+            <th>Tên thể loại</th>
+            <th>Sửa</th>
+            <th>Xóa</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% bookCategories.forEach((category, index)=>{ %>
+            <tr>
+              <td class="category-id" hidden><%= category._id %></td>
+              <td><%= index +1%></td>
+              <td class="category-name"><%= category.ten_the_loai %></td>
+              <td><button type="button" onclick="loadCategoryInfoToEditForm(this)" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-category-modal">Sửa</button></td>
+              <td><%- include('../../partials/delete-form-field.ejs', {url: `/librarian/policy/book-category/${category._id}`}) %></td>
+            </tr>
+            <% }) %> 
+        </tbody>
+      </table>
+        <!-- edit Modal -->
+      <div class="modal fade" id="edit-category-modal" tabindex="-1" aria-labelledby="edit-category-modal-label" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <form action="" method="POST">
+              <div class="modal-header">
+                <h5 class="modal-title" id="edit-category-modal-label">Cập nhật thể loại</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="mb-3">
+                  <label class="form-label">Tên thể loại sách</label>
+                  <input id="edit-modal-category-name-input" type="text" name="categoryName" required class="form-control">
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Cập nhật</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
