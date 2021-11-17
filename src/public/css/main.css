@@ -1,6 +1,7 @@
 
 @import url('./settings/variable.css');
 @import url('./components/header.css');
+@import url('./components/toast.css');
 
 *{
   box-sizing: border-box;

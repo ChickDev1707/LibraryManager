@@ -27,7 +27,5 @@ module.exports = function(passport){
   return router
 }
 
-
-
 // search book route
 
