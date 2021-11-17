@@ -1,4 +1,5 @@
 const registerBorrowServices = require('../../services/reader/register-borrow.js')
+const accountServices = require('../../services/account')
 
 // cart
 // ------------------------------
@@ -31,14 +32,16 @@ async function deleteSelectedBookHeadFromCart(req, res){
 // register borrow
 // ------------------------------
 async function registerBorrowBook(req, res){
-  
-  let errorMessage = await registerBorrowServices.getRegisterErrorMessage(req)
-  if(errorMessage == ''){
+  // let errorMessage = await registerBorrowServices.getRegisterErrorMessage(req)
+  // if(errorMessage == ''){
     await registerBorrowServices.handleRegisterSuccess(req)
-    res.redirect('/reader/cart')
-  }else{
-    console.log(errorMessage)
-  }
+  //   res.redirect('/reader/cart')
+  // }else{
+  //   console.log(errorMessage)
+  // }
+  
+  res.redirect('/reader/cart')
+  
 }
 async function showViewRegisterPage(req, res){
   const registerCards = await registerBorrowServices.searchRegisterCards(req)

@@ -10,6 +10,7 @@ const userAuth = require('../middlewares/user-auth.js')
 const borrowController = require('../controllers/librarian/borrow-book')
 const fineController = require('../controllers/librarian/fine')
 const {upload} = require('../services/librarian/manage-book-service')
+const notificationController = require('../controllers/librarian/notification')
 
 const confirmBook=require('../controllers/librarian/confirm-return-book.js')
 
@@ -80,5 +81,10 @@ router.route('/month-report')
       
 router.route('/day-report')
       .get(reportController.getDayReportPage)
+
+const accountServices = require('../services/account')
+router.route('/api/notification')
+      .get(notificationController.returnNotifications)
+      .post(notificationController.clientSideReadNotEvent)
 
 module.exports = router

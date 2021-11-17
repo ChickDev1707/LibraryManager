@@ -1,7 +1,8 @@
 
 <%- contentFor('head') %>
-<title>book cart</title>
-<script src="/public/js/register-borrow-book.js"></script>
+<title>Giỏ sách</title>
+<script src="/socket.io/socket.io.js"></script>
+<!-- <script src="/public/js/register-borrow-book.js"></script> -->
 
 <%- contentFor('body') %> 
 <%- include('../partials/header/reader-header.ejs') %> 
@@ -36,8 +37,64 @@
       <% }) %> 
     </tbody>
   </table>
-  <form method="POST" onsubmit="confirmRegister()" action="/reader/cart/register">
+  <form method="POST"  action="/reader/cart/register" onsubmit="confirmRegister()">
     <input id="register-selected-book-heads-input" name="bookHeads" value="" type="text" hidden >
     <button class="btn btn-primary" type="submit">Đăng ký</button>
   </form>
 </div>
+
+<script>
+    
+  function confirmRegister(){
+    // let bookHeadsInput = document.getElementById('register-selected-book-heads-input')
+    // let bookHeadsString = JSON.stringify(getBookHeads())
+    // bookHeadsInput.value = bookHeadsString
+
+    // console.log("reader not")
+    // // notification
+    // const socket = io('http://localhost:3000/');
+
+    // let msg = "abc"
+    // let data = {
+    //   date: Date.now(),
+    //   content: msg
+    // }
+    // if(msg.trim() !== '') {
+    //   socket.emit("send-notification", JSON.stringify(data));
+    // }
+  }
+
+  function confirmDelete(){
+    let bookHeadsInput = document.getElementById('delete-selected-book-heads-input')
+    let bookHeadsString = JSON.stringify(getBookHeads())
+    bookHeadsInput.value = bookHeadsString
+  }
+  function getBookHeads(){
+    let bookHeads = []
+    let selectBookHeadCbs = document.querySelectorAll('.cb-select-book-head')
+    for(let i = 0 ;i< selectBookHeadCbs.length; i++){
+      let checkbox = selectBookHeadCbs[i]
+      if(checkbox.checked) bookHeads.push(checkbox.value)
+    }
+    return bookHeads
+  }
+
+  var selectAll = (function(){
+    var selected = false;
+    return function(){
+      let selectBookHeadCbs = document.querySelectorAll('.cb-select-book-head')
+      if(!selected){
+        changeCheckBoxesState(selectBookHeadCbs, true)
+        selected = true;
+      }else{
+        changeCheckBoxesState(selectBookHeadCbs, false)
+        selected = false;
+      }
+    }
+  })()
+  function changeCheckBoxesState(checkboxes, state){
+    for(let i = 0; i<checkboxes.length; i++){
+      checkboxes[i].checked = state;
+    }
+  }
+</script>
