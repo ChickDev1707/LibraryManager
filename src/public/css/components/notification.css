@@ -1,0 +1,46 @@
+
+:root{
+  --not-background: rgb(226, 225, 225);
+  --new-not-color: #ee5253;
+}
+.offcanvas-header{
+  background-color: var(--primary);
+  color: white;
+  font-weight: bold;
+}
+.not-item{
+  display: block;
+  background-color: var(--not-background);
+  border-radius: .5rem;
+  padding: 1rem;
+  text-decoration: none;
+  color: var(--accent);
+  margin-bottom: .5rem;
+}
+.not-item p{
+  margin: 0;
+}
+.not-item .title{
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.not-item .date{
+  font-size: .8rem;
+}
+
+.no-not-panel{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 5rem;
+  color: gray;
+  text-align: center;
+}
+.no-not-panel img{
+  width: 50%;
+}
+
+.no-not-panel p{
+  font-size: .9rem;
+  padding: 0 2rem;
+}

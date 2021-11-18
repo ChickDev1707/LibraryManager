@@ -1,4 +1,6 @@
 const registerBorrowServices = require('../../services/reader/register-borrow.js')
+const accountServices = require('../../services/account')
+const urlHelper = require('../../helpers/url')
 
 // cart
 // ------------------------------
@@ -9,13 +11,21 @@ async function showCartPage(req, res){
 }
 async function addNewBookHeadToCart(req, res){
   const bookHeadId = req.body.bookHeadId
-
+  
   let errorMessage = await registerBorrowServices.getManageCartError(req)
   if(errorMessage == ''){
     registerBorrowServices.saveBookHeadToCart(req)
-    res.redirect('/book-head/'+ bookHeadId)
+    const redirectUrl = urlHelper.getEncodedMessageUrl(`/book-head/${bookHeadId}/`, {
+      type: 'success',
+      message: 'Đã thêm sách vào vỏ đăng ký mượn'
+    })
+    res.redirect(redirectUrl)
   }else{
-    res.redirect('/book-head/'+ bookHeadId +'?errorMessage='+ encodeURIComponent(errorMessage))
+    const redirectUrl = urlHelper.getEncodedMessageUrl(`/book-head/${bookHeadId}/`, {
+      type: 'error',
+      message: errorMessage
+    })
+    res.redirect(redirectUrl)
   }
 }
 async function deleteBookHeadFromCart(req, res){
@@ -31,7 +41,6 @@ async function deleteSelectedBookHeadFromCart(req, res){
 // register borrow
 // ------------------------------
 async function registerBorrowBook(req, res){
-  
   let errorMessage = await registerBorrowServices.getRegisterErrorMessage(req)
   if(errorMessage == ''){
     await registerBorrowServices.handleRegisterSuccess(req)
@@ -39,6 +48,7 @@ async function registerBorrowBook(req, res){
   }else{
     console.log(errorMessage)
   }
+  
 }
 async function showViewRegisterPage(req, res){
   const registerCards = await registerBorrowServices.searchRegisterCards(req)

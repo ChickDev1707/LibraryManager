@@ -9,6 +9,18 @@ async function getCurrentUserAccount(req){
   return currentUserAccount
 }
 
+async function getLibrarianAccount(){
+  const librarianAccount = await Account.findOne({vai_tro: 'librarian'})
+  return librarianAccount
+}
+
+async function updateLibrarianAccountNewNotStatus(){
+  let librarianAccount = await getLibrarianAccount()
+  librarianAccount.thong_bao_moi = false
+  await librarianAccount.save()
+}
 module.exports = {
-  getCurrentUserAccount
+  getCurrentUserAccount,
+  getLibrarianAccount,
+  updateLibrarianAccountNewNotStatus
 }
