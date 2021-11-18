@@ -1,7 +1,7 @@
 const Reader=require('../../models/reader')
 const Account=require('../../models/user-account')
 const BorrowReturnCard=require('../../models/borrow-return-card')
-const multer=require('multer')
+const Policy=require('../../models/policy')
 const fs=require('fs')
 const path=require('path')
 const excelToJson = require('convert-excel-to-json');
@@ -97,6 +97,8 @@ async function handleAddReader(reqBody){
     const checkAge=today.getFullYear()-nam_sinh.getFullYear()
 
     const checkEmail=await Reader.find({"email":reqBody.email})
+    const minAge=await Policy.find({ten_quy_dinh:'tuoi_toi_thieu'})
+    const maxAge=await Policy.find({ten_quy_dinh:'tuoi_toi_da'})
 
     const data={
         reader:"",
@@ -104,10 +106,10 @@ async function handleAddReader(reqBody){
         errorMessage:""
     }
 
-    if(checkAge<18){
+    if(checkAge<minAge[0].gia_tri){    
         data.errorMessage="Không đủ tuổi đăng ký"
     }
-    else if(checkAge>55){
+    else if(checkAge>maxAge[0].gia_tri){
         data.errorMessage="Vượt quá độ tuổi đăng ký"
     }
     else if(checkEmail.toString()!=''){

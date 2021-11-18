@@ -3,108 +3,136 @@
 <%- contentFor('body') %> 
 <%- include('../../partials/header/librarian-header.ejs') %> 
  
-
 <link rel="stylesheet" type="text/css" href="/public/css/elements/button.css" />
 <link rel="stylesheet" type="text/css" href="/public/css/elements/input.css">
 <link rel="stylesheet" type="text/css" href="/public/css/components/form.css">
 
-    <div class="info">
-        <div>
-            <button 
-                type="button"
-                data-bs-toggle="modal" 
-                data-bs-target="#addReader" 
-                class="btn"
-                >
-                <i class="fas fa-user-plus"></i>
-                Thêm độc giả
-            </button>
-            <%- include('./new.ejs') %>
-        </div>
-        
-        <div >
-            <div>
-                <span>Thêm độc giả bằng file excel</span>
-            </div>
-            <form action="/librarian/reader" enctype="multipart/form-data" method="post">
-                <input id="file" type="file" name="uploadfile"
-                     accept='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel' 
-                    >
-                <label class="label" for="file">Chọn file</label>
-                
-                <button type="submit" value="Upload Excel" class="btn">
-                    <i class="fas fa-folder-plus"></i>
-                    Tải tệp excel 
-                </button>   
-            </form> 
-        
-            <div >
-                <form action="/librarian/reader" method="get">
-                    <input type="text" name="ho_ten" hidden value="">
-                    <button class="btn">
-                        <i class="fas fa-search-plus"></i>
-                        Tất cả độc giả
-                    </button>
-                </form>
-            </div>
-
-            <div>
-                <form action="/librarian/reader" method="GET">
-                    <div class="form_body">
-                        <div>
-                            <input class="input_search_reader" type="text" name="ho_ten" value="<%= search.ho_ten %>" required>
-                            <label placeholder="Tìm kiếm độc giả"></label>
-                        </div>
-                        <button type="submit" class="btn">
-                            <i class="fas fa-search-plus"></i>
-                            Tìm kiếm
-                        </button>  
-                    </div>
-        
-                </form>
-            </div>
-    </div>
-    </div>
-    <table class="table table-striped position-relative " >
-        <thead class="table-dark">
-          <tr>
-            <th scope="col">STT</th>
-            <th scope="col">Tên độc giả</th>
-            <th scope="col">Xem thông tin độc giả</th>
-            <th scope="col">Sữa thông tin độc giả</th>
-            <th scope="col">Xóa độc giả</th>
-          </tr>
-        </thead>
-        <tbody>
+<div style="
+    padding: 10px;
+    box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+    margin-bottom: 30px;
+">
     
-        <% reader.forEach((reader,key)=>{ %> 
-        <tr>
-            <th>
-                <%= key %> 
-            </th>
-        <div >
-            <td>
-                <div >
-                    <span >
-                        <%= reader.ho_ten %>                
-                    </span>
-                </div>  
-            </td>
-            <div >
-                <td>
+    <div >
+        <div style="display: flex;justify-content:space-between">
+            <div>
+                <button 
+                    type="button"
+                    data-bs-toggle="modal" 
+                    data-bs-target="#addReader" 
+                    class="btn"
+                    >
+                    <i class="fas fa-user-plus"></i>
+                    Thêm độc giả
+                </button>
+                <%- include('./new.ejs') %>
+            </div>
 
-                        <button 
-                            type="button"
-                            data-bs-toggle="modal" 
-                            data-bs-target="#viewReader<%= key %>" 
-                            class="btn view_edit"
-                            >
-                            <i class="fas fa-eye"></i>
-                            
-                        </button>
-                        <%- include('./view.ejs',{key:key,reader:reader}) %> 
-                </td>
-                <td>
+            <div>
+                <form action="/librarian/reader" enctype="multipart/form-data" method="post">
+                    <input id="file" type="file" name="uploadfile"
+                            accept='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel' 
+                        >
+                    <label class="label" for="file">Chọn file</label>
+                    
+                    <button type="submit" value="Upload Excel" class="btn">
+                        <i class="fas fa-folder-plus"></i>
+                        Tải tệp excel 
+                    </button>   
+                </form> 
+            </div>
+        </div>
+
+
+        
+        <div >
+            <form action="/librarian/reader" method="get">
+                <input type="text" name="ho_ten" hidden value="">
+                <button class="btn">
+                    <i class="fas fa-search-plus"></i>
+                    Tất cả độc giả
+                </button>
+            </form>
+        </div>
+
+        <div>
+            <form action="/librarian/reader" method="GET">
+                <div class="form_body">
+                    <div >
+                        <i class="fas fa-search-plus" style="position: absolute;margin:15px 0px 0px 10px;"></i>
+                        <input style="border-radius: 10px; 
+                                padding-left: 40px;
+                                width: 980px;" 
+                                type="text" name="ho_ten" value="<%= search.ho_ten %>" required>
+                        <label style="padding-left: 20px;" placeholder="Tìm kiếm độc giả"></label>
+                    </div>
+                    <button type="submit" class="btn">
+                        <i class="fas fa-search-plus"></i>
+                        Tìm kiếm
+                    </button>  
+                </div>
+    
+            </form>
+        </div>
+</div>
+</div>
+<table class="table table-striped " >
+    <thead class="table-dark">
+        <tr>
+        <th >STT</th>
+        <th >Tên độc giả</th>
+        <th >Ngày lập thẻ</th>
+        <th >Nơi ở</th>
+        <th style="padding-left: 300px;">Xem chi tiết</th>
+        <th >Sửa thông tin</th>
+        <th >Xóa độc giả</th>
+        </tr>
+    </thead>
+    <tbody>
+
+    <% reader.forEach((reader,key)=>{ %> 
+    <tr>
+        <th>
+            <%= key %> 
+        </th>
+    <div style="display: flex;justify-content:space-between">
+        
+        <div >
+            <td >
+                <span >
+                    <%= reader.ho_ten %>                
+                </span>
+            </td>
+        </div>  
+        <div>
+            <td >               
+                <span >
+                    <%= reader.ngay_lap_the.toISOString().split('T')[0] %>                
+                </span>
+            </td>
+        </div>
+        <div>
+            <td >                
+                <span >
+                    <%= reader.dia_chi %>                
+                </span>
+            </td>
+        </div>
+        <div >
+            <td style="padding-left: 300px;">
+                <button 
+                    type="button"
+                    data-bs-toggle="modal" 
+                    data-bs-target="#viewReader<%= key %>" 
+                    class="btn view_edit"
+                    
+                    >
+                    <i class="fas fa-eye"></i>
+                    
+                </button>
+                <%- include('./view.ejs',{key:key,reader:reader}) %> 
+            </td>
+            <td>
                 <div>
                     <button 
                         type="button"
@@ -116,26 +144,23 @@
                         
                     </button>
                     <%- include('./edit.ejs',{key:key,reader:reader}) %> 
-                    
                 </div>
+            </td>
+            <td>
+                <form action="/librarian/reader/<%= reader.id %>?_method=DELETE" method="POST">
+                    <button type="submit" class="btn">
+                        <i class="fas fa-trash"></i>
+                        
+                    </button>
+                </form>  
+            </td>
+        </div>   
 
-                </td>
-                <td>
-                    <form action="/librarian/reader/<%= reader.id %>?_method=DELETE" method="POST">
-                        <button type="submit" class="btn">
-                            <i class="fas fa-trash"></i>
-                           
-                        </button>
-                    </form>  
-                </td>
-
-            </div>   
-
-        </div>
-        </tr>
-    <% }) %> 
-    </tbody>
-    </table>
+    </div>
+    </tr>
+<% }) %> 
+</tbody>
+</table>
 </div>
 
 
