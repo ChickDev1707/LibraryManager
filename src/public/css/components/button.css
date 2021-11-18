@@ -1,0 +1,30 @@
+
+.icon-text-btn{
+  padding: .7rem 1.4rem;
+  background-color: #27ae60; 
+  color: white;
+  font-weight: bold;
+  font-size: .85rem;
+  border: none;
+}
+.icon-text-btn:hover{
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+.icon-text-btn i{
+  font-size: 1.25rem;
+  margin-right: .25rem;
+}
+.icon-btn{
+  color: gray;
+  font-size: 1.4rem;
+  background-color: transparent;
+}
+.icon-btn:hover{
+  color: var(--secondary);
+}
+
+.submit-btn{
+  padding: .5rem 2.5rem;
+  background-color: var(--primary);
+  color: white;
+}

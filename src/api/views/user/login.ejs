@@ -13,31 +13,31 @@
   </div>
   <div class="col form-container">
     <form class="container-fluid" action="/login" method="POST">
-      <div class="row">
+      <div class="row input-row">
         <h2>Đăng nhập</h2>
       </div>
-      <div class="row">
-        <div class="col">
+      <div class="row input-row">
+        <div class="col input-item">
           <label for="">Tên tài khoản</label>
-          <input required name="email" type="email" placeholder="username">
+          <input class="input-primary" required name="email" type="email" placeholder="username">
         </div>
       </div>
-      <div class="row">
-        <div class="col">
+      <div class="row input-row">
+        <div class="col input-item">
           <label for="">Mật khẩu</label>
-          <input required name="password" type="password" placeholder="password">
+          <input class="input-primary" required name="password" type="password" placeholder="password">
         </div>
       </div>
-      <div class="row">
+      <div class="row input-row">
         <a href="">Quên mật khẩu</a>
       </div>
-      <div class="row">
+      <div class="row input-row">
         <div class="col">
           <button type="submit" class="login-btn">Đăng nhập</button>
         </div>
       </div>
       <hr>
-      <div class="row">
+      <div class="row input-row">
         <div class="col">
           <button class="login-google"><i class="fab fa-google-plus-square"></i> Google</button>
         </div>
@@ -45,9 +45,6 @@
           <button class="login-facebook"><i class="fab fa-facebook-square"></i> Facebook</button>
         </div>
       </div>
-      <!-- <div class="d-flex justify-content-center">
-        <a class="back-home-link" href=""><i class="fas fa-home"></i></a>
-      </div> -->
     </form>
   </div>
 </div>

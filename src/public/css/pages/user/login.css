@@ -29,9 +29,7 @@
 .form-container form{
   padding: 5rem 5rem 2rem;
 }
-.form-container form .row{
-  margin-bottom: 1rem;
-}
+
 .form-container form .row .col{
   display: flex;
   flex-direction: column;
@@ -41,23 +39,7 @@
   text-align: center;
 
 }
-.form-container .row .col label{
-  font-weight: bold;
-  color: #333;
-  margin-bottom: .25rem;
-}
-.form-container form .row .col input{
-  padding: .5rem 1rem;
-  font-size: .9rem;
-  outline: none;
-  border: none;
-  background-color: rgb(241, 241, 241);
-  border-radius: .25rem;
-  border: 1px solid transparent;
-}
-.form-container form .row .col input:focus{
-  border: 1px solid var(--primary);
-}
+
 .form-container form a{
   text-decoration: none;
   text-align: right;
@@ -78,15 +60,3 @@
 .form-container form .login-google{
   background-color: #ee5253;
 }
-/* .form-container form .back-home-link{
-  display: block;
-  width: 4rem;
-  height: 4rem;
-  margin-top: 1rem;
-  border-radius: 50%;
-  line-height: 4rem;
-  font-size: 1.5rem;
-  text-align: center;
-  color: white;
-  background-color: var(--secondary);
-} */
