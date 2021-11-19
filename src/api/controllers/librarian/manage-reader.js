@@ -4,6 +4,9 @@ const BorrowReturnCard=require('../../models/borrow-return-card')
 const manageReaderService=require('../../services/librarian/manage-reader-service')
 const path=require('path')
 const multer=require('multer')
+const XLSX=require('xlsx')
+const urlHelper=require('../../helpers/url')
+
 
 const uploadPath = path.join('./src/public', '/uploads/addReader')
 const storage = multer.diskStorage({
@@ -20,7 +23,7 @@ async function getAllReader(req,res){
     const reader=await manageReaderService.searchReader(req.query.ho_ten)
     res.render('librarian/manage-reader/all.ejs',{
         reader:reader,
-        search:req.query
+        search:req.query,
     })
 }
 async function addReader(req,res){
@@ -30,12 +33,22 @@ async function addReader(req,res){
     }
     else{
         const data=await manageReaderService.handleAddReader(req.body)
+        
         try {
-        const newreader= await data.reader.save()
-        const newAccount=await data.addAccount.save()
-        res.redirect('/librarian/reader')
+            const newreader= await data.reader.save()
+            const newAccount=await data.addAccount.save()
+            const redirectUrl=urlHelper.getEncodedMessageUrl('/librarian/reader/',{
+                type:'success',
+                message:"Tạo độc giả thành công"
+            })
+            res.redirect(redirectUrl)
         } catch (error) {
-            res.redirect('/librarian/reader')
+            // console.log(error)
+            const redirectUrl=urlHelper.getEncodedMessageUrl('/librarian/reader/',{
+                type:'error',
+                message:data.errorMessage
+            })
+            res.redirect(redirectUrl)
         } 
     }
 }
@@ -54,16 +67,24 @@ async function formEditReader(req,res){
     })
 } 
 async function editReader(req,res){
-    const Data=await manageReaderService.handleEditReader(req.params,req.body)
-    res.redirect('/librarian/reader')
+    const redirectUrl=await manageReaderService.handleEditReader(req.params,req.body)
+    res.redirect(redirectUrl)
 
 }
 async function deleteReader(req,res){
     try {
         await manageReaderService.handleDeleteReader(req.params.id) 
-        res.redirect('/librarian/reader')
+        const redirectUrl=urlHelper.getEncodedMessageUrl('/librarian/reader/',{
+            type:'success',
+            message:"Xóa thành công"
+        })
+        res.redirect(redirectUrl)
     } catch (error) {
-        res.redirect('/librarian/reader')
+        const redirectUrl=urlHelper.getEncodedMessageUrl('/librarian/reader/',{
+            type:'error',
+            message:"Không xóa được"
+        })
+        res.redirect(redirectUrl)
     }
 }
 module.exports={

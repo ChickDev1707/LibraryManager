@@ -5,6 +5,7 @@ const Policy=require('../../models/policy')
 const fs=require('fs')
 const path=require('path')
 const excelToJson = require('convert-excel-to-json');
+const urlHelper=require('../../helpers/url')
 
 async function searchReader(Query){
     const search={}
@@ -16,6 +17,9 @@ async function searchReader(Query){
 }
 
 async function handleAddFileExcel(reqFile){
+    const minAge=await Policy.find({ten_quy_dinh:'tuoi_toi_thieu'})
+    const maxAge=await Policy.find({ten_quy_dinh:'tuoi_toi_da'})
+
     const uploadPath = path.join('./src/public/uploads/addReader',reqFile.originalname+'')
     const result=excelToJson({
         sourceFile:uploadPath,
@@ -31,6 +35,7 @@ async function handleAddFileExcel(reqFile){
             F:'gioi_tinh'
         }
     })
+    
     const length=result.Reader.length;
     for(let i=0;i<length;i++){
         const nam_sinh=new Date(result.Reader[i].ngay_sinh)
@@ -43,7 +48,7 @@ async function handleAddFileExcel(reqFile){
             if(validAccount.length!=0){
                 continue;
             }
-            if(checkAge<18||checkAge>55){
+            if(checkAge<minAge||checkAge>maxAge){
                 continue;
             }
             //
@@ -154,6 +159,7 @@ async function handleEditReader(reqParam,reqBody){
     const today=new Date()
     const checkAge=today.getFullYear()-nam_sinh.getFullYear()
 
+    
     let reader= await Reader.findById(reqParam.id)
     const account=await Account.findById(reader.id_account)
     const checkEmail=await Reader.find({"email":reqBody.email})
@@ -175,15 +181,28 @@ async function handleEditReader(reqParam,reqBody){
 
     if(checkAge<18){
         dataReturn.error="Không đủ độ tuổi"
-       
+        const redirectUrl=urlHelper.getEncodedMessageUrl('/librarian/reader/',{
+            type:'error',
+            message:dataReturn.error
+        })
+        return redirectUrl
     }
     else if(checkAge>55){
         dataReturn.error="Vượt quá tuổi đăng ký"
-        
+        const redirectUrl=urlHelper.getEncodedMessageUrl('/librarian/reader/',{
+            type:'error',
+            message:dataReturn.error
+        })
+        return redirectUrl
     }
     else if(checkEmail.toString()!='' ){
         if(checkEmail[0]._id != reqParam.id){
             dataReturn.error="Email đã đăng ký"
+            const redirectUrl=urlHelper.getEncodedMessageUrl('/librarian/reader/',{
+                type:'error',
+                message:dataReturn.error
+            })
+            return redirectUrl
         }   
         else{
         
@@ -200,6 +219,11 @@ async function handleEditReader(reqParam,reqBody){
             account.ten_tai_khoan=reqBody.email
             dataReturn.account=account
             await account.save() 
+            const redirectUrl=urlHelper.getEncodedMessageUrl('/librarian/reader/',{
+                type:'success',
+                message:"Tạo thành công"
+            })
+            return redirectUrl
         }
     }
     else{
@@ -217,8 +241,13 @@ async function handleEditReader(reqParam,reqBody){
             account.ten_tai_khoan=reqBody.email
             dataReturn.account=account
             await account.save() 
+            const redirectUrl=urlHelper.getEncodedMessageUrl('/librarian/reader/',{
+                type:'success',
+                message:"Chỉnh sửa thành công"
+            })
+            return redirectUrl
         }
-    return dataReturn 
+     
 }
 async function handleDeleteReader(reqParam){
     const reader=await Reader.findById(reqParam)

@@ -11,6 +11,8 @@ const borrowController = require('../controllers/librarian/borrow-book')
 const fineController = require('../controllers/librarian/fine')
 const policyController = require('../controllers/librarian/policy')
 const {upload} = require('../services/librarian/manage-book-service')
+const notificationController = require('../controllers/librarian/notification')
+
 const confirmBook=require('../controllers/librarian/confirm-return-book.js')
 const readerController=require('../controllers/librarian/manage-reader')
 // index
@@ -95,4 +97,8 @@ router.route('/policy/borrow-book')
 router.route('/policy/fine')
       .get(policyController.getPolicyFinePage)
       .post(policyController.updateFinePolicies)
+router.route('/api/notification')
+      .get(notificationController.returnNotifications)
+      .post(notificationController.clientSideReadNotEvent)
+
 module.exports = router

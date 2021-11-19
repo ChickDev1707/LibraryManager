@@ -3,6 +3,7 @@ const BookHead = require('../../models/book-head.js')
 const Reader = require('../../models/reader.js')
 const RegisterBorrowCard = require('../../models/register-borrow-card.js')
 const accountServices = require('../../services/account.js')
+var ObjectID = require('mongodb').ObjectID;
 
 async function getBooksFromIds(bookHeadIds){
   let result = []
@@ -68,6 +69,9 @@ async function handleRegisterSuccess(req){
   const reader = await Reader.findOne({email: account.ten_tai_khoan})
   await handleSuccessWithCart(account, bookHeadIds)
   await addNewRegisterBorrowCard(reader._id, bookHeadIds)
+  await saveNewNotification(reader.ho_ten)
+  var io = req.app.get('socket-io');
+  io.emit("new-notification", 'new notification');
 }
 async function handleSuccessWithCart(account, bookHeadIds){
   removeRegisterTicketsWithAccount(account, bookHeadIds)
@@ -110,6 +114,22 @@ async function removeRegisterTicketsWithAccount(account, bookHeadIds){
     await account.gio_sach.splice(registerTicketIndex, 1)
   }
   
+}
+
+// notification
+async function saveNewNotification(readerName){
+  let notification = createNewNotification(readerName)
+  let librarianAccount = await accountServices.getLibrarianAccount()
+  librarianAccount.thong_bao.push(notification)
+  librarianAccount.thong_bao_moi = true
+  await librarianAccount.save()
+}
+function createNewNotification(readerName){
+  let not = {
+    tieu_de: 'Đăng ký mượn sách',
+    noi_dung: `Độc giả ${readerName} đã đăng ký mượn sách` 
+  }
+  return not
 }
 
 module.exports = {
