@@ -1,0 +1,22 @@
+.search-bar{
+  display: flex;
+  align-items: stretch;
+}
+.search-bar input{
+  padding: .5rem 1rem;
+  min-width: 30rem;
+  border: none;
+  background-color: rgb(241, 241, 241);
+  outline: none;
+  font-size: .85rem;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+}
+.search-bar button{
+  font-weight: 600;
+  background-color: var(--primary);
+  border-radius: 0 .25rem .25rem 0;
+  font-size: .9rem;
+  color: white;
+  padding: 0 1rem;
+
+}

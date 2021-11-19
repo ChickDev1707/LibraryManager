@@ -1,8 +1,8 @@
-
 :root{
   --primary: rgb(80, 70, 229);
   --secondary: rgb(16, 24, 43);
   --background: rgb(242, 245, 247);
+  --accent: #F50057;
   /* theme */
 
   --green-primary: #27ae60;

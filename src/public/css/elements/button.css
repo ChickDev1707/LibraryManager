@@ -1,0 +1,37 @@
+.icon-text-btn{
+  padding: .65rem 1.3rem;
+  background-color: var(--primary); 
+  color: white;
+  font-weight: 600;
+  font-size: .85rem;
+  border: none;
+}
+.icon-text-btn i{
+  font-size: 1rem;
+  margin-right: .25rem;
+}
+.icon-btn{
+  color: gray;
+  font-size: 1.4rem;
+  background-color: transparent;
+}
+.icon-btn:hover{
+  color: var(--secondary);
+}
+.icon-btn.danger:hover{
+  color: var(--red-primary) !important;
+}
+.icon-btn.info:hover{
+  color: var(--blue-primary) !important;
+}
+.submit-btn{
+  padding: .5rem 2.5rem;
+  background-color: var(--primary);
+  color: white;
+}
+.green-btn{
+  background-color: var(--green-primary);
+}
+.icon-text-btn:hover, .submit-btn:hover{
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
