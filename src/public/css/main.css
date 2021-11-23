@@ -13,10 +13,11 @@ body{
   background-color: var(--background);
 }
 table thead{
-  background-color: var(--primary);
+  background-color: var(--secondary);
   color: white;
 }
 button{
+  border: none;
   cursor: pointer;
   border-radius: .25rem;
 }

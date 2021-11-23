@@ -1,0 +1,6 @@
+
+.small-img-container{
+  width: 4rem;
+  height: 5rem;
+  object-fit: contain;
+}
