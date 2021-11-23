@@ -51,9 +51,17 @@ async function registerBorrowBook(req, res){
   let errorMessage = await registerBorrowServices.getRegisterErrorMessage(req)
   if(errorMessage == ''){
     await registerBorrowServices.handleRegisterSuccess(req)
-    res.redirect('/reader/cart')
+    const redirectUrl = urlHelper.getEncodedMessageUrl(`/reader/register-tickets/`, {
+      type: 'success',
+      message: 'Đăng ký mượn sách thành công'
+    })
+    res.redirect(redirectUrl)
   }else{
-    console.log(errorMessage)
+    const redirectUrl = urlHelper.getEncodedMessageUrl(`/reader/cart/`, {
+      type: 'error',
+      message: errorMessage
+    })
+    res.redirect(redirectUrl)
   }
   
 }
