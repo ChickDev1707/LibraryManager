@@ -6,9 +6,11 @@ const registerBorrowController = require('../controllers/reader/register-borrow.
 const borrowBookController = require('../controllers/reader/borrow-book.js')
 const favoriteBookController=require('../controllers/reader/favorite-books')
 // index
-router.route('/').get(userAuth.checkAuthenticatedAsReader, (req, res)=>{
-  res.render('reader/index.ejs')
-})
+router.use(userAuth.checkAuthenticatedAsReader)
+
+// router.route('/').get((req, res)=>{
+//   res.render('reader/index.ejs')
+// })
 // auth
 router.delete('/logout', authController.logOut)
 

@@ -11,7 +11,6 @@ async function showCartPage(req, res){
 }
 async function addNewBookHeadToCart(req, res){
   const bookHeadId = req.body.bookHeadId
-  
   let errorMessage = await registerBorrowServices.getManageCartError(req)
   if(errorMessage == ''){
     registerBorrowServices.saveBookHeadToCart(req)

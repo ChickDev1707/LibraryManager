@@ -10,10 +10,18 @@
             <img class="img-fluid"  height="600" width="400" src="../../../public/assets/images/default-book-cover.png">
             <br>
             <br>
-            <form action="/reader/cart" method="POST">
-                <input name="bookHeadId" type="text" hidden value="<%= bookHead._id%>">
-                <button class="btn btn-primary" type="submit">Borrow Book</button>
-            </form>
+            <% if(user == 'reader'){ %>
+                <form action="/reader/cart" method="POST">
+                    <input name="bookHeadId" type="text" hidden value="<%= bookHead._id%>">
+                    <button class="btn btn-primary" type="submit">Mượn sách</button>
+                </form>
+            <% }else{ %>
+                <form action='/login' method="GET">
+                    <input type="text" name="message" value="Đăng nhập để đăng ký mượn sách" hidden>
+                    <input type="text" name="type" value="info" hidden>
+                    <button class="btn btn-primary" type="submit">Mượn sách</button>
+                </form>
+            <% } %> 
 
             <form action="/reader/favorite-books" method="POST">
                 <input name="bookHeadIdFavorite" type="text" hidden value="<%= bookHead._id%>">
