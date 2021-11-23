@@ -13,6 +13,7 @@ async function getAllRegisterBorrowCard(req, res){
         res.render('librarian/register-borrow-card/all.ejs', {
             registerBorrowCard: registerBorrowCard
         })
+
     }catch{
         console.log(error)
         res.redirect('back')
@@ -23,7 +24,13 @@ async function getAllRegisterBorrowCard(req, res){
 async function denyRegisterBorrowCard(req, res){
     try{
         await registerBorrowCardService.denyRegisterBorrowCard(req.params.id)
-        res.redirect('/librarian/register-borrow-card/')
+
+        const redirectUrl = urlHelper.getEncodedMessageUrl(`/librarian/register-borrow-card/`, {
+            type: 'success',
+            message: 'Đã từ chối phiếu đăng kí mượn sách'
+        })
+        res.redirect(redirectUrl)
+
     }catch{
         console.log(error)
         res.redirect('/librarian/register-borrow-card/')
@@ -38,7 +45,12 @@ async function confirmRegisterBorrowCard(req, res){
         // update RegisterBorrowCard status
         await registerBorrowCardService.updateRegisterBorrowCardStatus(req.params.registerBorrowCardId)
 
-        res.redirect('/librarian/register-borrow-card/')
+        const redirectUrl = urlHelper.getEncodedMessageUrl(`/librarian/register-borrow-card/`, {
+            type: 'success',
+            message: 'Đã xát nhận phiếu đăng kí mượn sách'
+        })
+        res.redirect(redirectUrl)
+        
     }catch{
         res.redirect('/librarian/register-borrow-card')
         console.log(error) 

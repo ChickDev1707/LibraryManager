@@ -2,6 +2,7 @@
     .page-content-wrapper{
         margin: 0;
     }
+
 }
 
 .page-content-wrapper{
@@ -14,10 +15,12 @@
 }
 
 .img-fluid{
-    max-height: 600px;
+    max-height: 620px;
+    width: 100%;
     display: block;
     margin-left: auto;
     margin-right: auto;
+    object-fit: contain;
 }
 
 .col-7{
@@ -61,6 +64,8 @@ label{
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 7;
 }
+
+
 
 .action-button{
     display: flex;

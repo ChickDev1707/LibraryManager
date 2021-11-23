@@ -14,10 +14,9 @@
 
 <div class="page-content-wrapper">
     <form id="form-picker" class="row" action="" method="get" >
-        <div class="col-7"></div>
-        <input class="col form-control" type="date" name="date" value="<%= date %>">
-        <button class=" col-1 submit-btn" type="submit" >submit</button>
-        <button id="btnExport" class=" col-1 submit-btn" type="button" onclick="fnExportToExcel('xlsx')"><i class="fas fa-file-export"></i> export</button>
+        <input class="form-control date-picker" type="date" name="date" value="<%= date %>">
+        <button class="submit-btn" type="submit" >submit</button>
+        <button id="btnExport" class="submit-btn" type="button" onclick="fnExportToExcel('xlsx')"><i class="fas fa-file-export"></i> export</button>
     </form>
     
     <h2 class="text-center">THỐNG KÊ SÁCH TRẢ TRỄ <%= date %></h2>
