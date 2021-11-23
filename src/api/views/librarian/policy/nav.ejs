@@ -1,0 +1,16 @@
+<div class="list-group">
+  <% let policyItems = [
+      {url: '/librarian/policy', text: 'Độc giả'},
+      {url: '/librarian/policy/book-category', text: 'Thể loại sách'},
+      {url: '/librarian/policy/borrow-book', text: 'Mượn sách'},
+      {url: '/librarian/policy/fine', text: 'Tiền phạt'},
+    ] 
+  %> 
+  <% policyItems.forEach((item, index)=>{ %>
+    <% if(index == inputIndex){ %>
+      <a href="<%=item.url %>" class="list-group-item list-group-item-action active" aria-current="true"><%= item.text %></a>
+    <% }else{ %>
+      <a href="<%=item.url %>" class="list-group-item list-group-item-action" aria-current="true"><%= item.text %></a>
+    <% } %> 
+  <% }) %> 
+</div>

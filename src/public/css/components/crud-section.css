@@ -1,0 +1,16 @@
+.crud-section{
+  display: flex;
+  flex-direction: column;
+}
+.crud-section h4{
+  color: var(--accent);
+}
+.crud-row{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2rem;
+}
+.crud-row .btn-container button{
+  margin-left: .5rem;
+}
