@@ -4,16 +4,6 @@ function confirmRegister(){
   let bookHeadsString = JSON.stringify(getBookHeads())
   bookHeadsInput.value = bookHeadsString
 
-  console.log("reader not")
-  // notification
-  let msg = "abc"
-  let data = {
-    date: Date.now(),
-    content: msg
-  }
-  if(msg.trim() !== '') {
-    socket.emit("send-notification", JSON.stringify(data));
-  }
 }
 
 function confirmDelete(){
