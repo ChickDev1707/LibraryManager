@@ -35,8 +35,13 @@ async function handleAddFileExcel(reqFile){
             F:'gioi_tinh'
         }
     })
-    
-    const length=result.Reader.length;
+    let length=0
+    try{
+        length=result.Reader.length;
+    }
+    catch(e){
+        return
+    }
     for(let i=0;i<length;i++){
         const nam_sinh=new Date(result.Reader[i].ngay_sinh)
         const today=new Date()
@@ -221,7 +226,7 @@ async function handleEditReader(reqParam,reqBody){
             await account.save() 
             const redirectUrl=urlHelper.getEncodedMessageUrl('/librarian/reader/',{
                 type:'success',
-                message:"Tạo thành công"
+                message:"Cập nhật thành công"
             })
             return redirectUrl
         }

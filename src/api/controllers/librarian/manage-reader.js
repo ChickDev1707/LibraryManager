@@ -76,7 +76,7 @@ async function deleteReader(req,res){
         await manageReaderService.handleDeleteReader(req.params.id) 
         const redirectUrl=urlHelper.getEncodedMessageUrl('/librarian/reader/',{
             type:'success',
-            message:"Xóa thành công"
+            message:"Xóa độc giả thành công"
         })
         res.redirect(redirectUrl)
     } catch (error) {

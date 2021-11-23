@@ -1,13 +1,49 @@
 
 <div class="modal fade " id="viewReader<%= key %>" role="dialog" tabindex="-1">
-    <div class="modal-dialog modal-fullscreen-xs-down" role="document">
+    <div class="modal-dialog" style="max-width: 50%;" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <strong>Xem thông tin độc giả</strong>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div>
+                <div >
+                    <div style="display: flex;">
+                        <div style="margin:0px 20px 0px 20px">
+                            <div class="col input-item">
+                                <label for>Họ tên</label>
+                                <input disabled style="min-width: 320px;" placeholder="Your full name" class="input-primary" type="text" name="ho_ten" value="<%= reader.ho_ten %>">  
+                            </div>
+                            <div class="col input-item">     
+                                <label >Email</label>
+                                <input disabled placeholder="Your email" class="input-primary" type="email" name="email" value="<%= reader.email %>">
+                                
+                            </div>
+                            <div class="col input-item">
+                                <label >Địa chỉ</label>
+                                <input disabled class="input-primary" type="text" value="<%= reader.dia_chi %>">
+                                
+                            </div>      
+                        </div>
+                        <div style="margin: 0px 0px 0px 20px;">
+                            <div class="col input-item">
+                                <label >Giới tính</label>
+                                <input disabled class="input-primary" type="text" value="<%= reader.gioi_tinh %>">             
+                            </div>
+                            <div class="col input-item">
+                                <label >Ngày sinh</label>
+                                <input disabled style="min-width: 320px;" class="input-primary" type="date" name="ngay_sinh" value="<%= reader.ngay_sinh.toISOString().split('T')[0] %>" >   
+                            </div>
+                            <div class="col input-item">
+                                <label >Ngày lập thẻ</label>
+                                <input disabled class="input-primary" type="date" name="ngay_lap_the" value="<%= reader.ngay_lap_the.toISOString().split('T')[0] %>" >
+                            </div>
+                        </div>
+
+                    </div>
+                        
+                </div>
+                <!-- <div>
 
                     <table class="table">
                         <thead>
@@ -34,7 +70,7 @@
                         </tbody>
                     </table>
 
-                </div>
+                </div> -->
 
             </div>
 

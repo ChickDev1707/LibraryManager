@@ -1,0 +1,15 @@
+.page-title{
+  display: block;
+  position: relative;
+  font-weight: bold;
+  color: var(--secondary);
+  padding-left: 12px;
+}
+.page-title::after{
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background-color: var(--accent);
+}

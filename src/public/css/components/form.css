@@ -1,15 +1,4 @@
-.form_body{
-    display: flex;
-}
 
-.item{
-    margin: 10px;
-}
-
-.subitem{
-    margin-top: 11px;
-}
-
-.button_submit{
-    margin-left: 170px;
+.form-primary{
+  padding: 1rem;
 }

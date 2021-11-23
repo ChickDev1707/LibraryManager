@@ -2,6 +2,9 @@
 @import url('./settings/variable.css');
 @import url('./components/header.css');
 @import url('./components/toast.css');
+@import url('./elements/input.css');
+@import url('./elements/button.css');
+@import url('./elements/title.css');
 
 *{
   box-sizing: border-box;
@@ -9,6 +12,15 @@
 body{
   background-color: var(--background);
 }
+table thead{
+  background-color: var(--primary);
+  color: white;
+}
+button{
+  cursor: pointer;
+  border-radius: .25rem;
+}
+
 /* logo-link */
 .logo-link{
   color: white;

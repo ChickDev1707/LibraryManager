@@ -46,22 +46,22 @@
 <script>
     
   function confirmRegister(){
-    // let bookHeadsInput = document.getElementById('register-selected-book-heads-input')
-    // let bookHeadsString = JSON.stringify(getBookHeads())
-    // bookHeadsInput.value = bookHeadsString
+    let bookHeadsInput = document.getElementById('register-selected-book-heads-input')
+    let bookHeadsString = JSON.stringify(getBookHeads())
+    bookHeadsInput.value = bookHeadsString
 
-    // console.log("reader not")
-    // // notification
-    // const socket = io('http://localhost:3000/');
+    console.log("reader not")
+    // notification
+    const socket = io('http://localhost:3000/');
 
-    // let msg = "abc"
-    // let data = {
-    //   date: Date.now(),
-    //   content: msg
-    // }
-    // if(msg.trim() !== '') {
-    //   socket.emit("send-notification", JSON.stringify(data));
-    // }
+    let msg = "abc"
+    let data = {
+      date: Date.now(),
+      content: msg
+    }
+    if(msg.trim() !== '') {
+      socket.emit("send-notification", JSON.stringify(data));
+    }
   }
 
   function confirmDelete(){

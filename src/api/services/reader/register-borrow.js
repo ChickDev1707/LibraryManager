@@ -32,7 +32,7 @@ async function saveBookHeadToCart(req){
 }
 async function removeRegisterTickets(req, bookHeadIds){
   const account = await accountServices.getCurrentUserAccount(req)
-  removeRegisterTicketsWithAccount(account)
+  removeRegisterTicketsWithAccount(account,bookHeadIds)
   await account.save()
 }
 

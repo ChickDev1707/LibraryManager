@@ -60,7 +60,7 @@ router.route('/fine')
       .get(fineController.getAllFine)
       .post(fineController.saveFine)
 
-router.route('/xacnhantrasach')
+router.route('/confirm-return-book')
       .get(confirmBook.getConfirmReturnBook)
       .put(confirmBook.putConfirmReturnBook)
 //manage register-borrow-card
