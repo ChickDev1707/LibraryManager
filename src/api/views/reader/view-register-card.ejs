@@ -19,24 +19,29 @@
       </ul>
     </div>
   </div>
-  <div class="container">
+  <div>
     <div class="item-container">
       <% registerCards.forEach(card =>{ %>
         <div class="item">
-          <div class="top 
-            <% if(card.tinh_trang == 0){ %>
-              <%= 'pending' %> 
-            <% }else if(card.tinh_trang == 1){ %>
-              <%= 'confirmed' %>   
-            <% }else{ %>
-              <%= 'canceled' %> 
-            <% } %>">
-            <div class="content d-flex">
-              <div class="icon"><i class="fas fa-book"></i></div>
-              <div>
-                <p><i class="fas fa-calendar-alt"></i> <%= card.ngay_dang_ky %> </p>
+          <div class="main">
+            <div class="body
+              <% if(card.tinh_trang == 0){ %>
+                <%= 'pending' %> 
+              <% }else if(card.tinh_trang == 1){ %>
+                <%= 'confirmed' %>   
+              <% }else{ %>
+                <%= 'canceled' %> 
+              <% } %>">
+              <div class="top">
+                <div class="card-icon">
+                  <img src="/public/assets/images/card.png" alt="">
+                </div>
+              </div>
+              <div class="info-container">
+                <h6>Phiếu đăng ký</h6>
+                <p><i class="fas fa-calendar-alt"></i> Ngày mượn: <%= card.ngay_dang_ky.toLocaleDateString('vi') %></p>
                 <p>Đầu sách: <%= card.cac_dau_sach.length %> </p>
-                <p>Tình trạng: 
+                <p class="status">Tình trạng: 
                   <% if(card.tinh_trang == 0){ %>
                     <%= 'Đang chờ' %> 
                   <% }else if(card.tinh_trang == 1){ %>
@@ -47,12 +52,13 @@
                 </p>
               </div>
             </div>
-            <button type="button" data-bs-toggle="collapse" data-bs-target="#<%= card._id %>" aria-expanded="false" aria-controls="collapseExample1">More-info</button>
+            <button type="button" data-bs-toggle="collapse" data-bs-target="#card_<%= card._id %>" aria-expanded="false" aria-controls="card_<%= card._id %>">Chi tiết</button>
           </div>
-          <div class="collapse" id="<%= card._id %>">
+          <div class="collapse" id="card_<%= card._id %>">
             <div class="card card-body">
+              <h6><i class="fas fa-book"></i> Sách mượn</h6>
               <% card.cac_dau_sach.forEach(bookHead=>{ %>
-                <p><%= bookHead.ten_dau_sach %> </p>
+                <p><%= bookHead.ten_dau_sach %>
               <% }) %> 
             </div>
           </div>
