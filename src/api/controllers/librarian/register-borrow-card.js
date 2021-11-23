@@ -1,10 +1,12 @@
 const registerBorrowCardService = require('../../services/librarian/register-borrow-card-service.js')
+const urlHelper = require('../../helpers/url')
 
 // get all RegisterBorrowCard
 async function getAllRegisterBorrowCard(req, res){
     try{
         //deny overdue RegisterBorrowCards
         await registerBorrowCardService.denyOverdueRegisterBorrowCard()
+
         //get RegisterBorrowCard
         const registerBorrowCard = await registerBorrowCardService.getAllRegisterBorrowCard()
 
@@ -13,7 +15,7 @@ async function getAllRegisterBorrowCard(req, res){
         })
     }catch{
         console.log(error)
-        res.redirect('/librarian/register-borrow-card')
+        res.redirect('back')
     }
 }
 
@@ -21,13 +23,13 @@ async function getAllRegisterBorrowCard(req, res){
 async function denyRegisterBorrowCard(req, res){
     try{
         await registerBorrowCardService.denyRegisterBorrowCard(req.params.id)
-        
         res.redirect('/librarian/register-borrow-card/')
     }catch{
         console.log(error)
         res.redirect('/librarian/register-borrow-card/')
     }
 }
+
 // confirm RegisterBorrowCard
 async function confirmRegisterBorrowCard(req, res){
     try{

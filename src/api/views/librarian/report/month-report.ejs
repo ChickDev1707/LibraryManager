@@ -3,7 +3,7 @@
 <!-- Global src -->
 <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js" ></script>
-
+<link rel="stylesheet" href="../../../../public/css/pages/librarian/report.css">
 <!-- Local src -->
 <script src="../../../../public/js/chart-report.js"></script>
 <script src="../../../../public/js/export-report.js"></script>
@@ -11,19 +11,25 @@
 <%- contentFor('body') %> 
 <%- include('../../partials/header/librarian-header.ejs') %> 
 
-<body onload="onLoad('<%= data %>', '<%= label %>')">
-    <div class="container">
-        <form class="row" action="/librarian/month-report" method="get" >
-            <input class="col-lg-6 form-control" type="month" name="month" value="<%= month %>">
-            <button class=" col-lg-3 btn btn-primary" type="submit" >submit</button>
-            <button class=" col-lg-3 btn btn-success" type="button" id="btnExport" onclick="fnExportToExcel('xlsx')">export</button>
+<body onload="onLoad('<%= data %>', '<%= label %>', '<%= ratio %>')">
+    <div class="page-content-wrapper">
+        <form id="form-picker" class="row" action="/librarian/month-report" method="get" >
+            <div class="col-7"></div>
+            <input class="col form-control" type="month" name="month" value="<%= month %>">
+            <button class="col-1 submit-btn" type="submit" >Submit</button>
+            <button id="btnExport" class="col-1 submit-btn" type="button" onclick="fnExportToExcel('xlsx')"><i class="fas fa-file-export"></i> Export</button>
         </form>
-    </div>
-    <h3 class="text-center">THỐNG KÊ TÌNH HÌNH MƯỢN SÁCH THEO THỂ LOẠI</h3>
-    <div class="row">
-        <div class="col-lg-6">
-            <canvas id="myBarChart"></canvas>
-            <table id="reportTable" class="table align-middle text-center table-striped">
+        <h2 class="text-center">THỐNG KÊ TÌNH HÌNH MƯỢN SÁCH THEO THỂ LOẠI</h2>
+        <div id="div-chart" class="row">
+            <div class="col-8">
+                <canvas id="myBarChart"></canvas>
+            </div>
+            <div class="col-4">
+                <canvas id="myPieChart"></canvas>
+            </div>
+        </div>
+        <div id="div-table">
+            <table id="reportTable" class="table">
                 <thead>
                     <tr>
                         <th scope="col">STT</th>
@@ -45,15 +51,12 @@
                                 <%= reportArray.count %>
                             </td>
                             <td scope="col" class="text-wrap">
-                                <%= 100*(reportArray.count/ sum ).toFixed(3) %>%
+                                <%= (100*(reportArray.count/ sum )).toFixed(1) %>%
                             </td>
                         </tr>
                     <% }) %>
                 </tbody>
             </table>
-        </div>
-        <div class="col-lg-6" >
-            <canvas id="myPieChart"></canvas>
         </div>
     </div>
 </body>

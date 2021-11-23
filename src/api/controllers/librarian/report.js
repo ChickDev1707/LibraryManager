@@ -16,14 +16,15 @@ async function getMonthReportPage(req, res){
         await reportArray.sort((a, b)=>{
             return b.count -a.count
         })
-        const {label, data, sum} = await reportService.getChartValue(reportArray)
+        const {label, data, sum, ratio} = await reportService.getChartValue(reportArray)
 
         res.render('librarian/report/month-report.ejs',{
             month: req.query.month,
             reportArray: reportArray,
             label: label,
             data: data,
-            sum: sum
+            sum: sum,
+            ratio: ratio
         })
     }catch{
         res.redirect('back')

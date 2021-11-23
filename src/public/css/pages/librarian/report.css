@@ -1,0 +1,48 @@
+@media only screen and (max-width: 1060px) {
+    .page-content-wrapper{
+        margin: 0;
+        padding-top: 28px;
+        padding-bottom: 28px;
+    }
+
+}
+
+.page-content-wrapper{
+    padding-top: 28px;
+    padding-bottom: 28px;
+}
+
+.form-control{
+    background-color: rgb(241, 241, 241);
+    margin-left: 20px;
+}
+
+.form-control:focus{
+    background-color: rgb(241, 241, 241);
+}
+
+.submit-btn{
+    border: 0;
+    text-align:center; 
+    vertical-align:middle;
+    padding: 0;
+    margin-left: 10px;
+}
+
+#btnExport{
+    background-color: var(--green-primary);
+}
+
+#form-picker{
+    margin-bottom: 20px;
+}
+
+h2{
+    margin-bottom: 20px;
+}
+
+#div-chart{
+    margin-bottom: 28px;
+}
+
+

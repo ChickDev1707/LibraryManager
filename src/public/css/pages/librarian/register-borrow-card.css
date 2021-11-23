@@ -1,0 +1,25 @@
+.page-content-wrapper{
+    padding-top: 48px;
+    padding-bottom: 32px;
+}
+
+a{
+    text-decoration: none;
+    color: black;
+}
+
+a:hover{
+    color: var(--primary);
+}
+
+.icon-btn{
+    border: 0;
+}
+
+#btn-confirm:hover{
+    color: var(--green-primary);
+}
+
+#btn-deny:hover{
+    color: var(--red-primary);
+}

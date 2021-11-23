@@ -1,44 +1,51 @@
-<%- contentFor('head') %> 
+<%- contentFor('head') %>
+<link rel="stylesheet" href="../../../../public/css/pages/librarian/register-borrow-card.css">
 <title>Register Borrow Card</title>
 <%- contentFor('body') %> 
 <%- include('../../partials/header/librarian-header.ejs') %> 
 
-<div>
-    <table class="table align-middle text-center table-striped">
+<div class="page-content-wrapper">
+    <table class="table">
         <thead>
           <tr>
+            <th scope="col">STT</th>
             <th scope="col">Độc giả</th>
             <th scope="col">Đầu sách</th>
             <th scope="col">Ngày đăng ký</th>
-            <th scope="col"></th>
-            <th scope="col"></th>
+            <th scope="col">Xát nhận</th>
+            <th scope="col">Từ chối</th>
           </tr>
         </thead>
+        <tbody>
+            <% registerBorrowCard.forEach((registerBorrowCard, i) => { %>
+                <tr key= <%= registerBorrowCard._id %> > 
+                    <th scope="row"><%= i+1 %></th>
+                    <td scope="col">
+                        <a href="/librarian/reader/<%= registerBorrowCard.doc_gia.id %>"><%= registerBorrowCard.doc_gia.ho_ten %></a>
+                    </td>
+                    <td scope="col">
+                        <% registerBorrowCard.cac_dau_sach.forEach(cac_dau_sach => { %>
+                            <div>
+                                <a href="/book-head/<%= cac_dau_sach.id %>"><%= cac_dau_sach.ten_dau_sach %></a>
+                            </div>              
+                        <% }) %>  
+                    </td>
+                    <td scope="col"><%= registerBorrowCard.ngay_dang_ky.toLocaleDateString("VN", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %></td>
+                    <td scope="col">
+                        <form action="/librarian/register-borrow-card/confirm/<%= registerBorrowCard.id %>" method="post">
+                            <button id="btn-confirm" class="icon-btn" type="submit"><i class="far fa-check-circle fa-lg"></i></button>
+                        </form> 
+                    </td>
+                    <td scope="col">
+                        <form action="/librarian/register-borrow-card/deny/<%= registerBorrowCard.id %>?_method=PUT" method="post">
+                            <button id="btn-deny" class="icon-btn" type="submit"><i class="fas fa-ban fa-lg"></i></button>
+                        </form>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
 </div>
-<tbody>
-    <% registerBorrowCard.forEach(registerBorrowCard => { %>
-        <tr key= <%= registerBorrowCard._id %> > 
-            <td scope="col" class="text-wrap">
-                <a href="/librarian/reader/<%= registerBorrowCard.doc_gia.id %>"><%= registerBorrowCard.doc_gia.ho_ten %></a>
-            </td>
-            <td scope="col" class="text-wrap">
-                <% registerBorrowCard.cac_dau_sach.forEach(cac_dau_sach => { %>
-                    <div>
-                        <a href="/librarian/books/<%= cac_dau_sach.id %>"><%= cac_dau_sach.ten_dau_sach %></a>
-                    </div>              
-                <% }) %>  
-            </td>
-            <td scope="col" class="text-wrap"><%= registerBorrowCard.ngay_dang_ky.toLocaleDateString("VN", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %></td>
-            <td scope="col">
-                <form action="/librarian/register-borrow-card/confirm/<%= registerBorrowCard.id %>" method="post">
-                    <button class="btn-primary" type="submit">Confirm</button>
-                </form> 
-            </td>
-            <td scope="col">
-                <form action="/librarian/register-borrow-card/deny/<%= registerBorrowCard.id %>?_method=PUT" method="post">
-                    <button class="btn-primary btn-danger" type="submit">Deny</button>
-                </form>
-            </td>
-        </tr>
-    <% }) %>
-</tbody>
+
+
+
