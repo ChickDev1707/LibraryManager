@@ -6,8 +6,8 @@
 
 <%- contentFor('body') %> 
 <%- include('../partials/header/reader-header.ejs') %> 
-<div class="container">
-  <h2>Giỏ đăng ký mượn sách của bạn</h2>
+<div class="page-content-wrapper">
+  <h2 class="page-title">Giỏ đăng ký mượn sách của bạn</h2>
   <div class="d-flex justify-content-start" style="margin: 2rem 0 1rem 0">
     <button class="btn btn-primary" onclick="selectAll()">Chọn tất cả</button>
     <form style="margin-left: 1rem;" action="/reader/cart/register-tickets?_method=DELETE" method="POST" onsubmit="confirmDelete()">
@@ -16,7 +16,7 @@
     </form>
   </div>
   <table class="table">
-    <thead class="table-dark">
+    <thead>
       <tr>
         <td>STT</td>
         <td>Chọn</td>

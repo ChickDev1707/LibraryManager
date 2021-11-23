@@ -24,5 +24,6 @@ body{
 .page-content-wrapper{
   margin: 0 10rem;
   background-color: white;
-  padding: 0 3rem;
+  padding: 2rem 3rem;
+  min-height: 100vh;
 }
