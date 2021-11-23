@@ -1,53 +1,16 @@
 const ObjectId = require('mongodb').ObjectId;
-const multer = require('multer')
-const path = require('path')
-const fs = require('fs')
 
 const Book = require('../../models/book-head')
 const BookCategory = require('../../models/book-category')
 
-const uploadPath = path.join('./src/public', Book.coverImageBasePath)
-const getImagePath = path.join('/public', Book.coverImageBasePath)
 const imageMimeTypes = ['image/jpeg', 'image/png', 'images/gif']
 
 
-//init storage for multer
-const storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-      cb(null, uploadPath);
-    },
-    filename: function(req, file, cb) {
-      cb(null, Date.now().toString() + file.originalname);
-    }
-  });
-
-//init upload multer
-const upload = multer({
-    storage: storage,   
-    fileFilter: (req, file, callback) => {
-        callback(null, imageMimeTypes.includes(file.mimetype))
-    }
-})
-
-module.exports.upload = upload;
-
-//Remove book cover image
-function removeBookCover(getPath) {
-    const fileName = getPath&&getPath.split('\\')[4];
-    const removePath = path.join(uploadPath, fileName)
-    fs.unlink(removePath, err => {
-        if (!err)
-            return true;
-        console.log("ERROR", err)
-        return false; 
-            
-    })
-}
 
 //Get all book
 async function getAllBook(){
     try{
-        const books = await Book.find();
+        const books = await Book.find().populate('the_loai');
         return books;
     }catch{
         return null;
@@ -78,11 +41,10 @@ async function getBookCategory(){
 }
 
 //Save book to database
-async function saveBookData(newBook){
+async function saveBookData(newBook, anh_bia){
    
-    newBook.anh_bia = path.join(getImagePath, newBook.anh_bia);
     var book = new Book(newBook);
-
+    saveBookCover(book, anh_bia)
     //Add book into cac_quyen_sach of BookHead
     for(let i=0;i<book.so_luong;i++)
     {
@@ -95,8 +57,9 @@ async function saveBookData(newBook){
 
     //try-catch
     try {
-       book.save();
-       return {success: true, message: `Thêm sách: ${book.ten_dau_sach} thành công`, _id: book._id}
+       await book.save();
+       const category = await BookCategory.find();
+       return {success: true, message: `Thêm sách: ${book.ten_dau_sach} thành công`, _id: book._id, book: book, category, category}
     }
     catch{
         return {success: false, message: `Thêm sách: ${book.ten_dau_sach} không thành công!`, _id: null}
@@ -105,21 +68,18 @@ async function saveBookData(newBook){
 
 
 //Update book
-async function updateBookData(id, newBook){
+async function updateBookData(id, newBook, anh_bia){
     try{;
         const oldBook = await Book.findById(id);
-        if(oldBook.so_luong != oldBook.so_luong_kha_dung && oldBook.so_luong != newBook.so_luong)
-            return res.json({success: false, message: `${oldBook.ten_dau_sach} đang được mượn, không thể thay đổi số lượng!`});
+        if(newBook.so_luong!=undefined && oldBook.so_luong != oldBook.so_luong_kha_dung && oldBook.so_luong != newBook.so_luong )
+            return {success: false, message: `${oldBook.ten_dau_sach} đang được mượn, không thể thay đổi số lượng!`};
         else {
-            if(newBook.anh_bia == undefined)
-                delete newBook.anh_bia;
-            else
-                newBook.anh_bia = path.join(getImagePath, newBook.anh_bia.filename);
-            const updated = await Book.updateOne({_id: id}, newBook);
-            if(updated.ok && newBook.anh_bia != undefined)
-                removeBookCover(oldBook.anh_bia);
-                
-            return {success: true, message: "Cập nhật thông tin sách thành công"};
+            if(anh_bia!= undefined)
+                saveBookCover(newBook, anh_bia)
+            
+            const categories = await BookCategory.find();
+            const updated = await Book.findOneAndUpdate({_id: id}, newBook, {useFindAndModify: false, new: true}).populate('the_loai');
+            return {success: true, message: "Cập nhật thông tin sách thành công", id: id, book: updated, category: categories, anh_bia: updated.anh_bia};
         }
         
     }catch(err){
@@ -141,8 +101,9 @@ async function deleteBookData(id){
             return {success: false, message: `Không thành công: ${book.ten_dau_sach} đang được mượn, không thể xoá thông tin!`}
 
         const result = await Book.deleteOne(query);
-        if(result.ok){
-            removeBookCover(book.anh_bia);
+
+        // return {success: true, message: `Thành công:  ${book.ten_dau_sach} đã được xoá!`}
+        if(result.deletedCount){
             return {success: true, message: `Thành công:  ${book.ten_dau_sach} đã được xoá!`}
         }else{
             return {success: false, message: `Không thành công: Xoá thông tin ${book.ten_dau_sach} không thành công!`}
@@ -154,6 +115,80 @@ async function deleteBookData(id){
     }
 }
 
+async function deleteBookChild(id, childId){
+    var query = {"_id": id};
+    var update1 = {  
+        $pull:{"cac_quyen_sach": {_id: childId, tinh_trang: true}},
+          
+    }
+
+    var update2 = {
+        $inc: { "so_luong": -1, "so_luong_kha_dung": -1}  
+    }
+    var option = {
+        new: true, 
+        useFindAndModify: false
+    }
+
+    try{
+        const result1 = await Book.updateOne(query, update1);
+        if(result1.modifiedCount && result1.matchedCount){
+            const result = await Book.findOneAndUpdate(query, update2, option)
+            if(result!=null){
+                const category = await BookCategory.find();
+                return {success: true, message: "Xoá thành công", newBook: result, category:category}
+            }           
+            else
+                return {success: false, message: "Xoá không thành công", newBook: null, category:null}
+        }else{
+            return {success: false, message: "Xoá không thành công", newBook: null, category:null}
+        }
+        
+    }catch{
+        return {success: true, message: "Xoá không thành công", newBook: null, category:null}
+    }
+}
+
+async function addBookChild(id, num){
+    if(num < 1 )
+        return {success: false, newBook: null, newChild: null, message:"Số lượng sách thêm không nhỏ hơn 1!"}
+    else if (num == undefined || num ==null)
+        return {success: false, newBook: null, newChild: null, message:"Số lượng sách thêm không được bỏ trống!"}
+    
+        var newBookChilds = [];
+    for(let i =0; i< num; i++){
+        var newChild = { _id: new ObjectId(), tinh_trang: true};
+        newBookChilds.push(newChild);
+    }
+
+    const update = {
+        $inc: {"so_luong": num, "so_luong_kha_dung": num},
+        $push: {cac_quyen_sach: {$each: newBookChilds}}
+    }
+
+    const option = {
+        new: true, 
+        useFindAndModify: false
+    }
+
+    const result = await Book.findByIdAndUpdate(id, update, option)
+ 
+    if(result != null)
+        return {success: true, newBook: result, newChild: newBookChilds, message:"Thêm sách thành công!"}
+    else
+        return {success: false, newBook: null, newChild: null, message:"Thêm sách không thành công!"}
+}
+
+
+function saveBookCover(book, avatarEncoded){
+    if (avatarEncoded == null) 
+        return
+    const avatar = JSON.parse(avatarEncoded)
+    if (avatar != null && imageMimeTypes.includes(avatar.type)) {
+        book.bf_anh_bia = new Buffer.from(avatar.data, 'base64')
+        book.kieu_anh_bia = avatar.type
+    }
+}
 
 async function softDeleteBook(id){
     const query = {_id: id};
@@ -162,7 +197,6 @@ async function softDeleteBook(id){
     try{
         const result = await Book.updateOne(query, update);
         if(book){
-            removeBookCover(book.anh_bia);
             return {success: true, message: "Xoá thông tin sách thành công!"};
         }
         else
@@ -180,3 +214,5 @@ module.exports.getBookCategory = getBookCategory;
 module.exports.saveBookData = saveBookData;
 module.exports.deleteBookData = deleteBookData;
 module.exports.updateBookData = updateBookData;
+module.exports.deleteBookChild = deleteBookChild;
+module.exports.addBookChild = addBookChild;

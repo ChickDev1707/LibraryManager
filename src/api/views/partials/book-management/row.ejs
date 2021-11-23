@@ -1,0 +1,24 @@
+<tr id="row_<%=book._id%>">
+    <td scope="col" class="align-middle text-wrap name"><%= book.ten_dau_sach %></td>
+    <td scope="col" class="align-middle text-wrap date"><%= book.ngay_nhap.toLocaleDateString('en-GB')%></td>
+    <td scope="col" class="align-middle text-wrap price"><%= book.gia %></td>
+    <td scope="col" class="align-middle text-wrap quantity"><%= book.so_luong %></td>
+    <td scope="col" class="d-flex justify-content-around">    
+      <button 
+        class="icon-btn"
+        type="button"
+        data-bs-toggle="modal" 
+        data-bs-target="#edit_modal_<%=book._id%>"
+      >
+        <i class="fas fa-edit" aria-hidden="true"></i>
+      </button>
+      
+      <button 
+        class="icon-btn danger"
+        type="button"
+        onclick="deleteBook('<%=book._id %>')"
+      >
+        <i class="fas fa-trash-alt"></i>
+      </button>
+    </td>
+  </tr>

@@ -28,12 +28,7 @@ async function saveFineData(maDocGia, soTienThu, ngayThu){
             fineCard.save();
 
             const updateResult = await Reader.updateOne({"_id": reader._id}, {"tien_no": tienNoMoi}, {useFindAndModify: false}).exec();
-            console.log(updateResult)
-            if(updateResult.ok && updateResult.n)
-                return ({success: true, message: "Thanh toán thành công!", noMoi: tienNoMoi});
-            else
-                return ({success: false, message: "Thanh toán không thành công", noMoi: reader.tien_no});
-                
+            return ({success: true, message: "Thanh toán thành công!", noMoi: tienNoMoi});                
         }
         return ({success: false, message: "Thông tin độc giả không đúng!", noMoi: null});
     }

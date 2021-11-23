@@ -21,29 +21,22 @@
             <h2 scope="col" class="font-weight-bold text-uppercase" ><%= book.ten_dau_sach%></h2>
             <hr style="width: 100%; height: 3px;">
             <h4 scope="col" class="" >
-                <img class="img_icon" src="\public\assets\images\book-icon\categories-icon.png"/>
                 Thể loại: <%= book.the_loai.ten_the_loai %>
             </h4>
             <h4 scope="col" >
-                <img class="img_icon" src="\public\assets\images\book-icon\author_icon.png" />
                 Tác giả: <%= book.tac_gia %>
             </h4>
             <h4 scope="col" class="">
-                <img class="img_icon" src="\public\assets\images\book-icon\release-icon.png" />
                 Năm xuất bản: <%= book.nam_xuat_ban %></h4>
             <h4 scope="col" class="">
-                <img class="img_icon" src="\public\assets\images\book-icon\publisher-icon.png" />
                 Nhà xuất bản: <%= book.nha_xuat_ban %></h4>
             <h4 scope="col" class="">
-                <img class="img_icon" src="\public\assets\images\book-icon\receive-icon.png"/>
                 Ngày nhập sách: <%= book.ngay_nhap.toLocaleDateString('en-GB')%>
             </h4>
             <h4 scope="col" class="">
-                <img class="img_icon" src="\public\assets\images\book-icon\price-icon.png"/>
                 Giá: <%= Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(book.gia) %>
             </h4>
             <h4 scope="col" class="">
-                <img class="img_icon" src="\public\assets\images\book-icon\quantity-icon.png"/>
                 Số lượng: <%= Intl.NumberFormat('vi-VN').format(book.so_luong) %>
             </h4>
             <hr style="width: 100%; height: 3px;">
@@ -52,7 +45,7 @@
         </div>
     
         <div class="col-sm-12 col-md-6 col-xl-5" >
-            <img class="image" src="<%=book.anh_bia%>" style="max-width: 100%;"/>   
+            <img class="image" src="<%=book.dc_anh_bia%>" style="max-width: 100%;"/>   
         </div>
              
     </div>

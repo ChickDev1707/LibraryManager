@@ -59,22 +59,25 @@ function submit(){
     var ngayThu = $("input#ngay_thanh_toan").val();
 
     if(isNaN(parseFloat(thanhToan))||parseFloat(thanhToan)<=0 ) {
-        $("#alert_container").append(
-            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Số tiền thanh toán phải lơn hơn 0đ!</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>`
-        )
+
+        let messageToast = document.getElementById('message-toast')
+        var toast = new bootstrap.Toast(messageToast)
+        changeToast({
+            type: "error",
+            message: "Số tiền thanh toán phải lơn hơn 0đ!" 
+        })
+        toast.show();
         return;
     }
     else if(tienNo - thanhToan < 0){
-        $("#alert_container").append(
-            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Số tiền thanh toán không được vượt quá số tiền nợ!</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>`
-        )
-        return ;
+        let messageToast = document.getElementById('message-toast')
+        var toast = new bootstrap.Toast(messageToast)
+        changeToast({
+            type: "error",
+            message: "Số tiền thanh toán không được vượt quá số tiền nợ!" 
+        })
+        toast.show();
+        return;
     }else{
         $.ajax({
             type: "POST",
@@ -84,26 +87,30 @@ function submit(){
             dataType: 'json',
             cache: false,
             success: function (result) {
-                $("#alert_container").append(
-                    `<div class="alert alert-${result.success?'success':'danger'} alert-dismissible fade show " role="alert">
-                        <strong>Thanh toán thành công!</strong>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                     </div>`
-                )
 
-               if(result.success)
-                    $(`table tbody td#tien_no_${maDocGia}`).html(Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(result.noMoi))
+               if(result.success){
+                    $(`table tbody td#tien_no_${maDocGia}`).html(Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(result.noMoi))     
+               }
+
+               let messageToast = document.getElementById('message-toast')
+               var toast = new bootstrap.Toast(messageToast)
+               changeToast({
+                       type: result.success?"success":"error",
+                       message: result.message 
+               })
+               toast.show();
+                  
 
 
             },
             error: function (e) {
-                console.log(e)
-                $("#alert_container").append(
-                    `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong>Thanh toán không thành công!</strong>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>`
-                 )
+                let messageToast = document.getElementById('message-toast')
+                var toast = new bootstrap.Toast(messageToast)
+                changeToast({
+                    type: "error",
+                    message: "Thanh toán nợ không thành công!" 
+                })
+                toast.show();
             }
         });
     }

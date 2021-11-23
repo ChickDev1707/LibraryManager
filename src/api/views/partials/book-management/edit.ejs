@@ -1,0 +1,327 @@
+<%# begin modal %>
+
+<div class="modal fade" id="edit_modal_<%=book._id%>">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable ">
+      <div class="modal-content">
+        <div class="modal-header py-2">
+          <h4 class="modal-title page-title" id="staticBackdropLabel">
+              CHỈNH SỬA THÔNG TIN ĐẦU SÁCH
+          </h4>
+            <button id="" 
+                type="button" 
+                class="btn-close" 
+                data-bs-dismiss="modal" 
+                aria-label="Close" 
+                onclick="cancelEdit('<%=book._id%>')"
+            >
+            </button>
+        </div>
+        <div class="modal-body">
+               
+            <form
+                action="/librarian/books/<%=book._id%>"
+                method="PUT"
+                class="row info-container needs-validation"
+                id="update_form_<%=book._id%>"
+                novalidate
+                onsubmit="return submitEdit(event)"
+                
+            >
+                <div class="col-sm-12 col-md-12 col-xl-4 position-relative"  id="img_container">
+                    <input
+                        class="input-primary filepond"
+                        id="anh_bia-<%= book._id %>"
+                        name="anh_bia"
+                        type="file"
+                        accept="image/*"
+                    >
+                </div>
+                <div class="col-sm-12 col-md-12 col-xl-8">
+                    <div class="row mb-3">
+                        <div class="container d-flex flex-row flex-nowrap justify-content-between">
+                            <button
+                                class="icon-btn"
+                                type="button"
+                                id="btn-tab1"
+                                onclick="tab(1, '<%= book._id %>')"
+                                disabled
+                            >
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                            <div id="header-container-<%= book._id %>" class="d-flex flex-row flex-nowrap">
+                                <h4 id="info-title" class="text-start my-auto mx-3 ">Thông tin cơ bản</h4>
+                                <h4 id="child-title" class="text-start my-auto mx-2 d-none">Chi tiết quyển sách</h4>
+                                <button id="btn-edit-<%= book._id %>" class="icon-btn" type="button" onclick="editInfo('<%=book._id%>')">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </button>
+                            </div>
+                            <button
+                                class="icon-btn"
+                                type="button"
+                                onclick="tab(2,'<%= book._id %>')"
+                                id="btn-tab2"
+                            >
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+            
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-xl-6">
+                            <div class="info_tabs d-flex flex-column justify-content-center ">
+                                <div class="mb-3 input-item">
+                                    <label for="ten_dau_sachi" class="input_lable">
+                                        Tên đầu sách:
+                                    </label>
+                                    <input
+                                        name="ten_dau_sach"
+                                        id="ten_dau_sach"
+                                        class="input-primary text-truncate input-field"
+                                        type="text"
+                                        value="<%= book?book.ten_dau_sach:'' %>"
+                                        required
+                                        placeholder="Tên đầu sách"
+                                        disabled
+                                    />
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập tên đầu sách
+                                    </div>
+                                </div>
+                    
+                                <div class="mb-3 input-item">
+                                    <label for="the_loai" class="input_lable">
+                                        Thể loại:
+                                    </label>
+                                    <select
+                                        name="the_loai"
+                                        id="the_loai"
+                                        type="text"
+                                        required
+                                        class="form-select dropdown-toggle input-field"
+                                        disabled
+                                    >
+                                        <% bookCategories.forEach(category => { %>
+                                        <option value=<%= category._id %>
+                                            <%=book.the_loai._id.toString() == category._id.toString() ? "selected": ''%>
+                                        >
+                                            <%= category.ten_the_loai %>
+                                        </option>
+                                    <% }) %>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                    Vui lòng chọn thể loại sách
+                                    </div>
+                                </div>
+                                <div class="mb-3 input-item">
+                                    <label for="tac_gia" class="input_lable">
+                                        Tác giả:
+                                    </label>
+                                    <input
+                                        name="tac_gia"
+                                        id="tac_gia"
+                                        type="text"
+                                        value="<%= book?book.tac_gia:'' %>"
+                                        required
+                                        class="input-primary text-truncate input-field"
+                                        placeholder="Tác giả"
+                                        disabled
+                                    />
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập tác giả
+                                    </div>
+                                </div>
+                                
+                                <div  class="mb-3 input-item">
+                                    <label for="nha_xuat_ban" class="input_lable">
+                                        Nhà xuất bản:
+                                    </label>
+                                    <input
+                                        name="nha_xuat_ban"
+                                        id= "nha_xuat_ban"
+                                        type="text"
+                                        value="<%= book?book.nha_xuat_ban:'' %>"
+                                        required
+                                        class="input-primary text-truncate input-field"
+                                        placeholder="Nhà xuất bản"
+                                        disabled
+                                    />
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập nhà xuất bản
+                                    </div>
+                                </div>
+                                <div class="mb-3 input-item">
+                                    <label for="nam_xuat_ban" class="input_lable">
+                                        Năm xuất bản:
+                                    </label>
+                                    <input
+                                        name="nam_xuat_ban"
+                                        id="nam_xuat_ban"
+                                        type="number"
+                                        value="<%= book?book.nam_xuat_ban:'' %>"
+                                        required
+                                        class="input-primary text-truncate input-field"
+                                        placeholder="Năm xuất bản"
+                                        disabled
+                                        min="0"
+                                    />
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập năm xuất bản
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 input-item">
+                                    <label for="ngay_nhap"class="input_lable">
+                                        Ngày nhập:
+                                    </label>
+                                    <input
+                                        name="ngay_nhap"
+                                        id="ngay_nhap"
+                                        type="date"
+                                        value="<%=book.ngay_nhap.toLocaleDateString('en-GB').split('/').reverse().join('-')  %>"
+                                        required
+                                        class="input-primary text-truncate input-field"
+                                        disabled
+                                    />
+                                    <div class="invalid-feedback">
+                                        Vui lòng chọn ngày nhập sách
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-3 d-flex justify-content-center">
+                                    <button class="btn-save d-none" id="btn-submit-<%= book._id %>" style="min-width: 10rem;" type="submit">
+                                        <i class="bi bi-check2"></i>
+                                        Lưu
+                                    </button>
+                                </div>
+                            </div>
+                        </div> 
+        
+                        <div class="col-sm-12 col-md-12 col-xl-6" >
+                            <div  class="info_tabs">
+                               
+                                <div class="mb-3 input-item">
+                                    <label for="gia" class="input_lable">
+                                        Giá:
+                                    </label>
+                                    <input
+                                        name="gia"
+                                        id="gia"
+                                        type="number"
+                                        value="<%= book?book.gia:'' %>"
+                                        required
+                                        class="input-primary text-truncate input-field"
+                                        placeholder="Giá"
+                                        disabled
+                                        min="0"
+                                    />
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập giá sách
+                                    </div>
+                                </div>
+                                <div class="mb-3 input-item">
+                                    <label for="so_luong" class="input_lable">
+                                        Số lượng:
+                                    </label>
+                                    <input
+                                        name="so_luong"
+                                        id="so_luong"
+                                        type="number"
+                                        value="<%= book?book.so_luong:'' %>"
+                                        required
+                                        class="input-primary text-truncate"
+                                        placeholder="Số lượng"
+                                        min="0"
+                                        disabled
+                                    />
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập số lượng sách
+                                    </div>
+                                </div>
+                    
+                                <div class="input-item" >
+                                    <label for="tom_tat" class="input_lable" >
+                                        Tóm tắt:  
+                                    </label>
+                                    <textarea
+                                        name="tom_tat"
+                                        id="tom_tat"
+                                        class="input-primary input-field"
+                                        style="min-height: 270px;"
+                                        required
+                                        disabled
+                                    ><%= book?book.tom_tat:'' %></textarea>
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập tóm tắt nội dung sách
+                                    </div>
+                                </div>
+                            </div>           
+                        </div>
+        
+                        <div class="col-sm-12 col-md-12 col-xl-12 child_tab d-none" style="max-height:  480px; position: relative; overflow: auto">
+                            <table class="table table-hover "  id="table_<%= book._id %>" >
+                                <thead>
+                                    <tr>
+                                        <th>Mã sách</th>
+                                        <th class="text-align-center">Tình trạng</th>
+                                        <th>Xoá</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% book.cac_quyen_sach.forEach(sach => { %>
+                                    <tr id="row_child_<%= sach._id %>">
+                                        <td class=""><%= sach._id %> </td>
+                                        <td class="text-align-center"><%= sach.tinh_trang ?"Khả dụng": "Đã mượn" %> </td>
+                                        <td>
+                                            <button 
+                                                type="button" class="icon-btn delete" 
+                                                onclick="deleteChild('<%= sach._id %>', '<%= book._id %>')" 
+                                                <%= sach.tinh_trang?"":"disabled" %>
+                                            >
+                                                <% if (sach.tinh_trang) { %>
+                                                    <i class='fas fa-trash-alt'></i>
+                                                <% } %>
+                                                <% if (!sach.tinh_trang) { %>
+                                                    <i class='fas fa-ban'></i>
+                                                <% } %>
+                                                    
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                                    <tr>
+                                        <td colspan="3">
+                                            <hr style="height: 3px; color: black;">
+                                        </td>
+                                    </tr>
+                                    <tr id = "child_insert_row_<%=book._id%>">
+                                        <td colspan="2">
+                                            <input type="number" name="so_luong_them" id = "child_insert_input_<%=book._id%>" min="1" value="1"> 
+                                        </td>
+                                        <td>
+                                            <button type="button" class="icon-btn" onclick="addChildBook('<%=book._id%>')">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </td> 
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </form>    
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+<style>
+    #update_form_<%=book._id%> .filepond--root .filepond--drop-label {
+        background-image: url('<%=book.anh_bia %>');
+    }
+</style>
+
+<%# end modal %>

@@ -4,14 +4,7 @@
 <%- contentFor('body') %> 
 <%- include('../../partials/header/librarian-header.ejs') %> 
 <div class="container">
-    <div 
-        class="position-absolute top-0 end-0 mt-3 me-3 w-20 d-flex flex-column" 
-        id="alert_container" 
-        style="z-index: 9999; max-width: 25%; max-height: 90%;"
-    >
-        
-    </div>
-    <div class="input-group mb-3">
+    <div class="input-group my-3 search-bar">
         <div class="input-group-prepend">
             <select class="form-select form-control" name="search_book_option" id="search-book-option">
                 <option value="tatCa" > 
@@ -37,10 +30,13 @@
             value=""
             required 
         />
-        <button class="btn btn-primary" type="button" onclick="search()">Tìm kiếm</button>
+        <button class="btn btn-primary" type="button" onclick="search()">
+            <i class="fas fa-search" aria-hidden="true"></i>
+            Tìm kiếm
+        </button>
     </div>
     <table class="table align-middle text-center table-striped position-relative" id="readers_table">
-        <thead class="table-dark">
+        <thead>
             <tr>
                 <th class="w-20">ID</th>
                 <th>Email</th>

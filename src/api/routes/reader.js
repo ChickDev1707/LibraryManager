@@ -5,6 +5,7 @@ const userAuth = require('../middlewares/user-auth.js')
 const registerBorrowController = require('../controllers/reader/register-borrow.js')
 const borrowBookController = require('../controllers/reader/borrow-book.js')
 const favoriteBookController=require('../controllers/reader/favorite-books')
+const accountController = require('../controllers/reader/account.js');
 // index
 router.route('/').get(userAuth.checkAuthenticatedAsReader, (req, res)=>{
   res.render('reader/index.ejs')
@@ -33,5 +34,10 @@ router.route('/favorite-books')
       .get(favoriteBookController.getFavoriteBook)
       .post(favoriteBookController.postFavoriteBook)
       .put(favoriteBookController.putFavoriteBook)
+
+//Manage account      
+router.route("/account")
+      .get(accountController.getUserProfile)
+      .put(accountController.updateUser)
       
 module.exports = router;
