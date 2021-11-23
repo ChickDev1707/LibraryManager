@@ -1,4 +1,4 @@
-<div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark vertical-nav" >
+<div class="d-flex flex-column flex-shrink-0 p-3 link-dark vertical-nav" >
   <% let policyItems = [
       {url: '/librarian/policy', icon: 'fas fa-book-reader', text: 'Độc giả'},
       {url: '/librarian/policy/book-category', icon: 'fas fa-book-open', text: 'Thể loại sách'},
@@ -14,7 +14,7 @@
   <ul class="nav nav-pills flex-column mb-auto">
     <% policyItems.forEach((item, index)=>{ %>
       <% if(index == inputIndex){ %>
-        <li class="nav-item">
+        <li class="nav-item link-dark">
           <a href="<%=item.url %>" class="nav-link active" aria-current="page">
             <i class="<%= item.icon %>"></i>
             <%= item.text %>
@@ -23,7 +23,7 @@
         <!-- <a href="<%=item.url %>" class="list-group-item list-group-item-action active" aria-current="true"><%= item.text %></a> -->
       <% }else{ %>
         <li>
-          <a <a href="<%=item.url %>" class="nav-link text-white">
+          <a <a href="<%=item.url %>" class="nav-link link-dark">
             <i class="<%= item.icon %>"></i>
             <%= item.text %>
           </a>
@@ -32,37 +32,3 @@
     <% }) %> 
   </ul>
 </div>
-<!-- 
-<div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" >
-  <div>
-    <i class="fas fa-cogs"></i>
-    <span class="fs-4">Quy định</span>
-  </div>
-  <hr>
-  <ul class="nav nav-pills flex-column mb-auto">
-    <li class="nav-item">
-      <a href="#" class="nav-link active" aria-current="page">
-        <i class="fas fa-book-reader"></i>
-        Độc giả
-      </a>
-    </li>
-    <li>
-      <a href="#" class="nav-link text-white">
-        <i class="fas fa-book"></i>
-        Thể loại sách
-      </a>
-    </li>
-    <li>
-      <a href="#" class="nav-link text-white">
-        <i class="fas fa-book-medical"></i>
-        Mượn sách
-      </a>
-    </li>
-    <li>
-      <a href="#" class="nav-link text-white">
-        <i class="fas fa-coins"></i>
-        Tiền phạt
-      </a>
-    </li>
-  </ul>
-</div> -->
