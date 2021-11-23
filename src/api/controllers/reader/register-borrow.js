@@ -29,12 +29,20 @@ async function addNewBookHeadToCart(req, res){
 }
 async function deleteBookHeadFromCart(req, res){
   await registerBorrowServices.removeRegisterTickets(req, [req.params.id])
-  res.redirect('/reader/cart')
+  const redirectUrl = urlHelper.getEncodedMessageUrl(`/reader/cart/`, {
+    type: 'success',
+    message: 'Đã xóa sách đăng ký'
+  })
+  res.redirect(redirectUrl)
 }
 async function deleteSelectedBookHeadFromCart(req, res){
   const bookHeads = JSON.parse(req.body.bookHeads)
   await registerBorrowServices.removeRegisterTickets(req, bookHeads)
-  res.redirect('/reader/cart')
+  const redirectUrl = urlHelper.getEncodedMessageUrl(`/reader/cart/`, {
+    type: 'success',
+    message: 'Đã xóa các sách đăng ký được chọn'
+  })
+  res.redirect(redirectUrl)
 }
 
 // register borrow

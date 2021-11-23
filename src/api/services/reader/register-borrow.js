@@ -3,7 +3,7 @@ const BookHead = require('../../models/book-head.js')
 const Reader = require('../../models/reader.js')
 const RegisterBorrowCard = require('../../models/register-borrow-card.js')
 const accountServices = require('../../services/account.js')
-var ObjectID = require('mongodb').ObjectID;
+const policyServices = require('../../services/librarian/policy.js')
 
 async function getBooksFromIds(bookHeadIds){
   let result = []
@@ -19,9 +19,12 @@ async function getBooksFromIds(bookHeadIds){
 async function getManageCartError(req){
   const bookHeadId = req.body.bookHeadId
   const account = await accountServices.getCurrentUserAccount(req)
+  const amountLimit = await policyServices.getPolicyValueByName('so_sach_muon_toi_da')
+  const bookHead = await BookHead.findById(bookHeadId)
   const cart = account.gio_sach
   if(cart.includes(bookHeadId)) return 'Sách đã được đăng ký'
-  if(cart.length>= 5) return 'Quá hạn giỏ sách'
+  if(cart.length>= amountLimit) return 'Quá số lượng sách quy định'
+  if(Number(bookHead.so_luong_kha_dung)<= 0) return 'Sách không khả dụng'
   return ''
 }
 async function saveBookHeadToCart(req){
@@ -32,7 +35,7 @@ async function saveBookHeadToCart(req){
 }
 async function removeRegisterTickets(req, bookHeadIds){
   const account = await accountServices.getCurrentUserAccount(req)
-  removeRegisterTicketsWithAccount(account)
+  removeRegisterTicketsWithAccount(account, bookHeadIds)
   await account.save()
 }
 

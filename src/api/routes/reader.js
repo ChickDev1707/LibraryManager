@@ -8,9 +8,6 @@ const favoriteBookController=require('../controllers/reader/favorite-books')
 // index
 router.use(userAuth.checkAuthenticatedAsReader)
 
-// router.route('/').get((req, res)=>{
-//   res.render('reader/index.ejs')
-// })
 // auth
 router.delete('/logout', authController.logOut)
 
