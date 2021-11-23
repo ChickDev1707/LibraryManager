@@ -1,0 +1,8 @@
+
+.vertical-nav i:not(.top-icon){
+  width: 1.5rem;
+}
+.vertical-nav .top-icon{
+  font-size: 2.25rem;
+  margin-right: .5rem;
+}
