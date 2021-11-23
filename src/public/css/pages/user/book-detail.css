@@ -2,7 +2,6 @@
     .page-content-wrapper{
         margin: 0;
     }
-
 }
 
 .page-content-wrapper{
@@ -11,12 +10,12 @@
 
 /* book detail */
 .section-book-detail{
+    margin-top: 20px;
     margin-bottom: 48px;
 }
 
 .img-fluid{
-    max-height: 620px;
-    width: 100%;
+    max-height: 550px;
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -27,7 +26,14 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+}
 
+.detail div{
+    font-size: large;
+}
+
+label{
+    font-weight: 350;
 }
 
 .detail a{
@@ -39,33 +45,18 @@
     color: var(--primary);
 }
 
-.detail div{
-    font-size: large;
-}
-
-
-label{
-    font-weight: 300;
-}
-
-#destription{
+.destription{
     margin-top: 20px;
-    margin-bottom: 10px;
+    margin-bottom: px;
     background-color: rgb(241, 241, 241);
     font-weight: 500;
     font-size: 1.5rem;
     padding-left: -10px;
 }
 
-#content-destription{
-    overflow: hidden;
-    display: -webkit-box;
-    text-overflow: ellipsis;
-    -webkit-box-orient: vertical;
+.hide-overflow-text{
     -webkit-line-clamp: 7;
 }
-
-
 
 .action-button{
     display: flex;
@@ -74,14 +65,14 @@ label{
 }
 
 .submit-btn{
-    height: 48px;
-    border: 0;
-    padding-left: 10px;
-    padding-right: 10px;
+    width: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: .25rem;
     margin-right: 20px;
 }
 
-#add{
+.add-favorite{
     background-color: var(--orange-primary);
 }
 
@@ -95,24 +86,9 @@ label{
     justify-content: space-between;
 }
 
-.form-comment input{
-    flex: 1;
-    height: 48px;
-    padding: .5rem 1rem;
-    font-size: .9rem;
-    outline: none;
-    border: none;
-    background-color: rgb(241, 241, 241);
+.input-item input{
     border-radius: .25rem;
     border: 1px solid transparent;
-}
-
-.form-comment input:focus{
-    border: 1px solid var(--primary);
-}
-
-.form-comment input:hover{
-    border: 1px solid var(--primary);
 }
 
 .form-comment button{
@@ -140,17 +116,6 @@ label{
     border-bottom: 1px rgb(241, 241, 241) solid;
 }
 
-.comment-content{
-    padding-top: 10px;
-    padding-left: 10px;
-    display: inline-block;
-}
-
-.comment-content b{
-    font-weight: 500;
-    font-size: 1.25rem;
-}
-
 .avatar{
     vertical-align: middle;
     width: 50px;
@@ -158,4 +123,20 @@ label{
     border-radius: 50%;
 }
 
+.comment-content{
+    padding-top: 10px;
+    padding-left: 10px;
+}
 
+.comment-content b{
+    font-weight: 500;
+    font-size: 1.25rem;
+}
+
+.comment-content i{
+    color: gray;
+}
+
+.comment-content div{
+    font-size: large;
+}

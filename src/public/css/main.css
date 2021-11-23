@@ -38,3 +38,13 @@ button{
   background-color: white;
   padding: 0 3rem;
 }
+
+/* hide overflow text */
+.hide-overflow-text{
+  overflow: hidden;
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1; 
+  /* ẩn phẩn văn bản dài phía sau thay bằng dấu '...', tùy chỉnh số dòng bằng '-webkit-line-clamp' */
+}

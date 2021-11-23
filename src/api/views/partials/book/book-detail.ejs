@@ -5,25 +5,29 @@
 <% contentFor('body') %> 
 
 <div class="page-content-wrapper">
+    <h2 class="page-title">Chi tiết sách</h2>
+
     <div class="row section-book-detail">
         <div class="col-5">
             <img class="img-fluid" src="https://bloganchoi.com/wp-content/uploads/2021/09/one-piece-live-action-netlfix-2.jpg">
         </div>
+
         <div class="col-7">
             <div class="detail">
-                <h1><%= bookHead.ten_dau_sach %></h1>
+                <h2><%= bookHead.ten_dau_sach %></h2>
                 <div><label>Tác giả:</label> <a href="/?option=author&searchBox=<%= bookHead.tac_gia %>"><%= bookHead.tac_gia %></a></div>
                 <div><label>Thể loại:</label> <a href="/?option=category&searchBox=<%= bookHead.the_loai.ten_the_loai %>"><%= bookHead.the_loai.ten_the_loai %></a></div>
                 <div><label>Nhà xuất bản:</label> <a href="/?option=publisher&searchBox=<%= bookHead.nha_xuat_ban %>"><%= bookHead.nha_xuat_ban %></a></div>
                 <div><label>Xuất bản năm:</label> <%= bookHead.nam_xuat_ban %></div>
                 <div><label>Giá:</label> <%= bookHead.gia %> VND</div>
-                <div id="destription">Mô tả</div>
-                <div id="content-destription"><%= bookHead.tom_tat %></div>
+                <div class="destription">Mô tả</div>
+                <div class="hide-overflow-text"><%= bookHead.tom_tat %></div>
             </div>
+
             <div class="action-button">
                 <form action="/reader/favorite-books" method="POST">
                     <input name="bookHeadIdFavorite" type="text" hidden value="<%= bookHead._id%>">
-                    <button id="add" class="submit-btn" type="submit">Thêm vào mục yêu thích</button>
+                    <button class="submit-btn add-favorite" type="submit">Thêm vào mục yêu thích</button>
                 </form>
                 <form action="/reader/cart" method="POST">
                     <input name="bookHeadId" type="text" hidden value="<%= bookHead._id%>">
@@ -32,20 +36,25 @@
             </div>
         </div>
     </div>
+
     <div class="section-form-comment">
         <h3>Nhận xét</h3>
         <form class="form-comment" action="/comment/<%= bookHead.id %>" method="post">
-            <input type="text"  placeholder="Viết nhận xét..." name="commentInput">
+            <div class="input-item">
+                <input type="text"  placeholder="Viết nhận xét..." name="commentInput">
+            </div>
             <button class="submit-btn" type="submit">Nhận xét</button>
         </form>
     </div>
+
     <div class="section-comment">
         <% bookHead.cac_nhan_xet.forEach(comment => { %>
             <div class="comment">
-                <img src="https://thelifetank.com/wp-content/uploads/2018/08/avatar-default-icon.png" alt="Avatar" class="avatar">
+                <img class="avatar" src="https://thelifetank.com/wp-content/uploads/2018/08/avatar-default-icon.png" alt="Avatar">
                 <div class="comment-content">
                     <b><%= comment.doc_gia.ho_ten %></b>
                     <i><small><%= comment.ngay_dang.toLocaleDateString("VN", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %></small></i>
+                    
                     <div><%= comment.noi_dung %></div>
                 </div>
             </div>

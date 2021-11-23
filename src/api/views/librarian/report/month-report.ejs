@@ -3,23 +3,28 @@
 <!-- Global src -->
 <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js" ></script>
-<link rel="stylesheet" href="../../../../public/css/pages/librarian/report.css">
 <!-- Local src -->
 <script src="../../../../public/js/chart-report.js"></script>
 <script src="../../../../public/js/export-report.js"></script>
+<link rel="stylesheet" href="../../../../public/css/pages/librarian/report.css">
 
 <%- contentFor('body') %> 
 <%- include('../../partials/header/librarian-header.ejs') %> 
 
 <body onload="onLoad('<%= data %>', '<%= label %>', '<%= ratio %>')">
     <div class="page-content-wrapper">
-        <form id="form-picker" class="row" action="/librarian/month-report" method="get" >
-            <input class="form-control month-picker" type="month" name="month" value="<%= month %>">
+        <h2 class="page-title">Báo cáo tháng</h2>
+
+        <form class="form-picker" action="/librarian/month-report" method="get" >
+            <input class="input-primary" type="month" name="month" value="<%= month %>">
             <button class="submit-btn" type="submit" >Submit</button>
-            <button id="btnExport" class="col-1 submit-btn" type="button" onclick="fnExportToExcel('xlsx')"><i class="fas fa-file-export"></i> Export</button>
+            <button class="submit-btn" id="btnExport"  type="button" onclick="fnExportToExcel('xlsx')"><i class="fas fa-file-export"></i> Export</button>
         </form>
-        <h2 class="text-center">THỐNG KÊ TÌNH HÌNH MƯỢN SÁCH THEO THỂ LOẠI</h2>
-        <div id="div-chart" class="row">
+
+        <h3 class="text-center">THỐNG KÊ TÌNH HÌNH MƯỢN SÁCH THEO THỂ LOẠI</h3>
+
+        <h3 class="sub-title">Biểu đồ</h3>
+        <div class="row">
             <div class="col-8">
                 <canvas id="myBarChart"></canvas>
             </div>
@@ -27,7 +32,9 @@
                 <canvas id="myPieChart"></canvas>
             </div>
         </div>
-        <div id="div-table">
+
+        <h3 class="sub-title">Bảng thống kê</h3>
+        <div>
             <table id="reportTable" class="table">
                 <thead>
                     <tr>
@@ -59,6 +66,3 @@
         </div>
     </div>
 </body>
-
-
-

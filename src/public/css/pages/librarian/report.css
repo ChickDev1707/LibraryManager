@@ -1,61 +1,45 @@
 @media only screen and (max-width: 1060px) {
     .page-content-wrapper{
         margin: 0;
-        padding-top: 28px;
+        padding-top: 20px;
         padding-bottom: 28px;
     }
-
 }
 
 .page-content-wrapper{
-    padding-top: 28px;
+    padding-top: 20px;
     padding-bottom: 28px;
 }
 
-.form-control{
-    background-color: rgb(241, 241, 241);
-    margin-left: 20px;
-}
-
-.form-control:focus{
-    background-color: rgb(241, 241, 241);
-}
-
-#form-picker{
+.form-picker{
     margin-bottom: 20px;
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
 }
 
-.date-picker{
-    width: 200px;
-}
-
-.month-picker{
+.input-primary{
     width: 230px;
 }
 
 .submit-btn{
-    border: 0;
-    text-align:center; 
-    vertical-align:middle;
-    padding: 0;
-    margin-left: 10px;
     width: 100px;
+    border-radius: .25rem;
+    margin-left: 10px;
 }
 
 #btnExport{
     background-color: var(--green-primary);
-    margin-right: 12px;
 }
 
-h2{
-    margin-bottom: 20px;
+.sub-title{
+    margin-top: 40px;
 }
 
-#div-chart{
-    margin-bottom: 28px;
+.col-8{
+    padding-right: 0;
 }
 
-
+.col-4{
+    padding-left: 0;
+}
