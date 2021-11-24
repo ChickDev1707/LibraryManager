@@ -1,28 +1,7 @@
-<% contentFor('head') %> 
-<title>Book Details</title>
 <script src="/public/js/register-borrow-book.js"></script>
-<link rel="stylesheet" href="../../../../public/css/pages/user/book-detail.css">
-<% contentFor('body') %> 
-
+<link rel="stylesheet" href="/public/css/pages/user/book-detail.css">
 <div class="page-content-wrapper">
     <h2 class="page-title">Chi tiết sách</h2>
-    <div class="row">
-        <div class="col-4">
-            <img class="img-fluid"  height="600" width="400" src="../../../public/assets/images/default-book-cover.png">
-            <br>
-            <br>
-            <% if(user == 'reader'){ %>
-                <form action="/reader/cart" method="POST">
-                    <input name="bookHeadId" type="text" hidden value="<%= bookHead._id%>">
-                    <button class="btn btn-primary" type="submit">Mượn sách</button>
-                </form>
-            <% }else{ %>
-                <form action='/login' method="GET">
-                    <input type="text" name="message" value="Đăng nhập để đăng ký mượn sách" hidden>
-                    <input type="text" name="type" value="info" hidden>
-                    <button class="btn btn-primary" type="submit">Mượn sách</button>
-                </form>
-            <% } %> 
 
     <div class="row section-book-detail">
         <div class="col-5">
@@ -42,26 +21,50 @@
             </div>
 
             <div class="action-button">
-                <form action="/reader/favorite-books" method="POST">
-                    <input name="bookHeadIdFavorite" type="text" hidden value="<%= bookHead._id%>">
-                    <button class="submit-btn add-favorite" type="submit">Thêm vào mục yêu thích</button>
-                </form>
-                <form action="/reader/cart" method="POST">
-                    <input name="bookHeadId" type="text" hidden value="<%= bookHead._id%>">
-                    <button class="submit-btn" type="submit">Đăng kí mượn</button>
-                </form>
+                <% if(user == 'reader'){ %>
+                    <form action="/reader/cart" method="POST">
+                        <input name="bookHeadId" type="text" hidden value="<%= bookHead._id%>">
+                        <button class="submit-btn" type="submit"><i class="fas fa-cart-plus"></i> Đăng ký mượn</button>
+                    </form>
+                    <form action="/reader/favorite-books" method="POST">
+                        <input name="bookHeadIdFavorite" type="text" hidden value="<%= bookHead._id%>">
+                        <button class="outline-btn" type="submit"><i class="fas fa-heart"></i> Thêm vào yêu thích</button>
+                    </form>
+                <% }else if(user== 'guest'){ %>
+                    <form action="/login" method="GET">
+                        <input type="text" name="message" value="Đăng nhập để đăng ký mượn sách" hidden>
+                        <input type="text" name="type" value="info" hidden>
+                        <button class="submit-btn" type="submit"><i class="fas fa-cart-plus"></i> Đăng ký mượn</button>
+                    </form>
+                    <form action="/login" method="GET">
+                        <input type="text" name="message" value="Đăng nhập để thêm sách yêu thích" hidden>
+                        <input type="text" name="type" value="info" hidden>
+                        <button class="outline-btn" type="submit"><i class="fas fa-heart"></i> Thêm vào yêu thích</button>
+                    </form>
+                <% } %> 
             </div>
         </div>
     </div>
 
     <div class="section-form-comment">
         <h3>Nhận xét</h3>
-        <form class="form-comment" action="/comment/<%= bookHead.id %>" method="post">
-            <div class="input-item">
-                <input type="text"  placeholder="Viết nhận xét..." name="commentInput">
-            </div>
-            <button class="submit-btn" type="submit">Nhận xét</button>
-        </form>
+        <% if(user == 'reader'){ %>
+            <form class="form-comment" action="/comment/<%= bookHead.id %>" method="post">
+                <div class="input-item">
+                    <input type="text"  placeholder="Viết nhận xét..." name="commentInput">
+                </div>
+                <button class="submit-btn" type="submit">Nhận xét</button>
+            </form>
+        <% }else if(user == 'guest'){ %>
+            <form class="form-comment" action="/login" method="GET">
+                <div class="input-item">
+                    <input type="text" name="message" value="Đăng nhập để viết nhận xét" hidden>
+                    <input type="text" name="type" value="info" hidden>
+                    <input type="text"  placeholder="Viết nhận xét..." name="commentInput">
+                </div>
+                <button class="submit-btn" type="submit">Nhận xét</button>
+            </form>
+        <% } %> 
     </div>
 
     <div class="section-comment">
@@ -78,5 +81,3 @@
         <% }) %>   
     </div>
 </div>
-
-

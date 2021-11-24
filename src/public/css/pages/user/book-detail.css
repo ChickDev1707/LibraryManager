@@ -63,17 +63,13 @@ label{
     margin-bottom: 20px;
     margin-top: 20px;
 }
-
-.submit-btn{
-    width: auto;
-    padding-left: 20px;
-    padding-right: 20px;
-    border-radius: .25rem;
-    margin-right: 20px;
+.action-button button{
+    font-size: 1.2rem;
+    padding: .8rem 2rem;
 }
-
-.add-favorite{
-    background-color: var(--orange-primary);
+.action-button .submit-btn{
+    border: 2px solid var(--primary);
+    margin-right: 2rem;
 }
 
 /* form comment */

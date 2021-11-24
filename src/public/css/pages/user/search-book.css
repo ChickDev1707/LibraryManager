@@ -15,8 +15,8 @@
 /* search bar */
 .search-bar{
     display: flex;
-    height: 108px; 
     align-items: center;
+    margin-bottom: 3rem;
 }
 
 .search-bar select{
