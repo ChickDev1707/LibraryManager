@@ -1,0 +1,29 @@
+@import url('../../components/container.css');
+
+.fav-book-item{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: .5rem 2rem;
+  color: var(--secondary);
+  border-left: .5rem solid var(--primary);
+  margin-bottom: 1rem;
+}
+.fav-book-item:hover{
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+.fav-book-item .info{
+  margin-left: 1rem;
+  flex: 1;
+}
+.fav-book-item .info>*{
+  margin: 0;
+}
+.fav-book-item .info .author{
+  color: gray;
+  font-size: 1.1rem;
+}
+.fav-book-item .info .category{
+  font-size: .8rem;
+  font-weight: 600;
+}

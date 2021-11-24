@@ -1,3 +1,5 @@
+@import url('../../components/search-bar.css');
+
 @media only screen and (max-width: 1060px) {
     .page-content-wrapper{
         margin: 0;
@@ -11,43 +13,16 @@
         padding-right: 24px;
     }
 }
-
-/* search bar */
 .search-bar{
-    display: flex;
-    align-items: center;
+    padding: 0 .5rem;
     margin-bottom: 3rem;
 }
-
-.search-bar select{
+.search-bar input{
     flex: 1;
-    background-color: rgb(241, 241, 241);
-    height: 48px;
-    margin-right: 20px;
-    border-radius: .25rem;
-    border: rgb(241, 241, 241);
-    text-align-last: center;
+    margin-left: 2rem;
 }
-
 .input-item{
     flex: 8;
-}
-
-.input-item input{
-    height: 48px;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-}
-
-.submit-btn{
-    padding: 0;
-    border: 0;
-    height: 48px;
-    width: 48px;
-    border-top-right-radius: .25rem;
-    border-bottom-right-radius: .25rem;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
 }
 
 /* result-header */

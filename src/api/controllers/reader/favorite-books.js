@@ -10,7 +10,7 @@ async function getFavoriteBook(req,res){
         
         if(lengthOfFavoriteBook>0){
             for(let i=0;i<lengthOfFavoriteBook;i++){
-                const book=await Books.findById(favoriteBook.sach_yeu_thich[i])
+                const book=await Books.findById(favoriteBook.sach_yeu_thich[i]).populate('the_loai')
                 books.push(book)
             }
         }
