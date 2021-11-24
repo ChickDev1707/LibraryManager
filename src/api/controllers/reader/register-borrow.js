@@ -1,4 +1,6 @@
 const registerBorrowServices = require('../../services/reader/register-borrow.js')
+const accountServices = require('../../services/account')
+const urlHelper = require('../../helpers/url')
 
 // cart
 // ------------------------------
@@ -9,36 +11,59 @@ async function showCartPage(req, res){
 }
 async function addNewBookHeadToCart(req, res){
   const bookHeadId = req.body.bookHeadId
-
   let errorMessage = await registerBorrowServices.getManageCartError(req)
   if(errorMessage == ''){
     registerBorrowServices.saveBookHeadToCart(req)
-    res.redirect('/book-head/'+ bookHeadId)
+    const redirectUrl = urlHelper.getEncodedMessageUrl(`/book-head/${bookHeadId}/`, {
+      type: 'success',
+      message: 'Đã thêm sách vào vỏ đăng ký mượn'
+    })
+    res.redirect(redirectUrl)
   }else{
-    res.redirect('/book-head/'+ bookHeadId +'?errorMessage='+ encodeURIComponent(errorMessage))
+    const redirectUrl = urlHelper.getEncodedMessageUrl(`/book-head/${bookHeadId}/`, {
+      type: 'error',
+      message: errorMessage
+    })
+    res.redirect(redirectUrl)
   }
 }
 async function deleteBookHeadFromCart(req, res){
   await registerBorrowServices.removeRegisterTickets(req, [req.params.id])
-  res.redirect('/reader/cart')
+  const redirectUrl = urlHelper.getEncodedMessageUrl(`/reader/cart/`, {
+    type: 'success',
+    message: 'Đã xóa sách đăng ký'
+  })
+  res.redirect(redirectUrl)
 }
 async function deleteSelectedBookHeadFromCart(req, res){
   const bookHeads = JSON.parse(req.body.bookHeads)
   await registerBorrowServices.removeRegisterTickets(req, bookHeads)
-  res.redirect('/reader/cart')
+  const redirectUrl = urlHelper.getEncodedMessageUrl(`/reader/cart/`, {
+    type: 'success',
+    message: 'Đã xóa các sách đăng ký được chọn'
+  })
+  res.redirect(redirectUrl)
 }
 
 // register borrow
 // ------------------------------
 async function registerBorrowBook(req, res){
-  
   let errorMessage = await registerBorrowServices.getRegisterErrorMessage(req)
   if(errorMessage == ''){
     await registerBorrowServices.handleRegisterSuccess(req)
-    res.redirect('/reader/cart')
+    const redirectUrl = urlHelper.getEncodedMessageUrl(`/reader/register-tickets/`, {
+      type: 'success',
+      message: 'Đăng ký mượn sách thành công'
+    })
+    res.redirect(redirectUrl)
   }else{
-    console.log(errorMessage)
+    const redirectUrl = urlHelper.getEncodedMessageUrl(`/reader/cart/`, {
+      type: 'error',
+      message: errorMessage
+    })
+    res.redirect(redirectUrl)
   }
+  
 }
 async function showViewRegisterPage(req, res){
   const registerCards = await registerBorrowServices.searchRegisterCards(req)

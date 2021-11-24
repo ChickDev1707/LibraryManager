@@ -1,53 +1,54 @@
 <%- contentFor('head') %> 
 <title>Day Report</title>
 <!-- Global src -->
+<link rel="stylesheet" href="../../../../public/css/pages/librarian/report.css">
 <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
-
 <!-- Local src -->
 <script src="../../../../public/js/export-report.js"></script>
 
 <%- contentFor('body') %> 
 <%- include('../../partials/header/librarian-header.ejs') %> 
 
-<div class="container">
-    <form class="row" action="" method="get" >
-        <input class="col-lg-6 form-control" type="date" name="date" value="<%= date %>">
-        <button class=" col-lg-3 btn btn-primary" type="submit" >submit</button>
-        <button class=" col-lg-3 btn btn-success" type="button" id="btnExport" onclick="fnExportToExcel('xlsx')">export</button>
+<div class="page-content-wrapper">
+    <h2 class="page-title">Báo cáo ngày</h2>
+    <form class="form-picker"action="" method="get" >
+        <input class="input-primary" type="date" name="date" value="<%= date %>">
+        <button class="submit-btn" type="submit" >submit</button>
+        <button  class="submit-btn" id="btnExport" type="button" onclick="fnExportToExcel('xlsx')"><i class="fas fa-file-export"></i> export</button>
     </form>
-</div>
-<br>
-<h3 class="text-center">THỐNG KÊ SÁCH TRẢ TRỄ <%= date %></h3>
-<table id="reportTable" class="table align-middle text-center table-striped">
-    <thead>
-        <tr>
-        <th scope="col">STT</th>
-        <th scope="col">Độc Giả</th>
-        <th scope="col">Đầu Sách</th>
-        <th scope="col">Ngày Mượn</th>
-        <th scope="col">Số Ngày Trả Trễ</th>
-        </tr>
-    </thead>
-    <tbody id="reportBody">
-        <% borrowReturnCards.forEach((borrowReturnCard, i) => { %>
-            <tr key= <%= borrowReturnCards._id %> >
-                <td scope="col" class="text-wrap">
-                    <%= i + 1 %>
-                </td>
-                <td scope="col" class="text-wrap">
-                    <%= borrowReturnCard.doc_gia.ho_ten %>
-                </td>
-                <td scope="col" class="text-wrap">
-                    <%= borrowReturnCard.dau_sach.ten_dau_sach %>
-                </td>
-                <td scope="col" class="text-wrap">
-                    <%= borrowReturnCard.ngay_muon.toLocaleDateString("VN", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %>
-                </td>
-                <td scope="col" class="text-wrap">
-                    <%= borrowReturnCard.so_ngay_tra_tre %>
-                </td>
+    
+    <h3 class="text-center">THỐNG KÊ SÁCH TRẢ TRỄ <%= date %></h3>
+    <table id="reportTable" class="table">
+        <thead>
+            <tr>
+            <th scope="col">STT</th>
+            <th scope="col">Độc Giả</th>
+            <th scope="col">Đầu Sách</th>
+            <th scope="col">Ngày Mượn</th>
+            <th scope="col">Số Ngày Trả Trễ</th>
             </tr>
-        <% }) %>
-    </tbody>
-</table>
+        </thead>
+        <tbody id="reportBody">
+            <% borrowReturnCards.forEach((borrowReturnCard, i) => { %>
+                <tr key= <%= borrowReturnCards._id %> >
+                    <td scope="col" class="text-wrap">
+                        <%= i + 1 %>
+                    </td>
+                    <td scope="col" class="text-wrap">
+                        <%= borrowReturnCard.doc_gia.ho_ten %>
+                    </td>
+                    <td scope="col" class="text-wrap">
+                        <%= borrowReturnCard.dau_sach.ten_dau_sach %>
+                    </td>
+                    <td scope="col" class="text-wrap">
+                        <%= borrowReturnCard.ngay_muon.toLocaleDateString("VN", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %>
+                    </td>
+                    <td scope="col" class="text-center">
+                        <%= borrowReturnCard.so_ngay_tra_tre %>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</div>
 

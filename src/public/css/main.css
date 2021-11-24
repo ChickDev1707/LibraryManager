@@ -1,0 +1,55 @@
+
+@import url('./settings/variable.css');
+@import url('./components/header.css');
+@import url('./components/toast.css');
+@import url('./elements/input.css');
+@import url('./elements/button.css');
+@import url('./elements/title.css');
+
+*{
+  box-sizing: border-box;
+}
+body{
+  background-color: var(--background);
+}
+table{
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+table thead{
+  background-color: var(--secondary);
+  color: white;
+}
+button{
+  border: none;
+  cursor: pointer;
+  border-radius: .25rem;
+}
+
+/* logo-link */
+.logo-link{
+  color: white;
+  text-decoration: none;
+  font-size: 2rem;
+  font-weight: bold;
+}
+.logo-link:hover{
+  color: var(--primary);
+}
+  
+/* page-content-wrapper */
+.page-content-wrapper{
+  margin: 0 10rem;
+  background-color: white;
+  padding: 2rem 3rem;
+  min-height: 100vh;
+}
+
+/* hide overflow text */
+.hide-overflow-text{
+  overflow: hidden;
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1; 
+  /* ẩn phẩn văn bản dài phía sau thay bằng dấu '...', tùy chỉnh số dòng bằng '-webkit-line-clamp' */
+}

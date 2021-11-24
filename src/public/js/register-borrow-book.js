@@ -3,6 +3,7 @@ function confirmRegister(){
   let bookHeadsInput = document.getElementById('register-selected-book-heads-input')
   let bookHeadsString = JSON.stringify(getBookHeads())
   bookHeadsInput.value = bookHeadsString
+
 }
 
 function confirmDelete(){

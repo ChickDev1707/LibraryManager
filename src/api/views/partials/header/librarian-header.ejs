@@ -1,35 +1,65 @@
+<link rel="stylesheet" type="text/css" href="/public/css/elements/button.css">
 <header>
   <div class="container">
-    <ul class="nav nav-pills">
-      <li class="nav-item">
-        <a class="nav-link" aria-current="page" href="/librarian/reader">Độc giả</a>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Sách</a>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="/">Tra cứu</a></li>
-          <li><a class="dropdown-item" href="/librarian/books">Quản lý</a></li>
-          <li><a class="dropdown-item" href="/librarian/borrow">Cho mượn</a></li>
-          <li><a class="dropdown-item" href="/librarian/borrow/confirm">Nhận trả</a></li>
-          <li><a class="dropdown-item" href="/librarian/xacnhantrasach">Xác nhận trả sách</a></li>
-          <li><a class="dropdown-item" href="/librarian/register-borrow-card">Phiếu đăng ký mượn sách</a></li>
+    <div class="d-flex justify-content-between">
+      <div class="d-flex">
+        <a href="/" class="logo-link"><i class="fas fa-book-reader"></i> Library</a>
+        <ul class="nav nav-pills">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="/librarian/reader">Độc giả</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Sách</a>
+            <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-macos mx-0 border-0 shadow">
+              <li><a class="dropdown-item" href="/">Tra cứu</a></li>
+              <li><a class="dropdown-item" href="/librarian/books">Quản lý</a></li>
+              <li><a class="dropdown-item" href="/librarian/borrow">Cho mượn</a></li>
+              <li><a class="dropdown-item" href="/librarian/borrow/confirm">Nhận trả</a></li>
+              <li><a class="dropdown-item" href="/librarian/confirm-return-book">Xác nhận trả sách</a></li>
+              <li><a class="dropdown-item" href="/librarian/register-borrow-card">Phiếu đăng ký mượn sách</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/librarian/fine">Thu tiền phạt</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Báo cáo</a>
+            <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-macos mx-0 border-0 shadow">
+              <li><a class="dropdown-item" href="/librarian/month-report">Báo cáo tháng</a></li>
+              <li><a class="dropdown-item" href="/librarian/day-report">Báo cáo ngày</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/librarian/policy">Quy định</a>
+          </li>
         </ul>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/librarian/fine">Thu tiền phạt</a>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Báo cáo</a>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="/librarian/month-report">Báo cáo tháng</a></li>
-          <li><a class="dropdown-item" href="/librarian/day-report">Báo cáo ngày</a></li>
-        </ul>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Quy định</a>
       </li>
     </ul>
+      </div>
+      <div class="control-btn-container">
+        <button id="notification-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#notificationPanel" aria-controls="notificationPanel"><i class="far fa-bell"></i></button>
+      
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="notificationPanel" aria-labelledby="notificationPanelLabel">
+          <div class="offcanvas-header">
+            <h5 id="notificationPanelLabel">Thông báo</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            
+          </div>
+        </div>
+        <div class="dropdown text-end">
+          <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="/public/assets/images/user.png" alt="mdo" width="40" height="40" class="rounded-circle">
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-macos mx-0 border-0 shadow" aria-labelledby="dropdownUser1">
+            <li><a class="dropdown-item" href="/account"><i class="far fa-user"></i> Thông tin cá nhân</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><%- include('../log-out-link.ejs', {url: '/librarian/logout'}) %></li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
-  <%- include('../log-out-button.ejs', {url: '/librarian/logout'}) %> 
-  
 </header>
+

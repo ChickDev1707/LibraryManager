@@ -1,0 +1,13 @@
+:root{
+  --primary: rgb(80, 70, 229);
+  --secondary: rgb(16, 24, 43);
+  --background: rgb(242, 245, 247);
+  --accent: #F50057;
+  /* theme */
+
+  --green-primary: #27ae60;
+  --red-primary: #ee5253;
+  --orange-primary: #f39c12;
+  --blue-primary: #2980b9;
+  /* color */
+}

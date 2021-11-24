@@ -2,69 +2,200 @@
 <title>Readers</title>
 <%- contentFor('body') %> 
 <%- include('../../partials/header/librarian-header.ejs') %> 
-<a href="/librarian/reader/new">Thêm độc giả</a><br>
-<div >
+<script src="../../../../public/js/export-reader.js"></script> 
+<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
 
-    <div >
-        <span >Tất cả độc giả</span>
-    </div>
 
-    <form action="/librarian/reader" method="GET">
-        <div >
-            <span >
-                Tìm kiếm độc giả
-            </span>
-        </div>    
-        <div >
-            <input type="text" name="ho_ten" value="<%= search.ho_ten %>" >
-            <button type="submit" >Tìm kiếm</button>
-        </div>  
+<link rel="stylesheet" href="/public/css/components/crud-section.css">
+<div class="page-content-wrapper">
+    
+    <div style="
+    padding: 10px;
+    box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+    margin-bottom: 30px;
+">
+        <h2 class="page-title">Quản lý độc giả</h2>
+        <div class="crud-section">
+            <div class="crud-row">
+                <h4><i class="fas fa-book"></i>Danh sách độc giả</h4>
+                <div class="btn-container">
+                    <button
+                        
+                        data-bs-toggle="modal"
+                        data-bs-target="#addFileExcel"
+                        class="icon-text-btn green-btn"
+                    >
+                    <i class="far fa-file-excel"></i>
+                        Import excel
+                    </button>
+                    <%- include('./input-excel.ejs') %>
 
-    </form>
+                    <button 
+                        
+                        data-bs-toggle="modal" 
+                        data-bs-target="#addReader" 
+                        class="icon-text-btn"
+                    >
+                    <i class="fas fa-user-plus"></i>
+                        Thêm 
+                    </button>
+                    <%- include('./new.ejs') %>
+                  </div>
+            </div>
+            <div class="crud-row">
+                <div class="search-bar">
+                    <form action="/librarian/reader" method="GET">
+                        <input style="background-color: rgb(221, 233, 233);" class="input-primary" placeholder="Nhập tên độc giả ..."
+                                type="text" name="ho_ten" value="<%= search.ho_ten %>" required>
 
-    <table class="table">
-        <thead>
-          <tr>
+                        <button type="submit" class="icon-text-btn">
+                            <i class="fas fa-search"></i>
+                            Tìm kiếm
+                        </button>  
+                    </form>
+                </div>
+                <div class="btn-container">
+                  <form class="form-primary" action="/librarian/reader" method="get">
+                    <input type="text" name="ho_ten" hidden value="">
+                    <button class="icon-text-btn">
+                        <i class="fas fa-sync-alt"></i>
+                         Làm mới
+                    </button>
+                </form>
+                </div>
+            </div>
+            </div>
+        </div>
+
+    <table id="tableReader" class="table" >
+    <thead >
+        <tr>
             <th scope="col">STT</th>
             <th scope="col">Tên độc giả</th>
-            <th scope="col">Xem thông tin độc giả</th>
-            <th scope="col">Sữa thông tin độc giả</th>
+            <th scope="col">Email</th>
+            <th scope="col">Ngày lập thẻ</th>
+            <th scope="col">Nơi ở</th>
+            <th scope="col">Xem chi tiết</th>
+            <th scope="col">Sửa thông tin</th>
             <th scope="col">Xóa độc giả</th>
-          </tr>
-        </thead>
-        <tbody>
-    <% reader.forEach((reader,key)=>{ %> 
-        <tr>
-            <th>
-                <%= key %> 
-            </th>
-        <div >
-            <td>
-                <div >
-                    <span >
-                        <%= reader.ho_ten %>                
-                    </span>
-                </div>  
-            </td>
-  
-            <div >
-                <td>
-                    <a href="/librarian/reader/<%= reader.id %>" >View</a>
-                </td>
-                <td>
-                    <a href="/librarian/reader/<%= reader.id %>/edit" >Edit</a>
-                </td>
-                <td>
-                    <form action="/librarian/reader/<%= reader.id %>?_method=DELETE" method="POST">
-                        <button type="submit" >Delete</button>
-                    </form>  
-                </td>
-
-            </div>   
-
-        </div>
         </tr>
-    <% }); %> 
-    </tbody>
-    </table>
+    </thead>
+    <tbody>
+
+    <% reader.forEach((reader,key)=>{ %> 
+    <tr>
+        <th scope="row">
+            <%= key %> 
+        </th>
+    <div >
+        
+        <div >
+            <td >
+                <span >
+                    <%= reader.ho_ten %>                
+                </span>
+            </td>
+        </div>  
+        <div>
+            <td >               
+                <span >
+                    <%= reader.email %>                
+                </span>
+            </td>
+        </div>
+        <div>
+            <td >               
+                <span >
+                    <%= reader.ngay_lap_the.toISOString().split('T')[0] %>                
+                </span>
+            </td>
+        </div>
+        <div>
+            <td >                
+                <span >
+                    <%= reader.dia_chi %>                
+                </span>
+            </td>
+        </div>
+        <div >
+            <td >
+                
+                <button 
+                    type="button"
+                    data-bs-toggle="modal" 
+                    data-bs-target="#viewReader<%= key %>" 
+                    class="icon-btn"
+                    style="margin-left: 24px;"
+                    >
+                    <i class="far fa-question-circle"></i>
+                    
+                </button>
+                <%- include('./view.ejs',{key:key,reader:reader}) %> 
+            </td>
+            <td>
+                <div>
+                    <button 
+                        type="button"
+                        data-bs-toggle="modal" 
+                        data-bs-target="#editReader<%= key %>" 
+                        class="icon-btn"
+                        style="margin-left: 25px;"
+                        >
+                        <i class="fas fa-edit"></i>
+                        
+                    </button>
+                    <%- include('./edit.ejs',{key:key,reader:reader}) %> 
+                </div>
+            </td>
+            <td>
+                <form class="form-primary" action="/librarian/reader/<%= reader.id %>?_method=DELETE" method="POST">
+                    <button style="margin-left: 25px;" class="icon-btn danger" type="submit">
+                        <i class="far fa-trash-alt"></i>
+                        
+                    </button>
+                </form>  
+            </td>
+        </div>   
+
+    </div>
+    </tr>
+<% }) %> 
+</tbody>
+</table>
+
+<div >
+    <button style="margin:10px 0px 0px 970px" class="icon-text-btn" type="button" onclick="ExportToExcel('xlsx')">
+        <i class="far fa-file-excel"></i>
+        Export excel
+    </button>
 </div>
+
+</div>
+    
+<table id="exportTableReader" hidden>
+    <tr>
+        <th>STT</th>
+        <th>Tên độc giả</th>
+        <th>Ngày lập thẻ</th>
+        <th>Email</th>
+        <th>Giới tính</th>
+        <th>ngày sinh</th>
+        <th>Địa chỉ</th>
+    </tr>
+    <% reader.forEach((reader,key)=>{ %>
+         
+        <tr>
+            <td><%= key %></td>
+            <td><%= reader.ho_ten %></td>
+            <td><%= '12-03-2021' %></td>
+            <td><%= reader.email %></td>
+            <td><%= reader.gioi_tinh %> </td>
+            <td><%= reader.ngay_sinh.toISOString().split('T')[0] %> </td>
+            <td><%= reader.dia_chi %></td>
+        </tr>
+    <% }) %> 
+
+</table>
+</div>
+
+

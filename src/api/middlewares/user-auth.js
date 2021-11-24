@@ -21,12 +21,7 @@ async function checkAuthenticatedAsReader(req, res, next){
 }
 async function checkNotAuthenticated(req, res, next){
   if(req.isAuthenticated()){
-    const currentUser = await req.user
-    if(currentUser.vai_tro == "librarian"){
-      return res.redirect('/librarian')
-    }else if(currentUser.vai_tro == "reader"){
-      return res.redirect('/reader')
-    }
+    res.redirect('/')
   }
   next()
 }

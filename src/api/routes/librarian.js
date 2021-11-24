@@ -9,36 +9,33 @@ const bookMiddleWares = require('../middlewares/book-check')
 const userAuth = require('../middlewares/user-auth.js')
 const borrowController = require('../controllers/librarian/borrow-book')
 const fineController = require('../controllers/librarian/fine')
-const {upload} = require('../services/librarian/manage-book-service')
+const policyController = require('../controllers/librarian/policy')
+const notificationController = require('../controllers/librarian/notification')
 
 const confirmBook=require('../controllers/librarian/confirm-return-book.js')
-
 const readerController=require('../controllers/librarian/manage-reader')
-// index
-router.route('/').get(userAuth.checkAuthenticatedAsLibrarian)
+
+router.use(userAuth.checkAuthenticatedAsLibrarian)
 // auth
 router.delete('/logout', authController.logOut)
 
 // manage-book
 router.route('/books')
       .get(bookController.all)
-      .post(upload.single('anh_bia'), bookMiddleWares.checkNewBook, bookController.saveBook)
-
-router.get('/books/new', bookController.newBookForm)
+      .post(bookMiddleWares.checkNewBook, bookController.saveBook)
 
 router.route('/books/:id')
       .get(bookController.bookDetail)
-      .put(upload.single('anh_bia'), bookMiddleWares.checkUpdateBook, bookController.updateBook)
+      .put(bookMiddleWares.checkUpdateBook, bookController.updateBook)
       .delete(bookController.deleteBook)
+      .post(bookController.addChildBook)
 
-router.get('/books/:id/edit', bookController.updateBookForm)
+router.delete('/books/:id/:child', bookController.deleteChildBook)
 
-// manage reader
 router.route('/reader')
       .get(readerController.getAllReader)
-      .post(readerController.addReader)
-
-router.get('/reader/new', readerController.newReader)
+      .post(readerController.uploadReader.single('uploadfile'),readerController.addReader)
+// router.get('/reader/new', readerController.newReader)
 
 router.route('/reader/:id')
       .get(readerController.getReader)
@@ -53,6 +50,8 @@ router.route('/borrow')
       .get(borrowController.borrowForm)
       .post(borrowController.saveBorrowCard)
 
+router.get("/borrow/books", borrowController.getBorrowBook)
+
 router.route('/borrow/confirm')
       .get(borrowController.confirmForm)
       .post(borrowController.updateBorrowForm)
@@ -61,7 +60,7 @@ router.route('/fine')
       .get(fineController.getAllFine)
       .post(fineController.saveFine)
 
-router.route('/xacnhantrasach')
+router.route('/confirm-return-book')
       .get(confirmBook.getConfirmReturnBook)
       .put(confirmBook.putConfirmReturnBook)
 //manage register-borrow-card
@@ -80,5 +79,26 @@ router.route('/month-report')
       
 router.route('/day-report')
       .get(reportController.getDayReportPage)
+
+// policy
+router.route('/policy')
+      .get(policyController.getPolicyMainPage)
+      .post(policyController.updateReaderPolicies)
+router.route('/policy/book-category')
+      .get(policyController.getPolicyCategoryPage)
+      .post(policyController.addNewBookCategory)
+router.route('/policy/book-category/:id')
+      .put(policyController.editBookCategory)
+      .delete(policyController.deleteBookCategory)
+router.route('/policy/borrow-book')
+      .get(policyController.getPolicyBorrowBookPage)
+      .post(policyController.updatePolicyBorrowBook)
+     
+router.route('/policy/fine')
+      .get(policyController.getPolicyFinePage)
+      .post(policyController.updateFinePolicies)
+router.route('/api/notification')
+      .get(notificationController.returnNotifications)
+      .post(notificationController.clientSideReadNotEvent)
 
 module.exports = router

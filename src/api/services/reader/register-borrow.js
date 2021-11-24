@@ -3,6 +3,7 @@ const BookHead = require('../../models/book-head.js')
 const Reader = require('../../models/reader.js')
 const RegisterBorrowCard = require('../../models/register-borrow-card.js')
 const accountServices = require('../../services/account.js')
+const policyServices = require('../../services/librarian/policy.js')
 
 async function getBooksFromIds(bookHeadIds){
   let result = []
@@ -18,9 +19,12 @@ async function getBooksFromIds(bookHeadIds){
 async function getManageCartError(req){
   const bookHeadId = req.body.bookHeadId
   const account = await accountServices.getCurrentUserAccount(req)
+  const amountLimit = await policyServices.getPolicyValueByName('so_sach_muon_toi_da')
+  const bookHead = await BookHead.findById(bookHeadId)
   const cart = account.gio_sach
   if(cart.includes(bookHeadId)) return 'Sách đã được đăng ký'
-  if(cart.length>= 5) return 'Quá hạn giỏ sách'
+  if(cart.length>= amountLimit) return 'Quá số lượng sách quy định'
+  if(Number(bookHead.so_luong_kha_dung)<= 0) return 'Sách không khả dụng'
   return ''
 }
 async function saveBookHeadToCart(req){
@@ -31,7 +35,7 @@ async function saveBookHeadToCart(req){
 }
 async function removeRegisterTickets(req, bookHeadIds){
   const account = await accountServices.getCurrentUserAccount(req)
-  removeRegisterTicketsWithAccount(account)
+  removeRegisterTicketsWithAccount(account, bookHeadIds)
   await account.save()
 }
 
@@ -42,24 +46,17 @@ async function getRegisterErrorMessage(req){
   const bookHeadIds = JSON.parse(req.body.bookHeads)
   const account = await accountServices.getCurrentUserAccount(req)
   const reader = await Reader.findOne({email: account.ten_tai_khoan})
-  if(account.lich_su_dk.length + account.gio_sach.length > 5) return 'Số sách mượn quá quy định'
+  const amountLimit = await policyServices.getPolicyValueByName('so_sach_muon_toi_da')
+  const fineLimit = await policyServices.getPolicyValueByName('tien_no_toi_da')
+
   if(existBookInRegisterHistory(account.lich_su_dk, bookHeadIds)) return 'Có sách đã được đăng ký hoặc mượn'
-  
-  let checkNotAvailable = await existBookHeadWithNoAvailable(bookHeadIds)
-  if(checkNotAvailable) return 'Có đầu sách đã hết sách'
-  if(reader.tong_no > 50000) return 'ban dang no qua quy dinh'
+  if(account.lich_su_dk.length + account.gio_sach.length > amountLimit) return 'Số sách mượn quá số lượng quy định'
+  if(reader.tien_no > fineLimit) return 'Bạn đang nợ quá số tiền quy định'
   return ''
 }
 
 function existBookInRegisterHistory(history, bookHeadIds){
   return bookHeadIds.reduce((check, bookHeadId)=> history.includes(bookHeadId) || check, false)
-}
-async function existBookHeadWithNoAvailable(bookHeadIds){
-  for(i = 0; i< bookHeadIds.length; i++){
-    let bookHead = await BookHead.findById(bookHeadIds[i])
-    if(bookHead.so_luong_kha_dung<= 0) return true
-  }
-  return false;
 }
 
 async function handleRegisterSuccess(req){
@@ -68,6 +65,9 @@ async function handleRegisterSuccess(req){
   const reader = await Reader.findOne({email: account.ten_tai_khoan})
   await handleSuccessWithCart(account, bookHeadIds)
   await addNewRegisterBorrowCard(reader._id, bookHeadIds)
+  await saveNewNotification(reader.ho_ten)
+  var io = req.app.get('socket-io');
+  io.emit("new-notification", 'new notification');
 }
 async function handleSuccessWithCart(account, bookHeadIds){
   removeRegisterTicketsWithAccount(account, bookHeadIds)
@@ -110,6 +110,22 @@ async function removeRegisterTicketsWithAccount(account, bookHeadIds){
     await account.gio_sach.splice(registerTicketIndex, 1)
   }
   
+}
+
+// notification
+async function saveNewNotification(readerName){
+  let notification = createNewNotification(readerName)
+  let librarianAccount = await accountServices.getLibrarianAccount()
+  librarianAccount.thong_bao.push(notification)
+  librarianAccount.thong_bao_moi = true
+  await librarianAccount.save()
+}
+function createNewNotification(readerName){
+  let not = {
+    tieu_de: 'Đăng ký mượn sách',
+    noi_dung: `Độc giả ${readerName} đã đăng ký mượn sách` 
+  }
+  return not
 }
 
 module.exports = {

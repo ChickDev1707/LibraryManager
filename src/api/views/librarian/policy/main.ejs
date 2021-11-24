@@ -1,0 +1,38 @@
+<%- contentFor('head') %> 
+<title>Quy định</title>
+<link rel="stylesheet" href="/public/css/components/vertical-nav.css">
+<link rel="stylesheet" href="/public/css/components/container.css">
+
+<%- contentFor('body') %> 
+<%- include('../../partials/header/librarian-header.ejs') %>
+<div class="page-content-wrapper">
+  <h2 class="page-title">Thay đổi quy định</h2>
+  <div class="row">
+    <div class="col-3">
+      <%- include('./nav.ejs', {inputIndex: 0}) %> 
+    </div>
+    <div class="col-9">
+      <form action="/librarian/policy" class="border-container" method="POST">
+        <div class="mb-3">
+          <h4>Quy định độc giả</h4>
+          <div class="form-text">Độ tuổi (năm)</div>
+          <div class="row input-row">
+            <div class="col input-item">
+              <label >Tuổi tối thiểu</label>
+              <input type="number" name="minAge" min="1" value="<%= readerPolicies.minAge.toString()%>">
+            </div>
+            <div class="col input-item">
+              <label >Tuổi tối đa</label>
+              <input type="number" name="maxAge" min="1" value="<%= readerPolicies.maxAge.toString()%>" >
+            </div>
+          </div>
+        </div>
+        <div class="mb-3 input-item">
+          <label class="form-label">Thời hạn thẻ (tháng)</label>
+          <input type="number" name="cardExpireLimit" value="<%= readerPolicies.cardExpireLimit.toString()%>">
+        </div>
+        <button type="submit" class="submit-btn">Lưu</button>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,9 +1,9 @@
 <%- contentFor('head') %> 
-<title>Reader home page</title>
+<title>Độc giả</title>
+<link rel="stylesheet" href="/public/css/pages/user/search-book.css">
 
 <%- contentFor('body') %> 
 <%- include('../partials/header/reader-header.ejs') %> 
-
-<h1>welcome to Reader home page</h1>
-<p>nice to meet you</p>
-<%- include('../partials/book/search-book.ejs') %> 
+<div class="page-content-wrapper">
+  <%- include('../partials/book/search-book.ejs') %> 
+</div>

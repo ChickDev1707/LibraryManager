@@ -14,6 +14,7 @@ function getArrayRandomColor(data){
 
 //config color
 const  borderColorConfig = [
+    'rgba(255, 0, 0)',
     'rgb(255, 99, 132)',
     'rgb(255, 159, 64)',
     'rgb(255, 205, 86)',
@@ -24,20 +25,24 @@ const  borderColorConfig = [
 ]
 
 const backgroundColorConfig = [
-    'rgba(255, 99, 132, 0.2)',
-    'rgba(255, 159, 64, 0.2)',
-    'rgba(255, 205, 86, 0.2)',
-    'rgba(75, 192, 192, 0.2)',
-    'rgba(54, 162, 235, 0.2)',
-    'rgba(153, 102, 255, 0.2)',
-    'rgba(201, 203, 207, 0.2)'
+    'rgba(255, 0, 0, 0.5)',
+    'rgba(255, 128, 0, 0.5)',
+    'rgba(255, 255, 0, 0.5)',
+    'rgba(0, 255, 0, 0.5)',
+    'rgba(0, 255, 255, 0.5)',
+    'rgba(0, 0, 255, 0.5)',
+    'rgba(255, 0, 255, 0.5)',
+    'rgba(255, 0, 127, 0.5)',
+    'rgba(128, 128, 128, 0.5)'
+
 ]
 
 //load chart
-function onLoad(data, label){
+function onLoad(data, label, ratio){
     var labels = label.toString().split(',')
     var datas = data.toString().split(',')
-    var colors = getArrayRandomColor(datas).toString().split(',')
+    var ratios = ratio.toString().split(',')
+
     const ctxPie = document.getElementById('myPieChart').getContext('2d');
     //pie chart
     const myPieChart = new Chart(ctxPie, {
@@ -46,12 +51,12 @@ function onLoad(data, label){
             labels: labels,
             datasets: [{
                 label: '# of Votes',
-                data: datas,
+                data: ratios,
                 backgroundColor:backgroundColorConfig,
-                borderColor: borderColorConfig,
+                // borderColor: borderColorConfig,
                 borderWidth: 1
             }]
-        }, 
+        }
     });
 
     //bar chart
@@ -64,7 +69,7 @@ function onLoad(data, label){
                 label: 'Lượt mượn',
                 data: datas,
                 backgroundColor: backgroundColorConfig,
-                borderColor: borderColorConfig,
+                // borderColor: borderColorConfig,
                 borderWidth: 1
             }]
         },

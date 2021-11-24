@@ -1,0 +1,72 @@
+.icon-text-btn {
+  padding: 0.65rem 1.3rem;
+  background-color: var(--primary);
+  color: white;
+  font-weight: 600;
+  font-size: 0.85rem;
+  border: none;
+}
+.icon-text-btn i {
+  font-size: 1rem;
+  margin-right: 0.25rem;
+}
+.icon-btn {
+  color: gray;
+  font-size: 1.4rem;
+  background-color: transparent;
+  border: none;
+}
+.icon-btn:hover {
+  color: var(--secondary);
+}
+.icon-btn.danger:hover {
+  color: var(--red-primary) !important;
+}
+.icon-btn.info:hover {
+  color: var(--blue-primary) !important;
+}
+.submit-btn {
+  padding: 0.5rem 2.5rem;
+  background-color: var(--primary);
+  color: white;
+}
+.green-btn {
+  background-color: var(--green-primary);
+}
+.icon-text-btn:hover,
+.submit-btn:hover {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+
+.cancel-btn {
+  padding: 0.5rem 1rem;
+  margin-right: 1rem;
+  font-weight: 600;
+  color: var(--orange-primary);
+  text-decoration: none;
+  cursor: pointer;
+  background-color: white;
+  border-radius: 0.25rem;
+  border: 1px solid var(--orange-primary);
+}
+.cancel-btn:hover {
+  border: 1px solid var(--blue-primary);
+  color: var(--blue-primary);
+}
+.outline-btn{
+  position: relative;
+  color: var(--secondary);
+  background-color: transparent;
+  border: 2px solid var(--secondary);
+  overflow: hidden;
+  z-index: 0;  
+  transition: .3s;
+}
+
+.outline-btn:hover{
+  color: white;
+  background-color: var(--secondary);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+
+}

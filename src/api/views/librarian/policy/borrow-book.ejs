@@ -1,0 +1,29 @@
+<%- contentFor('head') %> 
+<title>Quy định mượn sách</title>
+<link rel="stylesheet" href="/public/css/components/vertical-nav.css">
+<link rel="stylesheet" href="/public/css/components/container.css">
+
+<%- contentFor('body') %> 
+<%- include('../../partials/header/librarian-header.ejs') %>
+<div class="page-content-wrapper">
+  <h2 class="page-title">Thay đổi quy định</h2>
+  <div class="row">
+    <div class="col-3">
+      <%- include('./nav.ejs', {inputIndex: 2}) %> 
+    </div>
+    <div class="col-9">
+      <form action="/librarian/policy/borrow-book" method="POST" class="border-container">
+        <h4>Quy định thể loại</h4>
+        <div class="mb-3 input-item">
+          <label >Thời hạn mượn sách (Ngày)</label>
+          <input min="1" type="number" name="borrowLimit" value="<%= borrowBookPolicies.borrowLimit %>" >
+        </div>
+        <div class="mb-3 input-item">
+          <label >Số sách tối đa được mượn/đăng ký (cuốn)</label>
+          <input min="1" type="number" name="maxAllowedBorrowBook" value="<%= borrowBookPolicies.maxAllowedBorrowBook %>" >
+        </div>
+        <button type="submit" class="submit-btn">Lưu</button>
+      </form>
+    </div>
+  </div>
+</div>

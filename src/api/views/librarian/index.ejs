@@ -1,9 +1,14 @@
 <%- contentFor('head') %> 
-<title>Librarian home page</title>
+<title>Thủ thư</title>
+<link rel="stylesheet" href="/public/css/components/notification.css">
+<link rel="stylesheet" href="/public/css/pages/user/search-book.css">
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/public/js/librarian-noti-handler.js"></script>
+
 <%- contentFor('body') %> 
 <%- include('../partials/header/librarian-header.ejs') %> 
-<h1>welcome to Librarian home page</h1>
-<p>nice to meet you</p>
-
-<%- include('../partials/book/search-book.ejs') %> 
-
+<div class="page-content-wrapper">  
+  <%- include('../partials/book/search-book.ejs') %> 
+</div>

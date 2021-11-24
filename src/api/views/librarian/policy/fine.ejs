@@ -1,0 +1,29 @@
+<%- contentFor('head') %> 
+<title>Quy định tiền phạt</title>
+<link rel="stylesheet" href="/public/css/components/vertical-nav.css">
+<link rel="stylesheet" href="/public/css/components/container.css">
+
+<%- contentFor('body') %> 
+<%- include('../../partials/header/librarian-header.ejs') %>
+<div class="page-content-wrapper">
+  <h2 class="page-title">Thay đổi quy định</h2>
+  <div class="row">
+    <div class="col-3">
+      <%- include('./nav.ejs', {inputIndex: 3}) %> 
+    </div>
+    <div class="col-9">
+      <form action="/librarian/policy/fine" method="POST" class="border-container">
+        <h4>Quy định thể loại</h4>
+        <div class="mb-3 input-item">
+          <label>Số tiền phạt trả trễ (vnđ)</label>
+          <input name="fineMoneyAmount" value="<%= finePolicies.fineMoneyAmount %>" min="0" type="number">
+        </div>
+        <div class="mb-3 input-item">
+          <label>Tiền nợ tối đa (vnđ)</label>
+          <input name="maxAllowedDebt" value="<%= finePolicies.maxAllowedDebt %>" min="0" type="number">
+        </div>
+        <button type="submit" class="submit-btn">Lưu</button>
+      </form>
+    </div>
+  </div>
+</div>

@@ -39,8 +39,12 @@ const BookHeadSchema = new mongoose.Schema({
     tom_tat:{
         type: String
     },
-    anh_bia:{
-        type: String
+    bf_anh_bia:{
+        type: Buffer,
+    },
+    kieu_anh_bia: {
+        type: String,
+        required: true
     },
     so_luong_kha_dung:{
         type: Number,
@@ -59,5 +63,11 @@ const BookHeadSchema = new mongoose.Schema({
     cac_nhan_xet: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }]
 })
 
+
+BookHeadSchema.virtual('anh_bia').get(function() {
+    if (this.bf_anh_bia != null && this.kieu_anh_bia != null) {
+      return `data:${this.kieu_anh_bia};charset=utf-8;base64,${this.bf_anh_bia.toString('base64')}`
+    }
+})
+
 module.exports = mongoose.model('BookHead', BookHeadSchema, "DauSach")
-module.exports.coverImageBasePath = coverImageBasePath

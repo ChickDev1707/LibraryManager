@@ -1,16 +1,14 @@
 
 <%- contentFor('head') %>
-<title>Borrow Card</title>
+<title>Sách mượn</title>
 
 <%- contentFor('body') %> 
 <%- include('../partials/header/reader-header.ejs') %> 
-<div class="container">
-  <h2>Các phiếu mượn sách của bạn</h2>
-  <div class="d-flex justify-content-start" style="margin: 2rem 0 1rem 0">
+<div class="page-content-wrapper">
+  <h2 class="page-title">Các phiếu mượn sách của bạn</h2>
+  <div class="d-flex justify-content-end" style="margin: 0 0 1rem 0">
     <div class="dropdown">
-      <button class="btn btn-secondary dropdown-toggle" type="button" id="sort-borrow-card" data-bs-toggle="dropdown" aria-expanded="false">
-        Tùy chọn
-      </button>
+      <button class="submit-btn dropdown-toggle" type="button" id="sort-borrow-card" data-bs-toggle="dropdown" aria-expanded="false">Tùy chọn</button>
       <ul class="dropdown-menu" aria-labelledby="sort-borrow-card">
         <li><a class="dropdown-item" href="/reader/borrow-cards">Tất cả</a></li>
         <li><a class="dropdown-item" href="/reader/borrow-cards?status=1">Chưa trả</a></li>

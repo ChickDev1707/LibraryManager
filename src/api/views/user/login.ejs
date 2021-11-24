@@ -1,9 +1,50 @@
 <%- contentFor('head') %> 
-<title>login</title>
+<title>Đăng nhập</title>
+<link rel="stylesheet" href="/public/css/pages/user/login.css">
 <%- contentFor('body') %> 
-<h1>login page</h1>
-<form action="/login" method="POST">
-  <input name="email" type="email" placeholder="username"><br><br>
-  <input name="password" type="password" placeholder="password"><br><br>
-  <button type="submit">login</button>
-</form>
+<%- include('../partials/header/user-header.ejs') %> 
+<div class="login-form-main">
+  <div class="col left">
+    <img src="/public/assets/images/login.svg" alt="">
+    <div>
+      <h4>Đăng nhập thư viện</h4>
+      <p>Đăng nhập bằng tài khoản admin để quản lý thư viện, hoặc đăng nhập với tư cách độc giả để mượn, trả sách, ...</p>
+    </div>
+  </div>
+  <div class="col form-container">
+    <form class="container-fluid" action="/login" method="POST">
+      <div class="row input-row">
+        <h2>Đăng nhập</h2>
+      </div>
+      <div class="row input-row">
+        <div class="col input-item">
+          <label for="">Tên tài khoản</label>
+          <input class="input-primary" required name="email" type="email" placeholder="username">
+        </div>
+      </div>
+      <div class="row input-row">
+        <div class="col input-item">
+          <label for="">Mật khẩu</label>
+          <input class="input-primary" required name="password" type="password" placeholder="password">
+        </div>
+      </div>
+      <div class="row input-row">
+        <a href="">Quên mật khẩu</a>
+      </div>
+      <div class="row input-row">
+        <div class="col">
+          <button type="submit" class="login-btn">Đăng nhập</button>
+        </div>
+      </div>
+      <hr>
+      <div class="row input-row">
+        <div class="col">
+          <button class="login-google"><i class="fab fa-google-plus-square"></i> Google</button>
+        </div>
+        <div class="col">
+          <button class="login-facebook"><i class="fab fa-facebook-square"></i> Facebook</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

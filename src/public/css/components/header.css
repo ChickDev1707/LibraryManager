@@ -1,0 +1,30 @@
+/* header */
+header{
+  background-color: var(--secondary);
+  padding: 1rem 0;
+}
+header .d-flex{
+  align-items: center;
+}
+header ul{
+  background-color: var(--secondary) !important;
+}
+header ul li a{
+  color: white !important;
+}
+header button{
+  background-color: var(--primary);
+  border: none;
+  color: white;
+  border-radius: .2rem;
+}
+header .login-btn{
+  padding: .75rem 2rem;
+}
+header #notification-btn{
+  margin-right: 1rem;
+  padding: 0 .75rem;
+}
+header .control-btn-container{
+  display: flex;
+}

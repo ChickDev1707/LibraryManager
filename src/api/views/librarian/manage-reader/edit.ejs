@@ -1,63 +1,68 @@
-<%- contentFor('head') %> 
-<title>Readers</title>
-<%- contentFor('body') %> 
-<%- include('../../partials/header/librarian-header.ejs') %> 
-<div class="edit">
-    <% if(error!=null||error!=""){ %> 
-        <%= error %> 
-    <% } %>
-    <div class="edit-author">
-        <span >
-            Sửa thông tin độc giả
-        </span>
+
+<div class="modal fade " id="editReader<%= key %>" role="dialog"  >
+    <div class="modal-dialog" style="max-width: 50%;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>Nhập thông tin độc giả</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div >
+                    <form action="/librarian/reader/<%= reader.id %>/edit?_method=put" method="post">
+                        <div style="display: flex;" class="form-primary">
+                            <div style="margin: 0px 20px 0px 20px;">
+                                <div style="width: 320px;" class="col input-item">
+                                    <label for>Nhập họ tên</label>
+                                    <input style="min-width: 220px;" placeholder="Your full name" class="input-primary" type="text" name="ho_ten" value="<%= reader.ho_ten %>" required>                
+                                </div>
+                                <div class="col input-item">     
+                                    <label >Nhập email</label>
+                                    <input placeholder="Your email" class="input-primary" type="email" name="email" value="<%= reader.email %>" required>                                  
+                                </div>
+                                <div class="col input-item">
+                                    <label >Nhập địa chỉ</label>
+                                    <input placeholder="Your address" class="input-primary" type="text" name="dia_chi" value="<%= reader.dia_chi %>" required>                                   
+                                </div>                               
+                            </div>
+                            <div style="margin: 0px 20px 0px 20px;">
+                                <div class="col input-item">
+                                    <label >Nhập giới tính</label>
+                                    <select class="input-primary" name="gioi_tinh">
+                                        <% if(reader.gioi_tinh=="Nam"){ %> 
+                                            <option selected value="Nam" label="Nam"></option>
+                                            <option value="Nữ" label="Nữ"></option>
+                                            <option value="Khác" label="Khác"></option>
+                                        <% } %> 
+                                        <% if(reader.gioi_tinh=="Nữ"){ %> 
+                                            <option value="Nam" label="Nam"></option>
+                                            <option selected value="Nữ" label="Nữ"></option>
+                                            <option value="Khác" label="Khác"></option>
+                                        <% } %> 
+                                        <% if(reader.gioi_tinh=="Khác"){ %> 
+                                            <option value="Nam" label="Nam"></option>
+                                            <option value="Nữ" label="Nữ"></option>
+                                            <option selected value="Khác" label="Khác"></option>
+                                        <% } %> 
+                                    </select>                                   
+                                </div>
+                                <div class="col input-item">
+                                    <label >Nhập ngày sinh</label>
+                                    <input  class="input-primary" type="date" name="ngay_sinh" value="<%= reader.ngay_sinh.toISOString().split('T')[0] %>" required>                                   
+                                </div>
+                                <div style="width: 320px;" class="col input-item">
+                                    <label >Ngày lập thẻ</label>
+                                    <input class="input-primary" type="date" name="ngay_lap_the" value="<%= reader.ngay_lap_the.toISOString().split('T')[0] %>" required>                                      
+                                </div>
+                            </div>
+                        </div>
+                            <button style="margin:30px 0px 0px 570px;" class="submit-btn" type="submit" >
+                                Submit
+                            </button>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
     </div>
-
-    <form action="/librarian/reader/<%= reader.id %>/edit?_method=put" method="post">
-
-        <div>
-            <span>Nhập họ tên</span>
-            <input type="text" name="ho_ten" value="<%= reader.ho_ten %>" required>
-        </div>
-        <div>
-            <span>Nhập email</span>
-            <input type="email" name="email" value="<%= reader.email %>" required>
-        </div>
-        <div>
-            <span>Nhập gioi tinh</span>
-            <select name="gioi_tinh">
-                <% if(reader.gioi_tinh=="nam"){ %> 
-                    <option selected value="nam" label="nam"></option>
-                    <option value="nữ" label="nữ"></option>
-                    <option value="khác" label="khác"></option>
-                <% } %> 
-                <% if(reader.gioi_tinh=="nữ"){ %> 
-                    <option value="nam" label="nam"></option>
-                    <option selected value="nữ" label="nữ"></option>
-                    <option value="khác" label="khác"></option>
-                <% } %> 
-                <% if(reader.gioi_tinh=="khác"){ %> 
-                    <option value="nam" label="nam"></option>
-                    <option value="nữ" label="nữ"></option>
-                    <option selected value="khác" label="khác"></option>
-                <% } %> 
-            </select>
-
-        </div>
-        <div>
-            <span>Nhập ngày sinh</span>
-            <input type="date" name="ngay_sinh" value="<%= reader.ngay_sinh %>" required>
-        </div>
-        <div>
-            <span>Nhập địa chỉ</span>
-            <input type="text" name="dia_chi" value="<%= reader.dia_chi %>" required>
-        </div>
-        <div>
-            <span>Ngày lập thẻ</span>
-            <input type="date" name="ngay_lap_the" value="<%= reader.ngay_lap_the %>" required>
-        </div>
-
-        <a href="/librarian/reader" >Cancel</a>
-        <button type="submit" >Update</button>
-    </form>
 </div>
-<%- contentFor('head') %>
