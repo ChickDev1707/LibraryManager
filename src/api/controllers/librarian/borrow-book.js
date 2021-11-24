@@ -2,7 +2,7 @@ const BorrowReturnCard = require('../../models/borrow-return-card')
 const Reader = require('../../models/reader')
 const Book = require('../../models/book-head')
 const mongoose = require('mongoose');
-const { findReader, findBookById, checkReader, findBook, saveBorrowData, getBorrowCardOf, updateBorrowData } = require('../../services/librarian/borrow');
+const { findReader, findBookById, checkReader, findBook, saveBorrowData, getBorrowCardOf, updateBorrowData, getBookBorrowByID } = require('../../services/librarian/borrow');
 
 
 //Render borrow form 
@@ -52,7 +52,8 @@ async function saveBorrowCard(req, res, next)
 {
     const ma_doc_gia = req.body.ma_doc_gia;
     const ngay_muon = req.body.ngay_muon;
-    const dsma_sach = req.body.ma_sach;
+    const dsDauSach = req.body.dau_sach;
+    const dsMaSach = req.body.ma_sach;
 
     const check = await checkReader(ma_doc_gia)
     if(!check.ok)
@@ -62,7 +63,7 @@ async function saveBorrowCard(req, res, next)
             nErrors: [{ok: 0, updated: 1, message: check.message}]
         });
 
-    var result = await saveBorrowData(ma_doc_gia, dsma_sach, ngay_muon)
+    var result = await saveBorrowData(ma_doc_gia, dsDauSach, dsMaSach, ngay_muon)
     return res.json({success: result.nErrors.length == 0, nSuccess: result.nSuccess, nErrors: result.nErrors});
 }
 
@@ -110,15 +111,33 @@ async function confirmForm(req, res, next){
 async function updateBorrowForm(req, res, next){
     const dsMaPhieu = req.body.dsMaPhieu;
     const ngayMuon = req.body.ngayMuon;
-    const result = await updateBorrowData(dsMaPhieu, ngayMuon)
-    console.log(result)
-   return res.json({success: result.nErrors.length == 0, nSuccess: result.nSuccess, updated: true, nErrors: result.nErrors})
+    if(checkDate(ngayMuon)){
+        const result = await updateBorrowData(dsMaPhieu, ngayMuon)
+        return res.json({success: result.nErrors.length == 0, nSuccess: result.nSuccess, updated: true, nErrors: result.nErrors})
+    }else{
+        return res.json({success: 0, nSuccess: 0, updated: true, nErrors: 0, message: "Ngày lấy không được vượt quá ngày hiện tại!"})
+    }
+
+    
 }
 
+async function getBorrowBook(req, res, next){
+    const childId = req.query.ma_sach;
+    const readerId = req.query.ma_doc_gia;
+    const book = await getBookBorrowByID(readerId, childId)
+    res.json(book)
+}
+
+function checkDate(dateString){
+    var date = new Date(dateString);
+    var toDate = new Date();
+    return date <= toDate
+}
 
 module.exports = {
     borrowForm,
     confirmForm,
     saveBorrowCard,
-    updateBorrowForm
+    updateBorrowForm,
+    getBorrowBook
 }

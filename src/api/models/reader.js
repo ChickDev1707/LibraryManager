@@ -33,6 +33,20 @@ const ReaderSchema= new mongoose.Schema({
     tien_no:{
         type:Number,
         default: 0
+    },
+    bf_anh_bia:{
+        type: Buffer,
+    },
+    kieu_anh_bia: {
+        type: String,
+        required: true
+    }
+    
+})
+
+ReaderSchema.virtual('anh_bia').get(function() {
+    if (this.bf_anh_bia != null && this.kieu_anh_bia != null) {
+      return `data:${this.kieu_anh_bia};charset=utf-8;base64,${this.bf_anh_bia.toString('base64')}`
     }
 })
 

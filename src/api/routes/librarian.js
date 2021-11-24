@@ -10,7 +10,6 @@ const userAuth = require('../middlewares/user-auth.js')
 const borrowController = require('../controllers/librarian/borrow-book')
 const fineController = require('../controllers/librarian/fine')
 const policyController = require('../controllers/librarian/policy')
-const {upload} = require('../services/librarian/manage-book-service')
 const notificationController = require('../controllers/librarian/notification')
 
 const confirmBook=require('../controllers/librarian/confirm-return-book.js')
@@ -23,16 +22,15 @@ router.delete('/logout', authController.logOut)
 // manage-book
 router.route('/books')
       .get(bookController.all)
-      .post(upload.single('anh_bia'), bookMiddleWares.checkNewBook, bookController.saveBook)
-
-router.get('/books/new', bookController.newBookForm)
+      .post(bookMiddleWares.checkNewBook, bookController.saveBook)
 
 router.route('/books/:id')
       .get(bookController.bookDetail)
-      .put(upload.single('anh_bia'), bookMiddleWares.checkUpdateBook, bookController.updateBook)
+      .put(bookMiddleWares.checkUpdateBook, bookController.updateBook)
       .delete(bookController.deleteBook)
+      .post(bookController.addChildBook)
 
-router.get('/books/:id/edit', bookController.updateBookForm)
+router.delete('/books/:id/:child', bookController.deleteChildBook)
 
 router.route('/reader')
       .get(readerController.getAllReader)
@@ -51,6 +49,8 @@ router.route('/reader/:id/edit')
 router.route('/borrow')
       .get(borrowController.borrowForm)
       .post(borrowController.saveBorrowCard)
+
+router.get("/borrow/books", borrowController.getBorrowBook)
 
 router.route('/borrow/confirm')
       .get(borrowController.confirmForm)

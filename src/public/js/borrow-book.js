@@ -1,91 +1,41 @@
-function addBook(book){
-    const bookBorrow = JSON.parse(book)
-    const borrowTable = document.getElementById("borrow_table").getElementsByTagName('tbody')[0];
-
-    if(document.getElementById(`bookID_${bookBorrow._id}`)!=null)
-        return
-    
-    const index = borrowTable.rows.length;
-    var newRow =  borrowTable.insertRow(index-1);
-    newRow.id = `bookID_${bookBorrow._id}`
-    var content =  
-    `<tr >
-        <td >
-            <img height="100" width="100" class="rounded" src="${bookBorrow.anh_bia}"/>
-        </td>
-        <td scope="col" class="book_id" value="${bookBorrow._id}" >${bookBorrow._id}</td>
-        <td scope="col" class="text-wrap">${bookBorrow.ten_dau_sach}</td>
-        <td scope="col" class="text-wrap">${bookBorrow.gia}</td>
-        <td><button class="btn btn-danger" onclick="deleteBook('${bookBorrow._id}')">Xoá</button></td> 
-    </tr>`
-    newRow.innerHTML = content;
-
-    $(`table#add_table button#add_${bookBorrow._id}`).prop("disabled", true);
-
-}
 
 function deleteBook(id){
-    $(`tr#bookID_${id}`).remove();
+    $(`tr#dau_sach_${id}`).remove();
     $(`table#add_table button#add_${id}`).prop("disabled", false);
 }
 
-function search(){
-    var option = $("#search-book-option").val();
-    var key = $("#search_book_string").val();
-    $("table#add_table tbody tr").each(
-        function(){
-            if(key=="")
-                $(this).removeClass("d-none")
-            else{
-                if(option=="cahai")
-                {
-                    if($(this).attr("masach").toLocaleLowerCase()== key.toLocaleLowerCase()
-                        ||$(this).attr("tensach").toLocaleLowerCase()== key.toLocaleLowerCase())
-                    {
-                        $(this).removeClass("d-none")
-                    }
-                    else
-                        $(this).addClass("d-none")
-                    
-                }
-                else if($(this).attr(option).toLocaleLowerCase()== key.toLocaleLowerCase()){
-                    $(this).removeClass("d-none")
-                }
-                else{
-                    $(this).addClass("d-none")
-                }
-            }
-                
-        }
-    )
-}
-
 function submit(){
-    var ids = []
-    $("#borrow_table tbody td.book_id").each(function() {
-        ids.push($(this).attr("value"))
+    let messageToast = document.getElementById('message-toast')
+    var toast = new bootstrap.Toast(messageToast)
+
+    var dau_sach = [];
+    var ma_sach= [];
+    $("#borrow_table tbody td.dau_sach").each(function() {
+        dau_sach.push($(this).attr("value"))
     })
 
-    if(ids.length <=0)
-    {
-        $("#alert_container").append(
-            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Vui lòng chọn sách!</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>`
-        )
+    $("#borrow_table tbody td.ma_sach").each(function() {
+        ma_sach.push($(this).attr("value"))
+    })
+
+    if(dau_sach.length <=0 || ma_sach.length <=0)
+    {  
+        changeToast({
+                type: "error",
+                message: "Vui lòng chọn sách trước khi tạo phiếu!" 
+        })
+        toast.show();
         return ;
     }
 
     var ma_doc_gia = $("#reader_id").val();
     if(ma_doc_gia == "")
     {
-        $("#alert_container").append(
-            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Vui lòng nhập thông tin độc giả!</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>`
-        )
+        changeToast({
+                type: "error",
+                message: "Vui lòng nhập thông tin độc giả để tạo phiếu!" 
+        })
+        toast.show();
         return ;
     }
 
@@ -94,42 +44,54 @@ function submit(){
         type: "POST",
         contentType: "application/json",
         url: "/librarian/borrow",
-        data: JSON.stringify({ma_sach: ids, ma_doc_gia: ma_doc_gia, ngay_muon:ngay_muon}),
+        data: JSON.stringify({dau_sach: dau_sach,ma_sach: ma_sach ,ma_doc_gia: ma_doc_gia, ngay_muon:ngay_muon}),
         dataType: 'json',
         cache: false,
         success: function (result) {
+            $("table#result_table tbody").empty();
             result.nSuccess.map((item)=>{
+                var row = `
+                <tr>
+                    <td scope="col">${item.ten_dau_sach}</td>
+                    <td scope="col">${item.ma_sach}</td>
+                    <td scope="col">Thành công</td>
+                    <td scope="col">${item.message}</td>
+                </tr>`
+
+                $("table#result_table tbody").append(row)
                 deleteBook(item.dau_sach)
-                $("#alert_container").append(
-                    `<div class="alert alert-success alert-dismissible fade show " role="alert">
-                        <strong>${item.message}!</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>`
-                 )
             })
 
             result.nErrors.map((item)=>{
-                $("#alert_container").append(
-                    `<div class="alert alert-danger alert-dismissible fade show role="alert">
-                        <strong>${item.message}!</strong>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>`
-                )
+                var row = `
+                <tr>
+                    <td scope="col">${item.ten_dau_sach}</td>
+                    <td scope="col">${item.ma_sach}</td>
+                    <td scope="col">Không thành công</td>
+                    <td scope="col">${item.message}</td>
+                </tr>`
+
+                $("table#result_table tbody").append(row)
+                deleteBook(item.dau_sach)
             })
+
+            $('#result_modal').modal('show')
         },
         error: function (e) {
-            $("#alert_container").append(
-                `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>Mượn không thành công!</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>`
-             )
+            changeToast({
+                type: "error",
+                message: "Không thành công!" 
+            })
+            toast.show();
         }
     });
 }
 
 
 function subConfirm(){
+    let messageToast = document.getElementById('message-toast')
+    var toast = new bootstrap.Toast(messageToast)
+
     var ids = []
     $("input.confirm_input:checked").each(function() {
         ids.push($(this).val())
@@ -137,12 +99,12 @@ function subConfirm(){
 
     if(ids.length == 0)
     {
-        $("#alert_container").append(
-            `<div class="alert alert-danger  alert-dismissible fade show positon-relative" role="alert">
-                <strong>Vui lòng chọn phiếu cần xác nhận!:</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>`)
-
+        changeToast({
+            type: "error",
+            message: "Vui lòng chọn phiếu đăng ký cần xác nhận lấy sách!"
+        })
+        toast.show();
+        return ;
     }   
 
     var ngayMuon = $("#ngay_muon").val()
@@ -155,39 +117,143 @@ function subConfirm(){
             cache: false,
             timeout: 60000,
             success: function (result) {
+                console.log(result)
+                if(result.nErrors==0 && result.nSuccess==0){
+                    changeToast({
+                        type: "error",
+                        message: result.message
+                    })
+                    toast.show();
+                    return ;
+                }
+                
                 result.nSuccess.forEach(id => {
-                    console.log(id)
-                    console.log($(`input[value="${id}"].confirm_input`))
                     $(`input[value="${id}"].confirm_input`).prop('checked', false);
                     $(`input[value="${id}"].confirm_input`).prop('disabled', true);
                     $(`td.status#sts_${id}`).html("Đã nhận sách");
                     $(`td.date_borow#date_borow_${id}`).html(new Date(ngayMuon).toLocaleDateString('en-GB'));
 
-                    $("#alert_container").append(
-                        `<div class="alert alert-success  alert-dismissible fade show positon-relative" role="alert">
-                            <strong>Xác nhận thành công phiếu có mã:</strong>
-                            <div class="text-wrap">${id}</div>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>`)
+                    
                 });
+               
+                if(result.nSuccess.length > 0){
+                    changeToast({
+                            type: "success",
+                            message: `Xác nhận thành công phiếu có mã:\n${result.nSuccess.join(',\n')}`
+                    })
+                    toast.show();
+                }
                 
-                result.nErrors.forEach(item=>{
-                    $("#alert_container").append(
-                        `<div class="alert alert-danger alert-dismissible fade show positon-relative"  role="alert">
-                            <strong>Xác nhận không thành công phiếu có mã:</strong><br>
-                            <div class="text-wrap" >${item}</div>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>`
-                        )
-                })
+                if(result.nErrors.length > 0){
+                    changeToast({
+                        type: "error",
+                        message: `Xác nhận không thành công phiếu có mã:\n${result.nSuccess.join(',\n')}`
+                    })
+                    toast.show();
+                }
+
+               
+               
+                
             },
             error: function (e) {
-                $("#alert_container").append(
-                    `<div class="alert alert-danger alert-dismissible fade show  role="alert">
-                        <strong>Xác nhận không thành công!</strong>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>`
-                 )
+                changeToast({
+                    type: "error",
+                    message: `Xác nhận không thành công`
+                })
+                toast.show();
+                return ;
             }
         });
+}
+
+function addBorrowBook(event){
+    event.preventDefault();
+   
+    var form = event.target;
+    var formData = new FormData(form);
+    var ma_sach = formData.get('ma_sach');
+    var ma_doc_gia = formData.get('ma_doc_gia');
+
+    if($(`td#ma_quyen_sach_${ma_sach}`).length > 0)
+    {
+        let messageToast = document.getElementById('message-toast')
+        var toast = new bootstrap.Toast(messageToast)
+        changeToast({
+                type: "error",
+                message: "Sách này đã được thêm!" 
+        })
+        toast.show();
+        return false;
+    }
+    else{
+        $.ajax({
+            method:  "GET",
+            url: $(form).attr('action'),
+            data: {ma_sach: ma_sach, ma_doc_gia: ma_doc_gia},      
+            timeout: 6000,
+            success: function (result) {
+                if(result.success){
+                    var bookBorrow = result.book;
+                    if($(`tr#dau_sach_${bookBorrow._id}`).length > 0)
+                    {
+                        let messageToast = document.getElementById('message-toast')
+                        var toast = new bootstrap.Toast(messageToast)
+                        changeToast({
+                                type: "error",
+                                message: "Đầu sách này đã được thêm!" 
+                        })
+                        toast.show();
+                        return false;
+                    }else{
+                        var content =  
+                            `<tr id="dau_sach_${bookBorrow._id}">
+                                <td class="align-middle">
+                                    <img height="142" width="100" class="rounded" src="${bookBorrow.anh_bia}"/>
+                                </td>
+                                <td scope="col" class="align-middle text-wrap" >${bookBorrow.ten_dau_sach}</td>
+                                <td scope="col" 
+                                    class="align-middle text-wrap dau_sach" 
+                                    value="${bookBorrow._id}" 
+                                >${bookBorrow._id}</td>
+                                <td scope="col" class="align-middle text-wrap ma_sach" 
+                                    id="ma_quyen_sach_${bookBorrow.cac_quyen_sach[0]._id}"
+                                    value="${bookBorrow.cac_quyen_sach[0]._id}"
+                                >
+                                    ${bookBorrow.cac_quyen_sach[0]._id}
+                                </td>
+                                <td scope="col" class="align-middle text-wrap" >${bookBorrow.gia}</td>
+                                <td class="align-middle text-wrap">
+                                    <button class="icon-button delete-button" onclick="deleteBook('${bookBorrow._id}')">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td> 
+                            </tr>`
+
+                        $("#row_add_button").before(content);
+                    }
+                   
+                }
+                let messageToast = document.getElementById('message-toast')
+                var toast = new bootstrap.Toast(messageToast)
+                changeToast({
+                        type: result.success?"success":"error",
+                        message: result.success?"Thêm thành công!":result.message 
+                })
+                toast.show();
+            },
+            error: function (e) {
+                let messageToast = document.getElementById('message-toast')
+                var toast = new bootstrap.Toast(messageToast)
+                changeToast({
+                        type: "error",
+                        message: "Thêm sách không thành công!" 
+                })
+                toast.show();
+            }
+        })
+
+        return false;
+    }
+    
 }
