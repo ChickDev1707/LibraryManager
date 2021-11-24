@@ -1,0 +1,142 @@
+@media only screen and (max-width: 1199px) {
+    .page-content-wrapper{
+        margin: 0;
+    }
+}
+
+.page-content-wrapper{
+    padding-top: 20px;
+}
+
+/* book detail */
+.section-book-detail{
+    margin-top: 20px;
+    margin-bottom: 48px;
+}
+
+.img-fluid{
+    max-height: 550px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    object-fit: contain;
+}
+
+.col-7{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.detail div{
+    font-size: large;
+}
+
+label{
+    font-weight: 350;
+}
+
+.detail a{
+    text-decoration: none;
+    color: black;
+}
+
+.detail a:hover{
+    color: var(--primary);
+}
+
+.destription{
+    margin-top: 20px;
+    margin-bottom: px;
+    background-color: rgb(241, 241, 241);
+    font-weight: 500;
+    font-size: 1.5rem;
+    padding-left: -10px;
+}
+
+.hide-overflow-text{
+    -webkit-line-clamp: 7;
+}
+
+.action-button{
+    display: flex;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.submit-btn{
+    width: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: .25rem;
+    margin-right: 20px;
+}
+
+.add-favorite{
+    background-color: var(--orange-primary);
+}
+
+/* form comment */
+.section-form-comment{
+    padding-bottom: 20px;
+}
+
+.form-comment{
+    display: flex;
+    justify-content: space-between;
+}
+
+.input-item input{
+    border-radius: .25rem;
+    border: 1px solid transparent;
+}
+
+.form-comment button{
+    display: block;
+    margin: 0;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-left: 20px;
+}
+
+.form-comment input:focus{
+    border: 0;
+}
+
+
+/* all comments */
+.section-comment{
+    padding-bottom: 10px;
+}
+
+.comment{
+    display: flex;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px rgb(241, 241, 241) solid;
+}
+
+.avatar{
+    vertical-align: middle;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.comment-content{
+    padding-top: 10px;
+    padding-left: 10px;
+}
+
+.comment-content b{
+    font-weight: 500;
+    font-size: 1.25rem;
+}
+
+.comment-content i{
+    color: gray;
+}
+
+.comment-content div{
+    font-size: large;
+}

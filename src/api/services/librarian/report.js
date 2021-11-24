@@ -34,6 +34,7 @@ async function getMonthReportArray(month){
 async function getChartValue(reportArray){
     let label = new Array()
     let data = new Array()
+    let ratio = new Array()
     let  sum = 0
 
     reportArray.forEach(report=>{
@@ -42,7 +43,11 @@ async function getChartValue(reportArray){
         data.push(report.count)
     })
 
-    return {label, data, sum}
+    reportArray.forEach(report =>{
+        ratio.push((((report.count)/sum)*100).toFixed(1))
+    })
+
+    return {label, data, sum, ratio}
 }
 
 //get day report array

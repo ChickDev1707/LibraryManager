@@ -1,0 +1,45 @@
+@media only screen and (max-width: 1060px) {
+    .page-content-wrapper{
+        margin: 0;
+        padding-top: 20px;
+        padding-bottom: 28px;
+    }
+}
+
+.page-content-wrapper{
+    padding-top: 20px;
+    padding-bottom: 28px;
+}
+
+.form-picker{
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.input-primary{
+    width: 230px;
+}
+
+.submit-btn{
+    width: 100px;
+    border-radius: .25rem;
+    margin-left: 10px;
+}
+
+#btnExport{
+    background-color: var(--green-primary);
+}
+
+.sub-title{
+    margin-top: 40px;
+}
+
+.col-8{
+    padding-right: 0;
+}
+
+.col-4{
+    padding-left: 0;
+}
