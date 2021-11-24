@@ -1,13 +1,17 @@
 const Reader = require('../../models/reader.js')
 const RegisterBorrowCard = require('../../models/register-borrow-card.js')
 const BorrowReturnCard = require('../../models/borrow-return-card.js')
-const BookHead = require('../../models/book-head.js');
-
+const BookHead = require('../../models/book-head.js')
+const Policy = require('../../models/policy.js')
 
 // deny overdue RegisterBorrowCard
 async function denyOverdueRegisterBorrowCard(){
+    //get policy
+    let policy = await Policy.findOne({ten_quy_dinh: "Số ngày chờ đăng ký mượn tối đa"})
+    let value = policy.gia_tri
     let date = new Date();
-    date.setDate(date.getDate()-3)
+    date.setDate(date.getDate() - value)
+
     //update all quantity available of book-head before deny overdue RegisterBorrowCard
     let registerBorrowCards = await RegisterBorrowCard.find({ngay_dang_ky: {$lte: date}, tinh_trang: 0})
     for await (const registerBorrowCard of registerBorrowCards){
@@ -17,6 +21,7 @@ async function denyOverdueRegisterBorrowCard(){
             await BookHead.findOneAndUpdate(filter, update, {useFindAndModify: false})
         }
     }
+
     // deny all overdue RegisterBorrowCard
     const filter = {ngay_dang_ky: {$lte: date}, tinh_trang: 0}
     const update = {tinh_trang: 2}
@@ -42,8 +47,9 @@ async function denyRegisterBorrowCard(registerBorrowCardId){
         const update = {$inc: {so_luong_kha_dung: 1}}
         let bookHead = await BookHead.findOneAndUpdate(filter, update , {useFindAndModify: false})
     }
+
     //deny RegisterBorrowCard
-    await RegisterBorrowCard.findByIdAndRemove(registerBorrowCardId, {useFindAndModify: false}).exec();
+    await RegisterBorrowCard.findOneAndUpdate({_id: registerBorrowCardId},{tinh_trang: 2}).exec();
 }
 
 //update RegisterBorrowCard status 
@@ -99,4 +105,5 @@ async function createNewBorrowReturnCard(readerID, bookHeadID, bookId){
     })
     await borrowReturnCard.save()
 }
+
 

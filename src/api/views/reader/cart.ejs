@@ -2,24 +2,26 @@
 <%- contentFor('head') %>
 <title>Giỏ sách</title>
 <script src="/socket.io/socket.io.js"></script>
-<!-- <script src="/public/js/register-borrow-book.js"></script> -->
+<link rel="stylesheet" href="/public/css/pages/reader/cart.css">
+<script src="/public/js/register-borrow-book.js"></script>
 
 <%- contentFor('body') %> 
 <%- include('../partials/header/reader-header.ejs') %> 
-<div class="container">
-  <h2>Giỏ đăng ký mượn sách của bạn</h2>
+<div class="page-content-wrapper">
+  <h2 class="page-title">Giỏ đăng ký mượn sách của bạn</h2>
   <div class="d-flex justify-content-start" style="margin: 2rem 0 1rem 0">
-    <button class="btn btn-primary" onclick="selectAll()">Chọn tất cả</button>
+    <button class="submit-btn" onclick="selectAll()">Chọn tất cả</button>
     <form style="margin-left: 1rem;" action="/reader/cart/register-tickets?_method=DELETE" method="POST" onsubmit="confirmDelete()">
       <input id="delete-selected-book-heads-input" name="bookHeads" value="" type="text" hidden >
-      <button type="submit" class="btn btn-primary">Xóa</button>
+      <button type="submit" class="submit-btn">Xóa</button>
     </form>
   </div>
   <table class="table">
-    <thead class="table-dark">
+    <thead>
       <tr>
         <td>STT</td>
         <td>Chọn</td>
+        <td>Ảnh</td>
         <td>Tên sách</td>
         <td>Tác giả</td>
         <td>Xóa</td>
@@ -30,71 +32,22 @@
         <tr>
           <td><%= index + 1 %> </td>
           <td><input class="form-check-input cb-select-book-head" type="checkbox" value="<%= bookHead._id%>"></td>
-          <td><%= bookHead.ten_dau_sach %> </td>
+          <td><img class="small-img-container" src="<%= bookHead.anh_bia %>" alt=""></td>
+          <td><strong><%= bookHead.ten_dau_sach %></strong></td>
           <td><%= bookHead.tac_gia %> </td>
           <td><%- include('../partials/delete-form-field.ejs', {url: `/reader/cart/register-tickets/${bookHead._id}`}) %> </td>    
         </tr>
       <% }) %> 
     </tbody>
   </table>
-  <form method="POST"  action="/reader/cart/register" onsubmit="confirmRegister()">
-    <input id="register-selected-book-heads-input" name="bookHeads" value="" type="text" hidden >
-    <button class="btn btn-primary" type="submit">Đăng ký</button>
+  <form method="POST" action="/reader/cart/register" onsubmit="confirmRegister()">
+    <div class="row input-row">
+      <input id="register-selected-book-heads-input" name="bookHeads" value="" type="text" hidden >
+      <div class="col d-flex justify-content-end">
+        <a href="/" class="cancel-btn">Cancel</a>
+        <button class="submit-btn" type="submit">Đăng ký</button>
+      </div>
+    </div>
   </form>
 </div>
 
-<script>
-    
-  function confirmRegister(){
-    // let bookHeadsInput = document.getElementById('register-selected-book-heads-input')
-    // let bookHeadsString = JSON.stringify(getBookHeads())
-    // bookHeadsInput.value = bookHeadsString
-
-    // console.log("reader not")
-    // // notification
-    // const socket = io('http://localhost:3000/');
-
-    // let msg = "abc"
-    // let data = {
-    //   date: Date.now(),
-    //   content: msg
-    // }
-    // if(msg.trim() !== '') {
-    //   socket.emit("send-notification", JSON.stringify(data));
-    // }
-  }
-
-  function confirmDelete(){
-    let bookHeadsInput = document.getElementById('delete-selected-book-heads-input')
-    let bookHeadsString = JSON.stringify(getBookHeads())
-    bookHeadsInput.value = bookHeadsString
-  }
-  function getBookHeads(){
-    let bookHeads = []
-    let selectBookHeadCbs = document.querySelectorAll('.cb-select-book-head')
-    for(let i = 0 ;i< selectBookHeadCbs.length; i++){
-      let checkbox = selectBookHeadCbs[i]
-      if(checkbox.checked) bookHeads.push(checkbox.value)
-    }
-    return bookHeads
-  }
-
-  var selectAll = (function(){
-    var selected = false;
-    return function(){
-      let selectBookHeadCbs = document.querySelectorAll('.cb-select-book-head')
-      if(!selected){
-        changeCheckBoxesState(selectBookHeadCbs, true)
-        selected = true;
-      }else{
-        changeCheckBoxesState(selectBookHeadCbs, false)
-        selected = false;
-      }
-    }
-  })()
-  function changeCheckBoxesState(checkboxes, state){
-    for(let i = 0; i<checkboxes.length; i++){
-      checkboxes[i].checked = state;
-    }
-  }
-</script>

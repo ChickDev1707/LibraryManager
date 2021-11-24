@@ -13,6 +13,10 @@ async function searchBook(searchBox, option){
                 query = query.regex('ten_dau_sach', new RegExp(stringSearchBox, 'i')) 
                 break
             }
+            case 'author':{
+                query = query.regex('tac_gia', new RegExp(stringSearchBox, 'i')) 
+                break
+            }
             case 'category':{
                 let tempCategorys = await BookCategory.find().regex('ten_the_loai', new RegExp(stringSearchBox, 'i'))
                 for await (const tempCategory of tempCategorys){

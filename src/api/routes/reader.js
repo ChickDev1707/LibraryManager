@@ -8,9 +8,8 @@ const favoriteBookController=require('../controllers/reader/favorite-books')
 const accountController = require('../controllers/reader/account.js');
 const accountUpdateMiddleware = require('../middlewares/account-update')
 // index
-router.route('/').get(userAuth.checkAuthenticatedAsReader, (req, res)=>{
-  res.render('reader/index.ejs')
-})
+router.use(userAuth.checkAuthenticatedAsReader)
+
 // auth
 router.delete('/logout', authController.logOut)
 

@@ -8,6 +8,7 @@
 .input-item label{
   font-weight: 600;
   font-size: .9rem;
+  margin-bottom: .3rem;
   color: var(--primary);
 }
 .input-item input, textarea, select{
