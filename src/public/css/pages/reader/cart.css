@@ -1,0 +1,4 @@
+@import url('../../components/container.css');
+table tr td{
+  vertical-align: middle;
+}

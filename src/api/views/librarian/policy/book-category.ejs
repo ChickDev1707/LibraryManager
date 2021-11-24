@@ -1,18 +1,22 @@
 <%- contentFor('head') %> 
-<title>Policy of book category</title>
+<title>Quy định thể loại sách</title>
 <script defer src="/public/js/edit-book-category.js"></script>
+<link rel="stylesheet" href="/public/css/components/vertical-nav.css">
 
 <%- contentFor('body') %> 
 <%- include('../../partials/header/librarian-header.ejs') %>
-<h2>Thay doi quy dinh</h2>
-<div class="container-fluid">
+<div class="page-content-wrapper">
+  <h2 class="page-title">Thay đổi quy định</h2>
   <div class="row">
     <div class="col-3">
       <%- include('./nav.ejs', {inputIndex: 1}) %> 
     </div>
     <div class="col-9">
       <!-- Button trigger modal -->
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#new-category-modal">Thêm </button>
+      <div style="margin-bottom: 2rem;" class="d-flex justify-content-between">
+        <h4>Quy định thể loại</h4>
+        <button type="button" class="submit-btn" data-bs-toggle="modal" data-bs-target="#new-category-modal">Thêm </button>
+      </div>
 
       <!-- add Modal -->
       <div class="modal fade" id="new-category-modal" tabindex="-1" aria-labelledby="new-category-modal-label" aria-hidden="true">
@@ -37,8 +41,6 @@
           </div>
         </div>
       </div>
-      <br>
-      <br>  
       <table class="table">
         <thead class="table-dark">
           <tr>

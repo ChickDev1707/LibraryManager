@@ -1,16 +1,34 @@
-<div class="list-group">
+<div class="d-flex flex-column flex-shrink-0 p-3 link-dark vertical-nav" >
   <% let policyItems = [
-      {url: '/librarian/policy', text: 'Độc giả'},
-      {url: '/librarian/policy/book-category', text: 'Thể loại sách'},
-      {url: '/librarian/policy/borrow-book', text: 'Mượn sách'},
-      {url: '/librarian/policy/fine', text: 'Tiền phạt'},
+      {url: '/librarian/policy', icon: 'fas fa-book-reader', text: 'Độc giả'},
+      {url: '/librarian/policy/book-category', icon: 'fas fa-book-open', text: 'Thể loại sách'},
+      {url: '/librarian/policy/borrow-book', icon: 'fas fa-book-medical', text: 'Mượn sách'},
+      {url: '/librarian/policy/fine', icon: 'fas fa-coins', text: 'Tiền phạt'},
     ] 
   %> 
-  <% policyItems.forEach((item, index)=>{ %>
-    <% if(index == inputIndex){ %>
-      <a href="<%=item.url %>" class="list-group-item list-group-item-action active" aria-current="true"><%= item.text %></a>
-    <% }else{ %>
-      <a href="<%=item.url %>" class="list-group-item list-group-item-action" aria-current="true"><%= item.text %></a>
-    <% } %> 
-  <% }) %> 
+  <div>
+    <i class="fas fa-cogs top-icon"></i>
+    <span class="fs-4">Quy định</span>
+  </div>
+  <hr>
+  <ul class="nav nav-pills flex-column mb-auto">
+    <% policyItems.forEach((item, index)=>{ %>
+      <% if(index == inputIndex){ %>
+        <li class="nav-item link-dark">
+          <a href="<%=item.url %>" class="nav-link active" aria-current="page">
+            <i class="<%= item.icon %>"></i>
+            <%= item.text %>
+          </a>
+        </li>
+        <!-- <a href="<%=item.url %>" class="list-group-item list-group-item-action active" aria-current="true"><%= item.text %></a> -->
+      <% }else{ %>
+        <li>
+          <a <a href="<%=item.url %>" class="nav-link link-dark">
+            <i class="<%= item.icon %>"></i>
+            <%= item.text %>
+          </a>
+        </li>
+      <% } %> 
+    <% }) %> 
+  </ul>
 </div>

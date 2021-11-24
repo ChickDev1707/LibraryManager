@@ -12,11 +12,15 @@
 body{
   background-color: var(--background);
 }
+table{
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
 table thead{
-  background-color: var(--primary);
+  background-color: var(--secondary);
   color: white;
 }
 button{
+  border: none;
   cursor: pointer;
   border-radius: .25rem;
 }
@@ -36,5 +40,6 @@ button{
 .page-content-wrapper{
   margin: 0 10rem;
   background-color: white;
-  padding: 0 3rem;
+  padding: 2rem 3rem;
+  min-height: 100vh;
 }

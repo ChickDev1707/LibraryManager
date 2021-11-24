@@ -15,8 +15,8 @@ const notificationController = require('../controllers/librarian/notification')
 
 const confirmBook=require('../controllers/librarian/confirm-return-book.js')
 const readerController=require('../controllers/librarian/manage-reader')
-// index
-router.route('/').get(userAuth.checkAuthenticatedAsLibrarian)
+
+router.use(userAuth.checkAuthenticatedAsLibrarian)
 // auth
 router.delete('/logout', authController.logOut)
 
