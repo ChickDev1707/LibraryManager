@@ -3,24 +3,46 @@
 
 <script type="text/javascript" src="/public/js/handler-submit-borrow-return-card.js">
 </script>
+<link rel="stylesheet" href="/public/css/components/crud-section.css">
+<div class="page-content-wrapper">
+    <h2 class="page-title">Danh sách các phiếu mượn sách</h2>
+    <div class="crud-section">
+    <div class="crud-row">
+        <div style="display: flex;justify-content: space-between;">
+            <form action="/librarian/confirm-return-book" method="get">
+                    <input class="input-primary" type="text" name="email" placeholder="nhập email" required >
+                    <button class="icon-text-btn" type='submit'>
+                        <i class="fas fa-search"></i>
+                        Tìm kiếm 
+                    </button>
+            </form>
+        </div>
+        <div class="btn-container">
+            <form class="form-primary" action="/librarian/confirm-return-book" method="get">
+                <input type="text" name="email" value="" hidden>
+                <button class="icon-text-btn">
+                    <i class="fas fa-sync-alt"></i>
+                    Làm mới
+                </button>
+            </form>
+        </div>
+    </div>
+    </div>
 
-<form action="/librarian/xacnhantrasach" method="get">
-    <input type="text" name="email" placeholder="nhập email"><br>
-    <button type='submit'>tìm kiếm</button>
-</form>
+    <% if(borrowReturnCard){ %> 
+        <% const lengOfCard=borrowReturnCard.length %> 
 
-<% if(borrowReturnCard){ %> 
-    <% const lengOfCard=borrowReturnCard.length %> 
+        <% for(let i=0;i<lengOfCard;i++){ %> 
+            <input type="checkbox" name="borrowReturnCard" value="<%= borrowReturnCard[i]._id %>">
+            <label>Mã phiếu: <%= borrowReturnCard[i]._id %></label>
+            <label>Tên độc giả: <%= allNameReader[i] %></label><br>
+        <% } %> 
 
-    <% for(let i=0;i<lengOfCard;i++){ %> 
-        <input type="checkbox" name="borrowReturnCard" value="<%= borrowReturnCard[i]._id %>">
-        <label>mã phiếu: <%= borrowReturnCard[i]._id %></label>
-        <label>Tên độc giả: <%= allNameReader[i] %></label><br>
     <% } %> 
 
-<% } %> 
+    <form action="/librarian/confirm-return-book?_method=put" method="post" name="formSubmit">
+        <input type="hidden" name="selectBorrowReturnCard"><br>
+        <button class="submit-btn" type="submit" onclick="DoSubmit()">Submit</button>
+    </form>
 
-<form action="/librarian/xacnhantrasach?_method=put" method="post" name="formSubmit">
-    <input type="hidden" name="selectBorrowReturnCard"><br>
-    <button type="submit" onclick="DoSubmit()">Xác nhận</button>
-</form>
+</div>
