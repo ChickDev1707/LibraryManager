@@ -59,7 +59,7 @@
             </div>
         </div>
     </div>
-    <h4 style="margin-bottom: 1rem">Danh sách độc giả</h4>
+    <h4 class="medium-title">Danh sách độc giả</h4>
     <table id="tableReader" class="table" >
     <thead >
         <tr>
@@ -68,89 +68,53 @@
             <th scope="col">Email</th>
             <th scope="col">Ngày lập thẻ</th>
             <th scope="col">Nơi ở</th>
-            <th scope="col">Xem chi tiết</th>
-            <th scope="col">Sửa thông tin</th>
-            <th scope="col">Xóa độc giả</th>
+            <th scope="col">Thao tác</th>
+            
         </tr>
     </thead>
     <tbody>
 
     <% reader.forEach((reader,key)=>{ %> 
     <tr>
-        <th scope="row">
-            <%= key %> 
-        </th>
-    <div >
-        
-        <div >
-            <td >
-                <span >
-                    <%= reader.ho_ten %>                
-                </span>
-            </td>
-        </div>  
-        <div>
-            <td >               
-                <span >
-                    <%= reader.email %>                
-                </span>
-            </td>
-        </div>
-        <div>
-            <td >               
-                <span >
-                    <%= reader.ngay_lap_the.toISOString().split('T')[0] %>                
-                </span>
-            </td>
-        </div>
-        <div>
-            <td >                
-                <span >
-                    <%= reader.dia_chi %>                
-                </span>
-            </td>
-        </div>
-        <div >
-            <td >
-                
-                <button 
+        <td><%= key +1 %></td>
+        <td ><%= reader.ho_ten %></td>
+        <td ><%= reader.email %></td>
+        <td ><%= reader.ngay_lap_the.toISOString().split('T')[0] %></td>
+        <td ><%= reader.dia_chi %></td>
+        <td >
+            <div class="action-container">
+                <div>
+                    <button 
                     type="button"
                     data-bs-toggle="modal" 
                     data-bs-target="#viewReader<%= key %>" 
                     class="icon-btn"
-                    style="margin-left: 24px;"
                     >
                     <i class="far fa-question-circle"></i>
                     
                 </button>
                 <%- include('./view.ejs',{key:key,reader:reader}) %> 
-            </td>
-            <td>
+                </div>
                 <div>
                     <button 
                         type="button"
                         data-bs-toggle="modal" 
                         data-bs-target="#editReader<%= key %>" 
                         class="icon-btn"
-                        style="margin-left: 25px;"
                         >
                         <i class="fas fa-edit"></i>
                         
                     </button>
                     <%- include('./edit.ejs',{key:key,reader:reader}) %> 
                 </div>
-            </td>
-            <td>
                 <form class="form-primary" action="/librarian/reader/<%= reader.id %>?_method=DELETE" method="POST">
-                    <button style="margin-left: 25px;" class="icon-btn danger" type="submit">
+                    <button class="icon-btn danger" type="submit">
                         <i class="far fa-trash-alt"></i>
                         
                     </button>
                 </form>  
-            </td>
-        </div>   
-
-    </div>
+            </div>
+        </td>
     </tr>
 <% }) %> 
 </tbody>

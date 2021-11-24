@@ -14,3 +14,7 @@
   height: 100%;
   background-color: var(--accent);
 }
+
+.medium-title{
+  margin-bottom: 1rem;
+}

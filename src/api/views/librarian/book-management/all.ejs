@@ -8,21 +8,17 @@
 <%- include('../../partials/header/librarian-header.ejs') %>
 <div class="table-responsive page-content-wrapper d-flex flex-column">
 
-  <h2 class="page-title mt-3">
-    QUẢN LÝ ĐẦU SÁCH
-  </h2>
+  <h2 class="page-title">Quản lý sách</h2>
 
   <div class="crud-section mt-3">
     <div class="crud-row">
-      <h4><i class="fas fa-book" aria-hidden="true"></i> Danh sách đầu sách</h4>
+      <h4><i class="fas fa-book" aria-hidden="true"></i> Đầu sách</h4>
       <div class="btn-container">
         <button 
           class="icon-text-btn"
           data-bs-toggle="modal" 
           data-bs-target="#new_modal"
-        >
-          <i class="fas fa-plus" aria-hidden="true"></i>
-          Thêm
+        ><i class="fas fa-plus" aria-hidden="true"></i>Thêm
         </button>
       </div>
     </div>
@@ -36,23 +32,23 @@
       </div>
     </div>
   </div>
-
+  <h4 class="medium-title">Danh sách sách</h4>
   <table class="table shadow" id="all-book-table">
     <thead>
       <tr>
+        <th scope="col">STT</th>
         <th scope="col">Tên đầu sách</th>
         <th scope="col">Ngày nhập</th>
         <th scope="col">Giá</th>
         <th scope="col">Số lượng</th>
-        <th scope="col"></th>
+        <th scope="col">Thao tác</th>
       </tr>
     </thead>
 
     <tbody>
-      <% books.forEach(book => { %>
-        <%- include("../../partials/book-management/row.ejs", {book: book}) %>
+      <% books.forEach((book, index)=> { %>
+        <%- include("../../partials/book-management/row.ejs", {book: book, index}) %>
       <%} ) %>
-      
       
     </tbody>
   </table>
@@ -69,4 +65,4 @@
     }) %> 
   </div>
 </div>
-<script src="../../../../public/js/book-management.js"></script>
+<script src="/public/js/book-management.js"></script>

@@ -1,23 +1,24 @@
 <%- contentFor('head') %> 
-<title>Day Report</title>
+<title>Báo cáo ngày</title>
 <!-- Global src -->
-<link rel="stylesheet" href="../../../../public/css/pages/librarian/report.css">
+<link rel="stylesheet" href="/public/css/pages/librarian/report.css">
 <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
 <!-- Local src -->
-<script src="../../../../public/js/export-report.js"></script>
+<script src="/public/js/export-report.js"></script>
 
 <%- contentFor('body') %> 
 <%- include('../../partials/header/librarian-header.ejs') %> 
 
 <div class="page-content-wrapper">
     <h2 class="page-title">Báo cáo ngày</h2>
-    <form class="form-picker"action="" method="get" >
-        <input class="input-primary" type="date" name="date" value="<%= date %>">
-        <button class="submit-btn" type="submit" >submit</button>
+    <form class="d-flex justify-content-between my-4" action="" method="get" >
+        <div>
+            <input class="input-primary" type="date" name="date" value="<%= date %>">
+            <button class="submit-btn" type="submit" >submit</button>
+        </div>
         <button  class="submit-btn" id="btnExport" type="button" onclick="fnExportToExcel('xlsx')"><i class="fas fa-file-export"></i> export</button>
     </form>
-    
-    <h3 class="text-center">THỐNG KÊ SÁCH TRẢ TRỄ <%= date %></h3>
+    <h3 class="text-center my-3">Thống kê sách trả trễ <%= date %></h3>
     <table id="reportTable" class="table">
         <thead>
             <tr>

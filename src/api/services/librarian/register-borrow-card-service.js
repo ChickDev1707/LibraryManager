@@ -2,13 +2,13 @@ const Reader = require('../../models/reader.js')
 const RegisterBorrowCard = require('../../models/register-borrow-card.js')
 const BorrowReturnCard = require('../../models/borrow-return-card.js')
 const BookHead = require('../../models/book-head.js')
+const policyService = require('../../services/librarian/policy.js')
 const Policy = require('../../models/policy.js')
 
 // deny overdue RegisterBorrowCard
 async function denyOverdueRegisterBorrowCard(){
     //get policy
-    let policy = await Policy.findOne({ten_quy_dinh: "Số ngày chờ đăng ký mượn tối đa"})
-    let value = policy.gia_tri
+    let policy = await policyService.getPolicyValueByName('thoi_han_dang_ky')
     let date = new Date();
     date.setDate(date.getDate() - value)
 
