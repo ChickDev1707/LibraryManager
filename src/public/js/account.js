@@ -3,12 +3,9 @@ function editProfile(){
     $("select.info").attr('disabled', false);
     $("button.btn-save-info").removeClass("d-none");
     $("label.btn-upload").removeClass("d-none")
-    $("button.btn-edit-info").empty();
-    $("div.info-header").append(
-        `<button class="icon-button btn-cancel-edit-info" type="button" onclick="cancelEditProfile()">
-            <i class="fas fa-times"></i>
-        </button>`
-    )
+    $("button#btn-edit-pro").addClass('d-none');
+    $("button#btn-cancel-edit-pro").removeClass('d-none');
+
 }
 
 function cancelEditProfile(saved){
@@ -16,12 +13,8 @@ function cancelEditProfile(saved){
     $("select.info").attr('disabled', true);
     $("button.btn-save-info").addClass("d-none");
     $("label.btn-upload").addClass("d-none")
-    $("button.btn-cancel-edit-info").remove();
-    $("div.info-header").append(
-        `<button class="icon-button btn-edit-info" type="button" onclick="editProfile()">
-            <i class="fas fa-pencil-alt"></i>
-        </button>`
-    )
+    $("button#btn-edit-pro").removeClass('d-none');
+    $("button#btn-cancel-edit-pro").addClass('d-none');
     var url =  $("#preview_image").attr("defaultSrc");
     $("#preview_image").attr('src', url);
 }
@@ -29,23 +22,16 @@ function cancelEditProfile(saved){
 function editPassword(){
     $("input.pass").attr('disabled', false);
     $("button.btn-save-pass").removeClass("d-none");
-    $("button.btn-edit-pass").empty();
-    $("div.password-header").append(
-        `<button class="icon-button btn-cancel-edit-pass" type="button" onclick="cancelEditPass(false)">
-            <i class="fas fa-times"></i>
-        </button>`
-    )
+    $("button#btn-edit-pass").addClass('d-none');
+    $("button#btn-cancel-edit-pass").removeClass('d-none');
 }
 
 function cancelEditPass(){
     $("input.pass").attr('disabled', true);
     $("button.btn-save-pass").addClass("d-none");
     $("button.btn-cancel-edit-pass").empty();
-    $("div.password-header").append(
-        `<button class="icon-button btn-edit-pass" type="button" onclick="editPassword()">
-            <i class="fas fa-pencil-alt"></i>
-        </button>`
-    )
+    $("button#btn-edit-pass").removeClass('d-none');
+    $("button#btn-cancel-edit-pass").addClass('d-none');
 }
 
 $(document).ready(function(){

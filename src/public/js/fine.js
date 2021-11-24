@@ -31,6 +31,14 @@ function search(){
     )
 }
 
+function refresh(){
+    $("#search_book_string").val('');
+    $("table#readers_table tbody tr").each(
+        function(){
+            $(this).removeClass("d-none")                
+        }
+    )
+}
 
 function payFine(readerJson){
     var reader = JSON.parse(readerJson)

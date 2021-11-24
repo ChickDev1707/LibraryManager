@@ -1,43 +1,49 @@
 <%- contentFor('head') %> 
 <script src ="../../../../public/js/borrow-book.js"></script>
+<link rel="stylesheet" href="../../../../public/css/components/searchbar-select.css">
+<link rel="stylesheet" href="../../../../public/css/components/search-bar.css">
 <%- contentFor('body') %> 
 <%- include('../../partials/header/librarian-header.ejs') %> 
-<link rel="stylesheet" href="../../../../public/css/components/search-bar.css">
-<div  class="container d-flex flex-column justify-content-center" id="mainContainer"> 
+<div  class="page-content-wrapper d-flex flex-column justify-content-center" id="mainContainer"> 
+    <h2 class="page-title mt-3">
+        MƯỢN SÁCH TRỰC TIẾP
+    </h2>
+    
     <form 
-        class="container search-container my-3"
+        class="mt-4  mb-5 searchbar_select_super"
         action="/librarian/borrow" 
     >
-        <div class="input-group mb-3 ">
-            <div class="input-group-prepend">
-                <select class="form-select" name="search_option" id="search-option">
-                    <option value="id" <%=option=="id"?"selected":"" %>  > 
-                        ID
-                    </option>
-                    <option value="email" <%=option=="email"?"selected":"" %>> 
-                        Email 
-                    </option>
-                </select>
+
+        <div class="searchbar_select">
+            <select class="" name="search_option" id="search-option">
+                <option value="id" <%=option=="id"?"selected":"" %> > 
+                    ID
+                </option>
+                <option value="email" <%=option=="email"?"selected":"" %>> 
+                    Email
+                </option>
+            </select>
+            <div class="search-bar">
+                <input 
+                    name="search_string"
+                    id="search_string"  
+                    type="text" 
+                    class="text-truncate"
+                    value="<%=searchString%>"
+                    required 
+                />
+                <button type="submit"><i class="fas fa-search" aria-hidden="true" ></i> Tìm kiếm</button>
             </div>
-            <input 
-                name="search_string"
-                id="search_string"  
-                type="text" 
-                class="form-control text-truncate "
-                value="<%=searchString %>"
-                required 
-            />
-            <button class="btn btn-primary" type="submit">
-                <i class="fas fa-search" aria-hidden="true"></i>
-                Tìm kiếm
-            </button>
+        </div>
+        <div class="btn-container ms-2">
+            <a class="icon-text-btn" type="reset" href='/librarian/borrow' ><i class="fas fa-sync-alt" aria-hidden="true"  ></i> Làm mới</a>
         </div>
     </form>
 
     <div class="justify-content-center ">
-        <h5 class="text-start page-title">Thông tin độc giả</h5>
+        <h5 class="text-start page-title mb-0">Thông tin độc giả</h5>
     </div>
-    <div class="container reader-container mb-3 shadow-lg">
+    <div class=" reader-container mb-3 shadow-lg px-5 py-4">
         
         <div class="row">
             <div class="col input-item mb-3">
@@ -138,7 +144,7 @@
         </div>
     </div>
 
-    <div class="container px-0 my-3">
+    <div class="my-3">
         <div class=" justify-content-center mb-1">
             <h5 class="text-start page-title">Danh sách sách đăng ký</h5>
         </div>
@@ -173,7 +179,7 @@
 
 
     <div class="modal fade" id="add_book_modal">
-        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
@@ -182,7 +188,7 @@
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body d-flex justify-content-center">
                     <form 
                         action="/librarian/borrow/books" 
                         method="GET" 
@@ -196,22 +202,20 @@
                             class="input-primary text-truncate d-none"
                             value="<%= reader?reader._id:'' %>" 
                         />
-                        <div class="col input-group mb-3">
-                            <span class="input-group-text" >
+                        <div class="col search-bar mb-3">
+                            <span class="input-group-text py-8" >
                                 Mã quyển sách:
                             </span>
                             <input 
                                 name="ma_sach" 
                                 id="ma_sach" 
-                                class="form-control text-truncate" 
+                                class="text-truncate" 
                                 type="text"   
                                 required 
                                 placeholder="Mã sách"
                             />
-                            <button type="submit" class="btn btn-success">Thêm</button>
-                        </div>
-                        
-                       
+                            <button  type="submit" class="icon-text-btn"><i class="fas fa-plus" aria-hidden="true"></i> Thêm</button>
+                        </div>               
                         
                     </form>
                 </div>

@@ -10,7 +10,7 @@
   font-size: .9rem;
   color: var(--primary);
 }
-.input-item input, textarea{
+.input-item input, textarea, select{
   padding: .5rem 1rem;
   font-size: .9rem;
   outline: none;
@@ -19,7 +19,7 @@
   border-radius: .25rem;
   border: 1px solid transparent;
 }
-.input-item input:focus, textarea:focus{
+.input-item input:focus, textarea:focus, select:focus{
   border: 1px solid var(--primary);
   
 }

@@ -19,6 +19,11 @@ function searchBook(){
         )
 }
 
+function refresh(){
+        console.log('object');
+        $('#search_bar_input').val('')
+        $("table#all-book-table tbody tr").removeClass("d-none")
+}
 
 function tab(index, id){
         if(index == 1)
@@ -29,8 +34,10 @@ function tab(index, id){
                 $(`#update_form_${id} #btn-tab1`).attr('disabled', true)
                 $(`#update_form_${id} .info_tabs`).removeClass("d-none")
                 $(`#update_form_${id} .child_tab`).addClass("d-none")
-                $(`#btn-edit-${id}`).removeClass('d-none')
-                $(`#btn-cancel-edit-${id}`).removeClass('d-none')
+                $(`#edit_modal_${id} .input-field`).attr("disabled", true);
+                $(`button#btn-edit-${id}`).removeClass('d-none');
+                $(`#btn-cancel-edit-${id}`).addClass('d-none')
+                $(`#btn-submit-${id}`).addClass("d-none");
         }
         else{
             $(`#update_form_${id} #info-title`).addClass("d-none")
@@ -40,32 +47,23 @@ function tab(index, id){
             $(`#update_form_${id} .info_tabs`).addClass("d-none")
             $(`#update_form_${id} .child_tab`).removeClass("d-none")
             $(`#btn-edit-${id}`).addClass('d-none')
-                $(`#btn-cancel-edit-${id}`).addClass('d-none')
+            $(`#btn-cancel-edit-${id}`).addClass('d-none')
         }
 }
 
 function editInfo(id){
         $(`#edit_modal_${id} .input-field`).attr("disabled", false);
-        $(`button#btn-edit-${id}`).remove();
-        $(`div#header-container-${id}`).append(
-            `<button class="icon-btn" id="btn-cancel-edit-${id}" type="button" onclick="cancelEdit('${id}')">
-                <i class="fas fa-times"></i>
-            </button>`
-        );
+        $(`button#btn-edit-${id}`).addClass('d-none');
+        $(`#btn-cancel-edit-${id}`).removeClass('d-none')
         $(`#btn-submit-${id}`).removeClass("d-none");
-        $(`#btn-upload-${id}`).removeClass("d-none");
 }
 
 function cancelEdit(id){
         $(`#edit_modal_${id} .input-field`).attr("disabled", true);
-        $(`button#btn-cancel-edit-${id}`).remove();
-        $(`button#btn-edit-${id}`).remove();
-        $(`div#header-container-${id}`).append(
-            `<button class="icon-btn" id="btn-edit-${id}" type="button" onclick="editInfo('${id}')">
-                <i class="fas fa-pencil-alt"></i>
-            </button>`
-        );
+        $(`button#btn-edit-${id}`).removeClass('d-none');
+        $(`#btn-cancel-edit-${id}`).addClass('d-none')
         $(`#btn-submit-${id}`).addClass("d-none");
+        $(`#anh_bia-${id} .filepond--file-action-button.filepond--action-remove-item`).trigger( "click" );
 }
 
 $.fn.isValid = function(){
@@ -291,7 +289,7 @@ function addChildBook(id){
                                         <td class="text-align-center">${sach.tinh_trang ?"Khả dụng": "Đã mượn"}</td>
                                         <td>
                                         <button 
-                                                type="button" class="icon-button delete" 
+                                                type="button" class="icon-btn danger" 
                                                 onclick="deleteChild('${sach._id }', '${book._id }')" 
                                         >
                                                 <i class='fas fa-trash-alt'></i>       
@@ -324,3 +322,9 @@ function addChildBook(id){
     return false;
 }
 
+$(document).ready(function(){
+        $(".filepond--root").on("FilePond:addfile", function(e){
+               var id = e.target.id.split('-')[1];
+               editInfo(id)
+        })
+})

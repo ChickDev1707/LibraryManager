@@ -30,7 +30,8 @@ async function updateUser(req, res, next){
     }else{
         var currentPass = req.body.currentPass;
         var newPass = req.body.newPass;
-        if(newPass==undefined || currentPass == undefined)
+        console.log(currentPass)
+        if(newPass==undefined || currentPass == undefined || newPass == "" || currentPass == "")
             return res.json({success: false, anh_bia: null, message: "Vui lòng nhập mật khẩu!"})
 
         var result = await updatePassword(currentUsert._id, currentPass, newPass);

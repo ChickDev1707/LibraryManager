@@ -34,7 +34,7 @@ async function updateUserProfile(id, newData){
             return ({success: false, message: "Không tìm thấy thông tin độc giả!"});
         else { 
             const policy = await getReaderPolicies();
-            if(newData.ngay_sinh!= undefined && (getAge(newData) - policy.minAge < 0|| getAge(newData) - policy.maxAge > 0 ))
+            if(newData.ngay_sinh!= undefined && (getAge(newData.ngay_sinh) - policy.minAge < 0 || getAge(newData.ngay_sinh) - policy.maxAge > 0 ))
                 return {success: false, message: "Tuổi của độc giả không hợp lệ"};          
             const updated = await Reader.updateOne({_id: oldProfile._id}, newData);
             return {success: true, message: "Cập nhật thông tin độc giả thành công"};

@@ -26,7 +26,7 @@
             >
             </button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body container px-5 my-3">
                
             <form
                 action="/librarian/books/<%=book._id%>"
@@ -37,7 +37,7 @@
                 onsubmit="return submitEdit(event)"
                 
             >
-                <div class="col-sm-12 col-md-12 col-xl-4 position-relative" id="img_container">
+                <div class="col-sm-12 col-md-12 col-xl-4 position-relative"  id="img_container">
                     <input
                         class="input-primary filepond"
                         id="anh_bia-<%= book._id %>"
@@ -46,8 +46,8 @@
                         accept="image/*"
                     >
                 </div>
-                <div class="col-sm-12 col-md-12 col-xl-8" style="max-height: 730px;">
-                    <div class="row mb-3">
+                <div class="col-sm-12 col-md-12 col-xl-8">
+                    <div class="row mb-2">
                         <div class="container d-flex flex-row flex-nowrap justify-content-between">
                             <button
                                 class="icon-btn"
@@ -63,6 +63,9 @@
                                 <h4 id="child-title" class="text-start my-auto mx-2 d-none">Chi tiết quyển sách</h4>
                                 <button id="btn-edit-<%= book._id %>" class="icon-btn" type="button" onclick="editInfo('<%=book._id%>')">
                                     <i class="fas fa-pencil-alt"></i>
+                                </button>
+                                <button class="icon-btn d-none" id="btn-cancel-edit-<%= book._id %>" type="button" onclick="cancelEdit('<%= book._id %>')">
+                                    <i class="fas fa-times"></i>
                                 </button>
                             </div>
                             <button
@@ -107,7 +110,7 @@
                                         id="the_loai"
                                         type="text"
                                         required
-                                        class="form-select dropdown-toggle input-field"
+                                        class="input-item dropdown-toggle input-field"
                                         disabled
                                     >
                                         <% bookCategories.forEach(category => { %>
@@ -197,16 +200,10 @@
                                     </div>
                                 </div>
                                 
-                                <div class="mt-3 d-flex justify-content-center">
-                                    <button class="btn-save d-none" id="btn-submit-<%= book._id %>" style="min-width: 10rem;" type="submit">
-                                        <i class="bi bi-check2"></i>
-                                        Lưu
-                                    </button>
-                                </div>
                             </div>
                         </div> 
         
-                        <div class="col-sm-12 col-md-12 col-xl-6">
+                        <div class="col-sm-12 col-md-12 col-xl-6" >
                             <div  class="info_tabs">
                                
                                 <div class="mb-3 input-item">
@@ -264,11 +261,19 @@
                                         Vui lòng nhập tóm tắt nội dung sách
                                     </div>
                                 </div>
-                            </div>           
+                                <div class="mt-3 d-flex justify-content-end">
+                                    <button class="submit-btn d-none" id="btn-submit-<%= book._id %>" style="min-width: 10rem;" type="submit">
+                                        <i class="bi bi-check2"></i>
+                                        Lưu
+                                    </button>
+                                </div>
+                            </div>                  
+                            
+                            
                         </div>
         
-                        <div class="col-sm-12 col-md-12 col-xl-12 child_tab d-none " style="max-height:  470px; position: relative; overflow: auto">
-                            <table class="table table-hover "  id="table_<%= book._id %>">
+                        <div class="col-sm-12 col-md-12 col-xl-12 child_tab d-none" style="max-height:  460px; position: relative; overflow: auto">
+                            <table class="table "  id="table_<%= book._id %>" >
                                 <thead>
                                     <tr>
                                         <th>Mã sách</th>
@@ -279,11 +284,11 @@
                                 <tbody>
                                     <% book.cac_quyen_sach.forEach(sach => { %>
                                     <tr id="row_child_<%= sach._id %>">
-                                        <td><%= sach._id %> </td>
+                                        <td class=""><%= sach._id %> </td>
                                         <td class="text-align-center"><%= sach.tinh_trang ?"Khả dụng": "Đã mượn" %> </td>
                                         <td>
                                             <button 
-                                                type="button" class="icon-btn delete" 
+                                                type="button" class="icon-btn danger" 
                                                 onclick="deleteChild('<%= sach._id %>', '<%= book._id %>')" 
                                                 <%= sach.tinh_trang?"":"disabled" %>
                                             >
@@ -333,5 +338,3 @@
         background-image: url('<%=book.anh_bia %>');
     }
 </style>
-
-<%# end modal %>

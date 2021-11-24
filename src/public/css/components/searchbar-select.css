@@ -1,0 +1,33 @@
+.searchbar_select {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.searchbar_select select {
+  border: none;
+  outline: none;
+  border-radius: 0;
+  box-shadow: rgb(0 0 0 / 2%) 0px 1px 3px 0px,
+    rgb(27 31 35 / 15%) 0px 0px 0px 1px;
+  text-align: start;
+}
+
+.searchbar_select_super {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
+.searchbar_select_super a {
+  cursor: pointer;
+  border-radius: 0.25rem;
+  text-decoration: none;
+}
+
+.searchbar_select_super a:hover {
+  color: #fff;
+}

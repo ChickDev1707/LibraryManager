@@ -1,3 +1,7 @@
+.profile-container {
+  background-color: transparent;
+}
+
 .image_container {
   max-height: 100%;
   height: 100%;
@@ -6,79 +10,13 @@
   border-radius: 1rem;
 }
 
-.filepond--drop-label label {
-  cursor: pointer;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #000;
-  border-bottom: 2px solid #000;
-  padding: 5px 10px !important;
-  border-radius: 5px;
-}
-
-.btn-save {
-  padding: 5px 40px;
-  border: 1px solid #dd2476;
-  border-radius: 100px;
-  background: linear-gradient(to top, #dd2476, #ff512f);
-}
-
-form {
-  border-radius: 1rem;
-  background-color: #fff;
-  padding: 0.5rem 1rem;
-}
-
-.icon-button {
-  background-color: transparent;
-  border: 0px;
-  font-size: 1.2rem;
-  padding: 0;
-  margin: auto 0px;
-  min-height: 20px;
-  min-width: 20px;
-}
-
-input,
-select {
-  padding: 0.3rem 0.6rem;
-  border-radius: 0.5rem;
-  color: #384144;
-  border: 1.5px solid #d0cab2;
-  font-size: 1.1rem !important;
-  line-height: 1.5rem;
-}
-
-input:focus,
-select:focus {
-  outline: 1px solid #94b3fd;
-  color: #2c272e;
-}
-input:disabled,
-select:disabled {
-  border: 0px;
-  font-size: 1.2rem !important;
-  font-weight: 500;
-  color: #212529;
-}
-
-.profile-container {
-  background-color: #cee5d0;
-  border-radius: 1rem;
-}
-
-#update_avatar_form {
-  padding: 0;
-  border-radius: 0;
-}
-
 .filepond--root {
   margin: 0;
   height: 750px;
 }
 
 .filepond--root .filepond--drop-label {
-  background-image: url("<%=reader.dc_anh_bia %>");
+  background-image: url("");
   height: 100%;
   width: 100%;
   background-repeat: no-repeat;
@@ -91,9 +29,44 @@ select:disabled {
   padding: 1rem;
 }
 
+.filepond--drop-label label {
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #000;
+  border-bottom: 2px solid #000;
+  padding: 5px 10px !important;
+  border-radius: 5px;
+}
+
 .btn-save-avatar {
   position: absolute;
   bottom: 1rem;
   left: 50%;
   transform: translate(-50%, 0);
+}
+
+#update_avatar_form {
+  padding: 0;
+  border-radius: 0;
+}
+
+#update_info_form {
+  /* background-color: #d9eaf5; */
+  padding: 0.8rem 3rem;
+  border-radius: 10px;
+}
+
+.info-header {
+  border-bottom: 1px solid #808287;
+}
+
+#update_pass_form {
+  /* background-color: #d9eaf5; */
+  padding: 0.8rem 3rem;
+  border-radius: 10px;
+}
+
+.password-header {
+  border-bottom: 1px solid #808287;
 }
