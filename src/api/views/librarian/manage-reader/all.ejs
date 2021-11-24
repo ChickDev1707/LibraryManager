@@ -1,72 +1,65 @@
 <%- contentFor('head') %> 
-<title>Readers</title>
+<title>Quản lý độc giả</title>
+<link rel="stylesheet" href="/public/css/components/search-bar.css">
+<link rel="stylesheet" href="/public/css/components/crud-section.css">
+
+<script defer src="/public/js/export-reader.js"></script> 
+<script defer type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+
 <%- contentFor('body') %> 
 <%- include('../../partials/header/librarian-header.ejs') %> 
-<script src="../../../../public/js/export-reader.js"></script> 
-<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
 
-
-<link rel="stylesheet" href="/public/css/components/crud-section.css">
 <div class="page-content-wrapper">
-    
-    <div style="
-    padding: 10px;
-    box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
-    margin-bottom: 30px;
-">
-        <h2 class="page-title">Quản lý độc giả</h2>
-        <div class="crud-section">
-            <div class="crud-row">
-                <h4><i class="fas fa-book"></i>Danh sách độc giả</h4>
-                <div class="btn-container">
-                    <button
-                        
-                        data-bs-toggle="modal"
-                        data-bs-target="#addFileExcel"
-                        class="icon-text-btn green-btn"
-                    >
-                    <i class="far fa-file-excel"></i>
-                        Import excel
-                    </button>
-                    <%- include('./input-excel.ejs') %>
+    <h2 class="page-title">Quản lý độc giả</h2>
+    <div class="crud-section">
+        <div class="crud-row">
+            <h4><i class="fas fa-book-reader"></i> Độc giả</h4>
+            <div class="btn-container">
+                <button
+                    
+                    data-bs-toggle="modal"
+                    data-bs-target="#addFileExcel"
+                    class="icon-text-btn green-btn"
+                >
+                <i class="far fa-file-excel"></i>
+                    Import excel
+                </button>
+                <%- include('./input-excel.ejs') %>
 
-                    <button 
-                        
-                        data-bs-toggle="modal" 
-                        data-bs-target="#addReader" 
-                        class="icon-text-btn"
-                    >
-                    <i class="fas fa-user-plus"></i>
-                        Thêm 
-                    </button>
-                    <%- include('./new.ejs') %>
-                  </div>
-            </div>
-            <div class="crud-row">
-                <div class="search-bar">
-                    <form action="/librarian/reader" method="GET">
-                        <input style="background-color: rgb(221, 233, 233);" class="input-primary" placeholder="Nhập tên độc giả ..."
-                                type="text" name="ho_ten" value="<%= search.ho_ten %>" required>
-
-                        <button type="submit" class="icon-text-btn">
-                            <i class="fas fa-search"></i>
-                            Tìm kiếm
-                        </button>  
-                    </form>
+                <button 
+                    
+                    data-bs-toggle="modal" 
+                    data-bs-target="#addReader" 
+                    class="icon-text-btn"
+                >
+                <i class="fas fa-user-plus"></i>
+                    Thêm 
+                </button>
+                <%- include('./new.ejs') %>
                 </div>
-                <div class="btn-container">
-                  <form class="form-primary" action="/librarian/reader" method="get">
-                    <input type="text" name="ho_ten" hidden value="">
-                    <button class="icon-text-btn">
-                        <i class="fas fa-sync-alt"></i>
-                         Làm mới
-                    </button>
+        </div>
+        <div class="crud-row">
+            <div>
+                <form class="search-bar" action="/librarian/reader" method="GET">
+                    <input placeholder="Nhập tên độc giả ..."
+                            type="text" name="ho_ten" value="<%= search.ho_ten %>" required>
+                    <button type="submit" class="icon-text-btn">
+                        <i class="fas fa-search"></i>Tìm kiếm
+                    </button>  
                 </form>
-                </div>
             </div>
+            <div class="btn-container">
+                <form class="form-primary" action="/librarian/reader" method="get">
+                <input type="text" name="ho_ten" hidden value="">
+                <button class="icon-text-btn">
+                    <i class="fas fa-sync-alt"></i>
+                        Làm mới
+                </button>
+            </form>
             </div>
         </div>
-
+    </div>
+    <h4 style="margin-bottom: 1rem">Danh sách độc giả</h4>
     <table id="tableReader" class="table" >
     <thead >
         <tr>
@@ -163,11 +156,8 @@
 </tbody>
 </table>
 
-<div >
-    <button style="margin:10px 0px 0px 970px" class="icon-text-btn" type="button" onclick="ExportToExcel('xlsx')">
-        <i class="far fa-file-excel"></i>
-        Export excel
-    </button>
+<div style="margin-top: 2rem;" class="d-flex justify-content-end">
+    <button class="icon-text-btn" type="button" onclick="ExportToExcel('xlsx')"><i class="far fa-file-excel"></i>Export excel</button>
 </div>
 
 </div>
