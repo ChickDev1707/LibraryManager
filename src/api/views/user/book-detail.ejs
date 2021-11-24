@@ -1,5 +1,6 @@
 <%- contentFor('head') %> 
 <title>Book detail</title>
 <%- contentFor('body') %> 
-<%- include('../partials/header/user-header.ejs') %> 
-<%- include('../partials/book/book-detail.ejs') %> 
+
+<%- include('../partials/header/user-header.ejs')  %> 
+<%- include('../partials/book/book-detail.ejs', {user: 'guest'}) %> 

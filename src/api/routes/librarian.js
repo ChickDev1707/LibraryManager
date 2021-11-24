@@ -14,10 +14,9 @@ const {upload} = require('../services/librarian/manage-book-service')
 const notificationController = require('../controllers/librarian/notification')
 
 const confirmBook=require('../controllers/librarian/confirm-return-book.js')
-
 const readerController=require('../controllers/librarian/manage-reader')
-// index
-router.route('/').get(userAuth.checkAuthenticatedAsLibrarian)
+
+router.use(userAuth.checkAuthenticatedAsLibrarian)
 // auth
 router.delete('/logout', authController.logOut)
 
@@ -35,12 +34,10 @@ router.route('/books/:id')
 
 router.get('/books/:id/edit', bookController.updateBookForm)
 
-// manage reader
 router.route('/reader')
       .get(readerController.getAllReader)
-      .post(readerController.addReader)
-
-router.get('/reader/new', readerController.newReader)
+      .post(readerController.uploadReader.single('uploadfile'),readerController.addReader)
+// router.get('/reader/new', readerController.newReader)
 
 router.route('/reader/:id')
       .get(readerController.getReader)
@@ -63,7 +60,7 @@ router.route('/fine')
       .get(fineController.getAllFine)
       .post(fineController.saveFine)
 
-router.route('/xacnhantrasach')
+router.route('/confirm-return-book')
       .get(confirmBook.getConfirmReturnBook)
       .put(confirmBook.putConfirmReturnBook)
 //manage register-borrow-card

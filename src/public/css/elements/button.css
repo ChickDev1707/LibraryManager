@@ -14,6 +14,7 @@
   color: gray;
   font-size: 1.4rem;
   background-color: transparent;
+  border: none;
 }
 .icon-btn:hover{
   color: var(--secondary);

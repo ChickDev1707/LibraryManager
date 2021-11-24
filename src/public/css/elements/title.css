@@ -4,6 +4,7 @@
   font-weight: bold;
   color: var(--secondary);
   padding-left: 12px;
+  margin-bottom: 2rem;
 }
 .page-title::after{
   content: '';
