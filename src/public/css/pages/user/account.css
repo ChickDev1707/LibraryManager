@@ -1,18 +1,25 @@
-.profile-container {
-  background-color: transparent;
-}
+@import url('../../components/static-tabs.css');
 
-.image_container {
-  max-height: 100%;
-  height: 100%;
-  object-fit: cover;
-  resize: both;
-  border-radius: 1rem;
+.main-container{
+  display: flex;
 }
-
-.filepond--root {
-  margin: 0;
-  height: 750px;
+.main-container .avatar-container{
+  position: relative;
+  width: 28rem;
+  padding: 1.5rem 3rem;
+  margin-right: 2rem;
+  border: 2px solid #95a5a6;
+}
+.main-container .avatar-container .submit-btn{
+  width: 100%;
+  font-weight: bold;
+  padding: .75rem 0;
+}
+.main-container .avatar-container .filepond{
+  height: 28rem !important;
+}
+.main-container .edit-panel-main{
+  flex: 1;
 }
 
 .filepond--root .filepond--drop-label {
@@ -39,34 +46,39 @@
   border-radius: 5px;
 }
 
-.btn-save-avatar {
-  position: absolute;
-  bottom: 1rem;
-  left: 50%;
-  transform: translate(-50%, 0);
-}
-
-#update_avatar_form {
-  padding: 0;
-  border-radius: 0;
-}
-
-#update_info_form {
-  /* background-color: #d9eaf5; */
-  padding: 0.8rem 3rem;
-  border-radius: 10px;
-}
-
-.info-header {
+.edit-header{
   border-bottom: 1px solid #808287;
+  margin-bottom: 1rem;
 }
 
-#update_pass_form {
-  /* background-color: #d9eaf5; */
-  padding: 0.8rem 3rem;
-  border-radius: 10px;
-}
+/* lib info */
 
-.password-header {
-  border-bottom: 1px solid #808287;
+.lib-info-item{
+  display: flex;
+  padding: .75rem 0 .5rem 1.5rem;
+  border-radius: .5rem;
+  margin-bottom: 1rem;
+  background-color: var(--background);
+}
+.lib-info-item:hover{
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+.lib-info-item .img{
+  width: 4.5rem;
+  height: 4.55rem;
+  line-height: 4rem;
+  background-color: white;
+  text-align: center;
+  border-radius: 50%;
+  margin-right: 1.5rem;
+}
+.lib-info-item h6{
+  margin: 0;
+}
+.lib-info-item h3{
+  color: var(--primary);
+}
+.lib-info-item .img img{
+  width: 45px;
+  height: 45px;
 }

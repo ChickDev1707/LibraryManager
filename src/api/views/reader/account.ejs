@@ -1,197 +1,160 @@
 <%- contentFor('head') %> 
-<link rel="stylesheet" href="../../../public/css/pages/user/account.css">
 <title>Tài khoản</title>
+<link rel="stylesheet" href="/public/css/pages/user/account.css">
+<script defer src="/public/js/account.js"></script>
+<script defer src="/public/js/static-tabs.js"></script>
 
 <%- contentFor('body') %> 
 <%- include('../partials/header/reader-header.ejs') %>
-<div class="page-content-wrapper profile-container">
-    <div class="row justify-content-lg-center pt-4 ">
-        <div class="col-lg-5 col-md-6 col-sm-12 mx-3 d-flex flex-column justify-content-lg-center align-content-center align-item-center">   
-            <form  
-                action="/reader/account" 
-                method="put"
-                id="update_avatar_form"
-                class="position-relative shadow"
-            >
+<div class="page-content-wrapper">
+    <h2 class="page-title">Thông tin tài khoản</h2>
+    <div class="main-container">
+        <div class="avatar-container">   
+            <form action="/reader/account" method="put" id="update_avatar_form">
                 <input class="filepond info" type="file" accept="image/*"  id="anh_bia" name="anh_bia">
-                <button class="icon-text-btn btn-save-avatar d-none" type="submit">Lưu</button>
+                <button class="submit-btn btn-save-avatar  d-none" type="submit">Lưu ảnh</button>
             </form>
-            
         </div>
-        <div class="col-lg-4 col-md-6 col-sm-12 mx-3 d-flex flex-column justify-content-center">
-            <form
-                action="/reader/account" 
-                method="PUT"
-                id="update_info_form"
-                class="row shadow-lg mb-2"
-            >
-                <div class="d-inline-flex justify-content-between info-header">  
-                    <h5 class="text-start my-auto">Thông tin liên hệ</h5> 
-                    <button class="icon-btn" type="button" onclick="editProfile()" id="btn-edit-pro">
-                        <i class="fas fa-pencil-alt"></i>
-                    </button>
-                    <button class="icon-btn d-none" type="button" onclick="cancelEditProfile()" id="btn-cancel-edit-pro">
-                        <i class="fas fa-times"></i>
-                    </button>
+        <div class="edit-panel-main tabs">
+            <div class="nav-btn">
+                <button data-nav-index="1">Thông tin cá nhân</button>
+                <button data-nav-index="2">Mật khẩu</button>
+                <button data-nav-index="3">Thư viện</button>
+            </div>
+            <div class="nav-content">
+                <div class="content">
+                    <form class="container" action="/reader/account" method="PUT" id="update_info_form">
+                        <div class="d-inline-flex justify-content-between edit-header">  
+                            <h5 class="text-start my-auto">Thông tin liên hệ</h5> 
+                            <button class="icon-btn" type="button" onclick="editProfile()" id="btn-edit-pro">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                            <button class="icon-btn d-none" type="button" onclick="cancelEditProfile()" id="btn-cancel-edit-pro">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="row input-row">
+                            <div class="col-8 input-item">
+                                <label for="ho_ten">Họ và Tên:</label>
+                                <input class=" info" id="ho_ten" type="text" name="ho_ten" value="<%= reader.ho_ten %>" placeholder="Họ và tên" required disabled >
+                            </div>
+                            <div class="col input-item">
+                                <label for="gioi_tinh"> Giới tính:</label>
+                                <select class="info" name="gioi_tinh" id="gioi_tinh" aria-placeholder="Giới tính" required disabled >
+                                    <option value="true" <%= reader.gioi_tinh == true?"selected": "" %> >Nam</option>
+                                    <option value="false" <%= reader.gioi_tinh == true?"selected": "" %> >Nữ</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row input-row">
+                            <div class="input-item">
+                                <label  for="ngay_sinh"> Ngày sinh:</label>
+                                <input class=" info" id="ngay_sinh" type="date" name="ngay_sinh" placeholder="Ngày sinh" required disabled
+                                    value="<%=reader.ngay_sinh.toLocaleDateString('en-GB').split('/').reverse().join('-') %>"  >
+                            </div>
+                        </div>
+                        <div class="row input-row">
+                            <div class="input-item">
+                                <label for="email">Email:</label>
+                                <input class=" info" id="email" type="email" name="email" value="<%= reader.email %>" placeholder="Email" required disabled>
+                            </div>
+                        </div>
+                        <div class="row input-row">
+                            <div class="input-item">
+                                <label for="dia_chi">Địa chỉ:</label>
+                                <textarea rows="4" class="info" id="dia_chi" type="text" name="dia_chi" value="<%=reader.dia_chi %>" placeholder="Địa chỉ" required disabled></textarea>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row justify-content-end" >
+                            <button class="submit-btn btn-save-info d-none">Lưu</button>
+                        </div>
+                    </form>
                 </div>
-
-                <div class="input-item mt-2">
-                    <label class="" for="ho_ten">
-                        <strong>Họ và Tên:</strong>
-                    </label>
-                    <input
-                        class=" info"
-                        id="ho_ten"
-                        type="text"
-                        name="ho_ten"
-                        value="<%= reader.ho_ten %>"
-                        placeholder="Họ và tên"
-                        required
-                        disabled
-                    >
+                <div class="content">
+                    <form class="container" action="/reader/account" method="PUT"  id="update_pass_form">
+                        <div class="d-inline-flex justify-content-between edit-header">  
+                            <h5 class="text-start my-auto">Thay đổi mật khẩu</h5> 
+                            <button class="icon-btn btn-edit-pass" type="button" onclick="editPassword()" id="btn-edit-pass">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                            <button class="icon-btn d-none" type="button" onclick="cancelEditPass(false)" id="btn-cancel-edit-pass">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="row input-row">
+                            <div class="col input-item ">
+                                <label for="currentPass">Mật khẩu hiện tại:</label>
+                                <input class=" pass" id="currentPass" type="password" name="currentPass" placeholder="Mật khẩu hiện tại" required disabled >
+                            </div>
+                        </div>
+                        <div class="row input-row">
+                            <div class="col input-item ">
+                                <label for="newPass"> Mật khẩu mới:</label>
+                                <input class=" pass" id="newPass" type="password" name="newPass" placeholder="Mật khậu mới" requireddisabled>
+                            </div>
+                        </div>
+                        <div class="row input-row">
+                            <div class="col input-item ">
+                                <label for="rePass">Xác nhận:</label>
+                                <input class=" pass" id="rePass" type="password" name="rePass" placeholder="Xác nhận"requireddisabled    >
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row justify-content-end mt-3" >
+                            <button class="submit-btn btn-save-pass d-none">Lưu</button>
+                        </div>
+                    </form>
                 </div>
-                
-                <div class="input-item mt-2">
-                    <label for="gioi_tinh">
-                        <strong>Giới tính:</strong>
-                    </label>
-                    <select 
-                        class="info" 
-                        name="gioi_tinh" 
-                        id="gioi_tinh" 
-                        aria-placeholder="Giới tính" 
-                        required
-                        disabled
-                    >
-                        <option value="true" <%= reader.gioi_tinh == true?"selected": "" %> >Nam</option>
-                        <option value="false" <%= reader.gioi_tinh == true?"selected": "" %> >Nữ</option>
-                    </select>
+                <div class="content">
+                    <div class="container">
+                        <h4 class="medium-title">Thông tin thư viện của bạn</h4>
+                        <div class="row">
+                            <div class="lib-info-item">
+                              <div class="img">
+                                <img src="/public/assets/images/account/money.png" alt="">
+                              </div>
+                              <div class="info">
+                                <h6>Tiền nợ thư viện (vnđ)</h6>
+                                <h3>50</h3>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="lib-info-item">
+                                <div class="img">
+                                    <img src="/public/assets/images/account/duration.png" alt="">
+                                  </div>
+                                  <div class="info">
+                                    <h6>Thời hạn thẻ (ngày)</h6>
+                                    <h3>150</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="lib-info-item">
+                                <div class="img">
+                                    <img src="/public/assets/images/account/card.png" alt="">
+                                  </div>
+                                  <div class="info">
+                                    <h6>Số sách đang mượn (cuốn)</h6>
+                                    <h3>5</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="lib-info-item">
+                                <div class="img">
+                                    <img src="/public/assets/images/account/edit.png" alt="">
+                                  </div>
+                                  <div class="info">
+                                    <h6>Số sách đăng ký (cuốn)</h6>
+                                    <h3>2</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="input-item mt-2">
-                    <label  for="ngay_sinh">
-                        <strong>Ngày sinh:</strong>
-                    </label>
-                    <input class=" info" 
-                        id="ngay_sinh" 
-                        type="date" 
-                        name="ngay_sinh" 
-                        value="<%=reader.ngay_sinh.toLocaleDateString('en-GB').split('/').reverse().join('-') %>" 
-                        placeholder="Ngày sinh" 
-                        required
-                        disabled
-                    >
-                </div>
-
-                <div class="input-item mt-2">
-                    <label for="email">
-                        <strong>Email:</strong>
-                    </label>
-                    <input 
-                        class=" info" 
-                        id="email" 
-                        type="email" 
-                        name="email"
-                        value="<%= reader.email %>"
-                        placeholder="Email" 
-                        required
-                        disabled
-                    >
-                </div>
-
-                <div class="input-item mt-2">
-                    <label for="dia_chi">
-                        <strong>Địa chỉ:</strong>
-                    </label>
-                    <input 
-                        class="info" 
-                        id="dia_chi" 
-                        type="text" 
-                        name="dia_chi" 
-                        value="<%=reader.dia_chi %>" 
-                        placeholder="Địa chỉ" 
-                        required
-                        disabled
-                    >
-                </div>
-
-                <div class="d-flex flex-row justify-content-end mt-2" >
-                    <button class="icon-text-btn btn-save-info d-none">Lưu</button>
-                </div>
-                
-            </form>
-            
-            <form 
-                class="row shadow-lg pass_container mt-3"
-                action="/reader/account" 
-                method="PUT"  
-                id="update_pass_form"
-
-            >
-                <div class="mb-2 d-inline-flex justify-content-between password-header">  
-                    <h5 class="text-start my-auto">Thay đổi mật khẩu</h5> 
-                    <button class="icon-btn btn-edit-pass" type="button" onclick="editPassword()" id="btn-edit-pass">
-                        <i class="fas fa-pencil-alt"></i>
-                    </button>
-                    <button class="icon-btn d-none" type="button" onclick="cancelEditPass(false)" id="btn-cancel-edit-pass">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-
-                <div class="input-item mt-2">
-                    <label for="currentPass">
-                        <strong>
-                            Mật khẩu hiện tại:
-                        </strong>
-                    </label>
-                    <input 
-                        class=" pass" 
-                        id="currentPass" 
-                        type="password" 
-                        name="currentPass" 
-                        placeholder="Mật khẩu hiện tại"
-                        required
-                        disabled    
-                    >
-                </div>
-
-                <div class="input-item mt-2">
-                    <label for="newPass">
-                        <strong>Mật khẩu mới:</strong>
-                    </label>
-                    <input 
-                        class=" pass" 
-                        id="newPass" 
-                        type="password" 
-                        name="newPass" 
-                        placeholder="Mật khậu mới"
-                        required
-                        disabled
-                    >
-                </div>
-                
-                <div class="input-item mt-2">
-                    <label for="rePass">
-                        <strong>Xác nhận:</strong>
-                    </label>
-                    <input 
-                        class=" pass" 
-                        id="rePass" 
-                        type="password" 
-                        name="rePass" 
-                        placeholder="Xác nhận"
-                        required
-                        disabled    
-                    >
-                </div>
-
-                <div class="d-flex flex-row justify-content-end mt-3" >
-                    <button class="icon-text-btn btn-save-pass d-none">Lưu</button>
-                </div>
-            </form>
-            
+            </div>
         </div>
-
     </div>
 </div> 
 <style>
@@ -199,4 +162,3 @@
         background-image: url('<%=reader.anh_bia %>');
     }
 </style>
-<script src="/public/js/account.js"></script>
