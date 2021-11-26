@@ -39,7 +39,7 @@ const ReaderSchema= new mongoose.Schema({
     },
     kieu_anh_bia: {
         type: String,
-        required: true
+        // required: true
     }
     
 })
