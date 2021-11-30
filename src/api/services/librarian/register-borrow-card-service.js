@@ -10,7 +10,7 @@ async function denyOverdueRegisterBorrowCard(){
     //get policy
     let policy = await policyService.getPolicyValueByName('thoi_han_dang_ky')
     let date = new Date();
-    date.setDate(date.getDate() - value)
+    date.setDate(date.getDate() - policy)
 
     //update all quantity available of book-head before deny overdue RegisterBorrowCard
     let registerBorrowCards = await RegisterBorrowCard.find({ngay_dang_ky: {$lte: date}, tinh_trang: 0})
@@ -35,7 +35,8 @@ async function getAllRegisterBorrowCard(){
         .populate('cac_dau_sach')
         .sort({ngay_dang_ky: 1})
         .exec()
-    return registerBorrowCard
+    if(registerBorrowCard) 
+        return registerBorrowCard
 }
 
 // deny RegisterBorrowCard
