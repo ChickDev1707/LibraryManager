@@ -27,3 +27,7 @@
   font-size: .8rem;
   font-weight: 600;
 }
+
+.small-img-container img{
+  height: 88px;
+}
