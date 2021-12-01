@@ -18,7 +18,11 @@ async function saveFineData(maDocGia, soTienThu, ngayThu){
 
             if(tienNoMoi < 0)
                 return ({success: false, message: "Số tiền thanh toán không thể vượt quá số tiền nợ!", noMoi: reader.tien_no})
-
+            else if(soTienThu <= 0)
+                return ({success: false, message: "Số tiền thanh toán phải lớn hơn 0!", noMoi: reader.tien_no})
+            else if(!checkDate(ngayThu))
+                return ({success: false, message: "Ngày thanh toán nợ không được vượt quá thời gian hiện tại!", noMoi: reader.tien_no})
+                
             const fineCard = new Fine({
                 ma_doc_gia: maDocGia,
                 so_tien_thu: soTienThu,
@@ -37,6 +41,12 @@ async function saveFineData(maDocGia, soTienThu, ngayThu){
         return ({success: false, message: "Thanh toán không thành công", noMoi: null})
     }
 
+}
+
+function checkDate(dateString){
+    var date = new Date(dateString);
+    var toDate = new Date();
+    return date <= toDate
 }
 
 module.exports.getAllFineInfo = getAllFineInfo;

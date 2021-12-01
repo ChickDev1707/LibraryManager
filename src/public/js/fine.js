@@ -60,6 +60,12 @@ function changePayMoney(event){
     
 }
 
+function checkDate(dateString){
+    var date = new Date(dateString);
+    var toDate = new Date();
+    return date <= toDate
+}
+
 function submit(){
     var maDocGia = $("input#id").val();
     var tienNo = $("input#tien_no").val();
@@ -68,6 +74,17 @@ function submit(){
 
     if(isNaN(parseFloat(thanhToan))||parseFloat(thanhToan)<=0 ) {
 
+        let messageToast = document.getElementById('message-toast')
+        var toast = new bootstrap.Toast(messageToast)
+        changeToast({
+            type: "error",
+            message: "Số tiền thanh toán phải lơn hơn 0đ!" 
+        })
+        toast.show();
+        return;
+    }
+
+    else if(!checkDate(ngayThu)){
         let messageToast = document.getElementById('message-toast')
         var toast = new bootstrap.Toast(messageToast)
         changeToast({

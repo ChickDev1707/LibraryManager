@@ -11,6 +11,7 @@ const borrowController = require('../controllers/librarian/borrow-book')
 const fineController = require('../controllers/librarian/fine')
 const policyController = require('../controllers/librarian/policy')
 const notificationController = require('../controllers/librarian/notification')
+const {checkNewBorrow} = require('../middlewares/borrow-book')
 
 const confirmBook=require('../controllers/librarian/confirm-return-book.js')
 
@@ -51,7 +52,7 @@ router.route('/reader/:id/edit')
 //borow books
 router.route('/borrow')
       .get(borrowController.borrowForm)
-      .post(borrowController.saveBorrowCard)
+      .post(checkNewBorrow, borrowController.saveBorrowCard)
 
 router.get("/borrow/books", borrowController.getBorrowBook)
 

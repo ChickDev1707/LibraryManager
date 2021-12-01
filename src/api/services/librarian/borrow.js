@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const UserAccount = require('../../models/user-account');
 const Policy = require("../../models/policy");
 const { getBorrowBookPolicies, getFinePolicies } = require('./policy');
+const RegisterBorrowCard = require('../../models/register-borrow-card.js')
 
 //function 
 async function findReader(option, string){
@@ -431,6 +432,13 @@ async function getBookBorrowByID(readerId, childId){
     }
 }
 
+async function countBorrowRegister(readerId){
+    const countBorrow = await BorrowReturnCard.countDocuments({"doc_gia": readerId, "tinh_trang": 1});
+    const countRegister = await BorrowReturnCard.countDocuments({"doc_gia": readerId, "tinh_trang": 0});
+    const countRegisterCard = await RegisterBorrowCard.countDocuments({"doc_gia": readerId, "tinh_trang": 0});
+    return {borrow: countBorrow, register: countRegister + countRegisterCard};
+}
+
 module.exports.findReader = findReader;
 module.exports.findBookById = findBookById;
 module.exports.checkReader = checkReader;
@@ -439,3 +447,4 @@ module.exports.saveBorrowData = saveBorrowData;
 module.exports.getBorrowCardOf = getBorrowCardOf;
 module.exports.updateBorrowData = updateBorrowData;
 module.exports.getBookBorrowByID = getBookBorrowByID;
+module.exports.countBorrowRegister = countBorrowRegister;

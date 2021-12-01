@@ -1,5 +1,28 @@
 .profile-container {
+  background-color: #fff;
+  padding: 2rem 0rem;
+  height: calc(100vh - 80px);
+}
+
+.nav-tabs {
+  border-bottom: 0px;
+  background-color: var(--background);
+  padding: 0.5rem 1rem;
+}
+
+.nav-tabs .nav-link {
+  border: 0px solid transparent;
+  color: #495057;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.nav-tabs .nav-link.active {
+  border: 0px solid transparent;
   background-color: transparent;
+  color: var(--primary);
+  border-bottom: 3px solid var(--primary);
+  border-radius: 0px;
 }
 
 .image_container {
@@ -53,20 +76,64 @@
 
 #update_info_form {
   /* background-color: #d9eaf5; */
-  padding: 0.8rem 3rem;
-  border-radius: 10px;
+  padding: 0.8rem 0;
+  margin: 0;
 }
 
-.info-header {
-  border-bottom: 1px solid #808287;
+#update_info_form .input-item label {
+  font-size: 1.05rem;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+#update_info_form .input-item input,
+textarea,
+select {
+  font-size: 1.05rem;
+  font-weight: 400;
 }
 
 #update_pass_form {
   /* background-color: #d9eaf5; */
-  padding: 0.8rem 3rem;
-  border-radius: 10px;
+  padding: 0.8rem 0rem;
+  margin: 0;
 }
 
-.password-header {
-  border-bottom: 1px solid #808287;
+#update_pass_form .input-item label {
+  font-size: 1.05rem;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+#update_pass_form .input-item input,
+textarea,
+select {
+  font-size: 1.05rem;
+  font-weight: 400;
+}
+
+.library-container {
+  padding: 0.8rem 0rem;
+}
+
+.library-content {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-content: center;
+  align-items: center;
+  background-color: var(--background);
+  padding: 1rem 2rem;
+  border-radius: 5px;
+}
+
+.library-content .icon-content {
+  margin-right: 2rem;
+  background-color: #fff;
+  border-radius: 50%;
+  padding: 1rem;
+}
+
+.library-content .text-content h2 {
+  color: var(--primary);
 }

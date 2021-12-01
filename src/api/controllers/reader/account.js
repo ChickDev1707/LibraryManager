@@ -2,11 +2,17 @@ const { getCurrentUserAccount } = require("../../services/account");
 const { getProfileByAccountId, updateUserProfile, updatePassword, updateAvatar } = require("../../services/reader/account");
 //Get user profile
 async function getUserProfile(req, res, next){
-    var currentUsert = await getCurrentUserAccount(req);
-    if(!currentUsert)
-       return res.redirect('/')
-    var userProfile  = await getProfileByAccountId(currentUsert._id);
-    res.render("reader/account", {reader:userProfile})
+    try{
+        var currentUsert = await getCurrentUserAccount(req);
+        if(!currentUsert)
+           return res.redirect('/')
+        var userProfile  = await getProfileByAccountId(currentUsert._id);
+        res.render("reader/account", {reader:userProfile})
+    }catch(err){
+        console.log(err);
+        res.redirect('/')
+    }
+    
 }
 //Update user profile
 async function updateUser(req, res, next){

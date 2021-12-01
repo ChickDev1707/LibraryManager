@@ -146,7 +146,7 @@ function saveNewBook(event){
                 var toast = new bootstrap.Toast(messageToast)
                 changeToast({
                         type: "warning",
-                        message: "Vui lòng điển đủ thông tin!" 
+                        message: "Vui lòng điển đủ và chính xác thông tin!" 
                 })
                 toast.show();
                 return;
