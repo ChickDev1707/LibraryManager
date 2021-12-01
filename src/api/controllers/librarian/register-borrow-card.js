@@ -9,7 +9,7 @@ async function getAllRegisterBorrowCard(req, res){
 
         //get RegisterBorrowCard
         const registerBorrowCard = await registerBorrowCardService.getAllRegisterBorrowCard()
-
+        
         res.render('librarian/register-borrow-card/all.ejs', {
             registerBorrowCard: registerBorrowCard
         })

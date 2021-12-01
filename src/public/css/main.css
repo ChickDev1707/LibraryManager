@@ -5,6 +5,7 @@
 @import url('./elements/input.css');
 @import url('./elements/button.css');
 @import url('./elements/title.css');
+@import url('./elements/table.css');
 
 *{
   box-sizing: border-box;
@@ -12,17 +13,14 @@
 body{
   background-color: var(--background);
 }
-table{
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-}
-table thead{
-  background-color: var(--secondary);
-  color: white;
-}
+
 button{
   border: none;
   cursor: pointer;
   border-radius: .25rem;
+}
+a{
+  text-decoration: none;
 }
 
 /* logo-link */

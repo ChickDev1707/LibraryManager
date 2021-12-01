@@ -7,11 +7,8 @@
 <%- contentFor('body') %> 
 <%- include('../../partials/header/librarian-header.ejs') %> 
 <div class="page-content-wrapper">
-    <h2 class="page-title mt-3">
-        THANH TOÁN NỢ
-    </h2>
-   
-    <div class="d-flex flex-lg-nowrap justify-content-between my-3">
+    <h2 class="page-title mt-3">Thanh toán nợ</h2>
+    <div class="d-flex flex-lg-nowrap justify-content-between my-4">
         <div class="searchbar_select">
             <select class="" name="search_book_option" id="search-book-option">
                 <option value="tatCa" > 
@@ -36,9 +33,11 @@
           <button class="icon-text-btn" onclick="refresh()" ><i class="fas fa-sync-alt" aria-hidden="true"  ></i> Làm mới</button>
         </div>
     </div>
+    <h4 class="medium-title">Danh sách độc giả</h4>
     <table class="table align-middle position-relative" id="readers_table">
         <thead>
             <tr>
+                <th>STT</th>
                 <th class="w-20">ID</th>
                 <th>Email</th>
                 <th>Họ và Tên</th>
@@ -47,8 +46,9 @@
             </tr>
         </thead>
         <tbody>
-            <% fineData.forEach(reader => { %>
+            <% fineData.forEach((reader, index) => { %>
                 <tr  maDocGia="<%= reader._id %>" email="<%= reader.email %>" hoTen="<%= reader.ho_ten %>">
+                    <td><%= index+ 1 %></td>
                     <td class="mw-20"><%= reader._id %> </td>
                     <td ><%= reader.email %> </td>
                     <td><%= reader.ho_ten %></td>

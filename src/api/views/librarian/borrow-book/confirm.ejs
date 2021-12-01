@@ -5,12 +5,10 @@
 <%-contentFor('body') %>
 <%- include('../../partials/header/librarian-header.ejs') %> 
 <div class="page-content-wrapper d-flex flex-column justify-content-center " id="mainContainer">
-    <h2 class="page-title mt-3">
-        XÁC NHẬN LẤY SÁCH
-    </h2>
+    <h2 class="page-title mt-3">Xát nhận lấy sách</h2>
     <form 
         class="my-4 searchbar_select_super"
-        action="/librarian/borrow/confirm" 
+        action="/librarian/borrow/confirm"
     >
         <div class="searchbar_select">
             <select class="" name="search_option" id="search-option">
@@ -44,7 +42,7 @@
         method="post"
     > 
     <div class="justify-content-center ">
-        <h5 class="text-start page-title mb-0">Thông tin độc giả</h5>
+        <h4 class="text-start medium-title ">Thông tin độc giả</h4>
     </div>
     <div class=" reader-container mb-3 shadow-lg px-5 py-4">
         
@@ -134,7 +132,7 @@
     </div>
     
         <div class=" table-responsive my-3  p-0 ">
-            <h5 class="text-start page-title mb-2">Danh sách phiếu mượn trả của độc giả</h5>
+            <h4 class="text-start medium-title">Danh sách phiếu mượn trả của độc giả</h4>
             <table class="table  position-relative shadow-lg">
                 <thead >
                     <tr> 

@@ -38,10 +38,8 @@ const ReaderSchema= new mongoose.Schema({
         type: Buffer,
     },
     kieu_anh_bia: {
-        type: String,
-        // required: true
+        type: String
     }
-    
 })
 
 ReaderSchema.virtual('anh_bia').get(function() {

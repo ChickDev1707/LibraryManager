@@ -1,22 +1,21 @@
 <%- contentFor('head') %> 
-<%- include('../../partials/header/librarian-header') %> 
-
-<script type="text/javascript" src="/public/js/handler-submit-borrow-return-card.js">
-</script>
+<script type="text/javascript" src="/public/js/handler-submit-borrow-return-card.js"></script>
 <link rel="stylesheet" href="/public/css/components/crud-section.css">
+<link rel="stylesheet" href="/public/css/components/search-bar.css">
+
+<%- contentFor('body') %> 
+<%- include('../../partials/header/librarian-header') %> 
 <div class="page-content-wrapper">
-    <h2 class="page-title">Danh sách các phiếu mượn sách</h2>
+    <h2 class="page-title">Xác nhận trả sách</h2>
     <div class="crud-section">
     <div class="crud-row">
-        <div style="display: flex;justify-content: space-between;">
-            <form action="/librarian/confirm-return-book" method="get">
-                    <input class="input-primary" type="text" name="email" placeholder="nhập email" required >
-                    <button class="icon-text-btn" type='submit'>
-                        <i class="fas fa-search"></i>
-                        Tìm kiếm 
-                    </button>
-            </form>
-        </div>
+        <form class="search-bar" action="/librarian/confirm-return-book" method="get">
+                <input class="input-primary" type="text" name="email" placeholder="nhập email" required >
+                <button class="icon-text-btn" type='submit'>
+                    <i class="fas fa-search"></i>
+                    Tìm kiếm 
+                </button>
+        </form>
         <div class="btn-container">
             <form class="form-primary" action="/librarian/confirm-return-book" method="get">
                 <input type="text" name="email" value="" hidden>
@@ -40,9 +39,10 @@
 
     <% } %> 
 
-    <form action="/librarian/confirm-return-book?_method=put" method="post" name="formSubmit">
-        <input type="hidden" name="selectBorrowReturnCard"><br>
-        <button class="submit-btn" type="submit" onclick="DoSubmit()">Submit</button>
-    </form>
-
+    <div class="d-flex justify-content-end">
+        <form action="/librarian/confirm-return-book?_method=put" method="post" name="formSubmit">
+            <input type="hidden" name="selectBorrowReturnCard"><br>
+            <button class="submit-btn" type="submit" onclick="DoSubmit()">Submit</button>
+        </form>
+    </div>
 </div>

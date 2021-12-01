@@ -15,54 +15,51 @@
             </div>
             <div class="modal-body">
                 <div >
-                    <form class="" action="/librarian/reader" method="post">
+                    <form class="container" action="/librarian/reader" method="post">
+                        <div class="row input-row">
+                            <div class="col input-item">
+                                <label for>Nhập họ tên</label>
+                                <input style="min-width: 320px;" placeholder="Your full name" class="input-primary" type="text" name="ho_ten" value="<%= reader.ho_ten %>" required>
                         
-                        <div style="display: flex ">
-                            <div style="margin: 0px 20px 0px 20px;">
-                                <div class="col input-item">
-                                    <label for>Nhập họ tên</label>
-                                    <input style="min-width: 320px;" placeholder="Your full name" class="input-primary" type="text" name="ho_ten" value="<%= reader.ho_ten %>" required>
-                            
-                                </div>
-                                <div class="col input-item">
-                                    <label >Nhập email</label>
-                                    <input placeholder="Your email" class="input-primary" type="email" name="email" value="<%= reader.email %>" required>
-                                    
-                                </div>
-                                <div class="col input-item">
-                                    <label >Nhập địa chỉ</label>
-                                    <input placeholder="Your address" class="input-primary" type="text" name="dia_chi" value="<%= reader.dia_chi %>" required>
-        
-                                </div>
                             </div>
-
-                            <div style="margin: 0px 20px 0px 20px;">
-                                <div class="col input-item gioi-tinh">
-                                    <label >Nhập giới tính</label>
-                                    <select class="input-primary" name="gioi_tinh">
-                                        <option value="Nam"  label="Nam"></option>
-                                        <option value="Nữ"  label="Nữ"></option>
-                                        <option value="Khác"  label="Khác"></option>
-                                    </select>
-                                    
-                                </div>
-                                <div class="col input-item">
-                                    <label >Nhập ngày sinh</label>
-
-                                    <input style="min-width: 320px;" class="input-primary" type="date" name="ngay_sinh" value="<%= reader.ngay_sinh %>" required>
-                                </div>
-
-                                <div class="col input-item">
-                                    <label >Ngày lập thẻ</label>
-                                    <input class="input-primary" type="date" name="ngay_lap_the" value="<%= ngay_lap_the %>" required>      
-                                </div>
+                            <div class="col input-item">
+                                <label >Nhập email</label>
+                                <input placeholder="Your email" class="input-primary" type="email" name="email" value="<%= reader.email %>" required>
+                                
                             </div>
                         </div>
+                        <div class="row input-row">
+                            <div class="col input-item">
+                                <label >Nhập ngày sinh</label>
 
-                        <button style="margin:30px 0px 0px 570px;" class="submit-btn" type="submit">
-                            Submit
-                        </button>
-                        
+                                <input style="min-width: 320px;" class="input-primary" type="date" name="ngay_sinh" value="<%= reader.ngay_sinh %>" required>
+                            </div>
+
+                            <div class="col input-item gioi-tinh">
+                                <label >Nhập giới tính</label>
+                                <select class="input-primary" name="gioi_tinh">
+                                    <option value="Nam"  label="Nam"></option>
+                                    <option value="Nữ"  label="Nữ"></option>
+                                    <option value="Khác"  label="Khác"></option>
+                                </select>
+                                
+                            </div>
+                        </div>
+                        <div class="row input-row">
+                            
+                            <div class="col input-item">
+                                <label >Nhập địa chỉ</label>
+                                <textarea rows="4" placeholder="Your address" class="input-primary" type="text" name="dia_chi" value="<%= reader.dia_chi %>" required></textarea>
+    
+                            </div>
+                            <div class="col input-item">
+                                <label >Ngày lập thẻ</label>
+                                <input class="input-primary" type="date" name="ngay_lap_the" value="<%= ngay_lap_the %>" required>      
+                            </div>
+                        </div>
+                        <div style="margin-top: 2rem;" class="d-flex justify-content-end">
+                            <button class="submit-btn" type="submit">Submit</button>
+                        </div>
                     </form>
                 </div>
 
