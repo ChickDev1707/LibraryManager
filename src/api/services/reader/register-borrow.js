@@ -83,7 +83,7 @@ async function handleRegisterSuccess(req){
   await addNewRegisterBorrowCard(reader._id, bookHeadIds)
   await saveNewNotification(reader.ho_ten)
   var io = req.app.get('socket-io');
-  io.emit("new-notification", 'new notification');
+  io.emit("librarian-new-notification", 'new notification');
 }
 async function handleSuccessWithCart(account, bookHeadIds){
   removeRegisterTicketsWithAccount(account, bookHeadIds)
@@ -131,7 +131,7 @@ async function removeRegisterTicketsWithAccount(account, bookHeadIds){
 async function saveNewNotification(readerName){
   let notification = createNewNotification(readerName)
   let librarianAccount = await accountServices.getLibrarianAccount()
-  librarianAccount.thong_bao.push(notification)
+  librarianAccount.thong_bao.unshift(notification)
   librarianAccount.thong_bao_moi = true
   await librarianAccount.save()
 }

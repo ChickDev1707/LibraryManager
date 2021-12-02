@@ -2,6 +2,7 @@ const Reader = require('../../models/reader.js')
 const RegisterBorrowCard = require('../../models/register-borrow-card.js')
 const BorrowReturnCard = require('../../models/borrow-return-card.js')
 const BookHead = require('../../models/book-head.js')
+const Account = require('../../models/user-account')
 const policyService = require('../../services/librarian/policy.js')
 const Policy = require('../../models/policy.js')
 
@@ -69,14 +70,23 @@ async function createNewBorrowReturnCard(readerID, bookHeadID, bookId){
   await borrowReturnCard.save()
 }
 
-// confirm get book
+// notification
+async function saveNewNotification(registerBorrowCardId, not){
+  let registerBorrowCard = await RegisterBorrowCard.findById(registerBorrowCardId).populate('doc_gia')
+  let a = registerBorrowCard.doc_gia.email
+  let readerAccount = await Account.findOne({ten_tai_khoan: registerBorrowCard.doc_gia.email})
+
+  readerAccount.thong_bao.unshift(not)
+  readerAccount.thong_bao_moi = true
+  await readerAccount.save()
+}
 
 module.exports={
   getUnconfirmedRegisterBorrowCard,
   updateRegisterBorrowCardStatus,
   createBorrowReturnCard,
-  denyRegisterBorrowCard
-  // denyOverdueRegisterBorrowCard,
-  
+  denyRegisterBorrowCard,
+  saveNewNotification
+  // denyOverdueRegisterBorrowCard, 
 }
 

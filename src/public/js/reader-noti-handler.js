@@ -1,5 +1,6 @@
+
 const socket = io('http://localhost:3000/');     
-socket.on('librarian-new-notification', (notification) => {
+socket.on('reader-new-notification', (notification) => {
   loadNotifications()
 });
 window.onload = function(){
@@ -9,7 +10,7 @@ function loadNotifications(){
   let notPanel = document.querySelector('#notificationPanel .offcanvas-body')
   notPanel.innerHTML = ""
   // clear notifications
-  fetch('http://localhost:3000/librarian/api/notification')
+  fetch('http://localhost:3000/reader/api/notification')
     .then(data => {
       return data.json()
     })
@@ -42,13 +43,14 @@ function addNotificationFromData(notPanel, data){
 
 function createNotItem(notification){
   let item = createItem('a', 'not-item')
-  item.href = '/librarian/xacnhantrasach'
+  item.href = '/reader/register-tickets'
   let noteWrapper = document.createElement('div')
-  
+  let notIcon = getNotIconImg(notification.tieu_de)
+
   noteWrapper.innerHTML=`
     <div class="title-wrapper">
       <div class="not-img">
-        <img src="/public/assets/images/register/comment.png" alt="">
+        ${notIcon}
       </div>
       <span>${notification.tieu_de}</span>
     </div>
@@ -58,6 +60,14 @@ function createNotItem(notification){
   item.appendChild(noteWrapper)
   return item
 }
+function getTimeString(date){
+  let utcDate = new Date(date)
+  return utcDate.toUTCString()
+}
+function getNotIconImg(title){
+  if(title == 'Đăng ký thành công') return '<img src="/public/assets/images/register/accepted.png" alt=""></img>'
+  else if(title == 'Đăng ký thất bại') return '<img src="/public/assets/images/register/rejected.png" alt=""></img>'
+}
 function createItem(tagName, className, inner){
   let item = document.createElement(tagName)
   if(className) item.classList.add(className)
@@ -65,12 +75,8 @@ function createItem(tagName, className, inner){
   return item
 }
 $('#notification-btn').on("click", (function(){
-  $.post('/librarian/api/notification', {
+  $.post('/reader/api/notification', {
     newNot: true
   })
   $(this).css('background-color', 'var(--primary)')
 }))
-function getTimeString(date){
-  let utcDate = new Date(date)
-  return utcDate.toUTCString()
-}
