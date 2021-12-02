@@ -1,5 +1,6 @@
 
 const BookHead = require('../../models/book-head.js')
+const BorrowReturnCard = require('../../models/borrow-return-card.js')
 const Reader = require('../../models/reader.js')
 const RegisterBorrowCard = require('../../models/register-borrow-card.js')
 const accountServices = require('../../services/account.js')
@@ -46,17 +47,32 @@ async function getRegisterErrorMessage(req){
   const bookHeadIds = JSON.parse(req.body.bookHeads)
   const account = await accountServices.getCurrentUserAccount(req)
   const reader = await Reader.findOne({email: account.ten_tai_khoan})
-  const amountLimit = await policyServices.getPolicyValueByName('so_sach_muon_toi_da')
   const fineLimit = await policyServices.getPolicyValueByName('tien_no_toi_da')
-
-  if(existBookInRegisterHistory(account.lich_su_dk, bookHeadIds)) return 'Có sách đã được đăng ký hoặc mượn'
-  if(account.lich_su_dk.length + account.gio_sach.length > amountLimit) return 'Số sách mượn quá số lượng quy định'
+  
+  const borrowAndRegisterCheckError = await checkInBorrowAndRegister(reader._id, bookHeadIds, account.gio_sach)
+  if(borrowAndRegisterCheckError != '') return borrowAndRegisterCheckError
   if(reader.tien_no > fineLimit) return 'Bạn đang nợ quá số tiền quy định'
   return ''
 }
 
-function existBookInRegisterHistory(history, bookHeadIds){
-  return bookHeadIds.reduce((check, bookHeadId)=> history.includes(bookHeadId) || check, false)
+async function checkInBorrowAndRegister(readerId, bookHeadIds, bookCart){
+  const amountLimit = await policyServices.getPolicyValueByName('so_sach_muon_toi_da')
+  const activeRegisterCards = await RegisterBorrowCard.find({doc_gia: readerId, tinh_trang: 1})
+  const borrowReturnCards = await BorrowReturnCard.find({doc_gia: readerId, ngay_tra: null})
+  const registerBookHeads = activeRegisterCards.reduce((prev, cur)=>{
+    return prev.concat(...cur.cac_dau_sach.map(bookHead=> bookHead.toString()))
+  }, [])
+  
+  if(registerBookHeads.length + borrowReturnCards.length + bookCart.length > amountLimit) return 'Số sách mượn quá số lượng quy định'
+  if(hasItemInArray(bookHeadIds, registerBookHeads) || hasItemInArray(bookHeadIds, registerBookHeads)) return 'Có sách đã được đăng ký hoặc mượn'
+  return ''
+}
+
+function hasItemInArray(arr, container){
+  for(item of arr){
+    if(container.includes(item)) return true
+  }
+  return false
 }
 
 async function handleRegisterSuccess(req){
@@ -71,7 +87,6 @@ async function handleRegisterSuccess(req){
 }
 async function handleSuccessWithCart(account, bookHeadIds){
   removeRegisterTicketsWithAccount(account, bookHeadIds)
-  account.lich_su_dk.push(...bookHeadIds)
   await account.save()
   await updateAvailableAmountOfBookHeads(bookHeadIds)
 }

@@ -52,10 +52,7 @@ router.route('/borrow')
 
 router.get("/borrow/books", borrowController.getBorrowBook)
 
-router.route('/borrow/confirm')
-      .get(borrowController.confirmForm)
-      .post(borrowController.updateBorrowForm)
-
+// fine
 router.route('/fine')
       .get(fineController.getAllFine)
       .post(fineController.saveFine)
@@ -64,14 +61,14 @@ router.route('/confirm-return-book')
       .get(confirmBook.getConfirmReturnBook)
       .put(confirmBook.putConfirmReturnBook)
 //manage register-borrow-card
-router.route('/register-borrow-card')
-      .get(registerBorrowCardController.getAllRegisterBorrowCard)
+router.route('/confirm-register-borrow')
+      .get(registerBorrowCardController.getConfirmRegisterPage)
 
-router.route('/register-borrow-card/deny/:id')
+router.route('/confirm-register-borrow/confirm/:id')
+      .put(registerBorrowCardController.confirmRegisterBorrowCard)
+
+router.route('/confirm-register-borrow/deny/:id')
       .put(registerBorrowCardController.denyRegisterBorrowCard)
-
-router.route('/register-borrow-card/confirm/:registerBorrowCardId')
-      .post(registerBorrowCardController.confirmRegisterBorrowCard)
 
 //report
 router.route('/month-report')

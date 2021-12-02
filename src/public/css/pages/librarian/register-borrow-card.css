@@ -1,29 +1,9 @@
-.page-content-wrapper{
-    padding-top: 20px;
-    padding-bottom: 32px;
+@import url('../../components/link-tabs.css');
+
+.btn-confirm:hover{
+  color: var(--green-primary) !important;
 }
 
-a{
-    text-decoration: none;
-    color: black;
-}
-
-a:hover{
-    color: var(--primary);
-}
-
-.table{
-    margin-top: 20px;
-}
-
-.icon-btn{
-    border: 0;
-}
-
-#btn-confirm:hover{
-    color: var(--green-primary);
-}
-
-#btn-deny:hover{
-    color: var(--red-primary);
+.btn-deny:hover{
+  color: var(--red-primary) !important;
 }
