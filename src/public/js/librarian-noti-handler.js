@@ -47,7 +47,7 @@ function createNotItem(notification){
   let noteWrapper = document.createElement('div')
   let title = createItem('p', 'title', `<i class="far fa-envelope-open"></i> ${notification.tieu_de}`)
   let content = createItem('p', 'content', `${notification.noi_dung}`)
-  let date = createItem('p', 'date', `${notification.ngay}`)
+  let date = createItem('p', 'date', `${notification.ngay.split('T')[0]}`)
 
   noteWrapper.appendChild(title)
   noteWrapper.appendChild(content)
@@ -61,9 +61,9 @@ function createItem(tagName, className, inner){
   if(inner) item.innerHTML = inner
   return item
 }
-$('#notification-btn').click(function(){
+$('#notification-btn').on("click", (function(){
   $.post('/librarian/api/notification', {
     newNot: true
   })
   $(this).css('background-color', 'var(--primary)')
-})
+}))

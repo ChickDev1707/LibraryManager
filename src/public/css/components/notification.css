@@ -14,7 +14,7 @@
   border-radius: .5rem;
   padding: 1rem;
   text-decoration: none;
-  color: var(--accent);
+  color: var(--secondary);
   margin-bottom: .5rem;
 }
 .not-item p{

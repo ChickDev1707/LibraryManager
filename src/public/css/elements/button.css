@@ -57,7 +57,7 @@
 .outline-btn{
   position: relative;
   color: var(--secondary);
-  background-color: transparent;
+  background-color: white;
   border: 2px solid var(--secondary);
   overflow: hidden;
   z-index: 0;  
