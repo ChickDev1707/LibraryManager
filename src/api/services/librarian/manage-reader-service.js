@@ -26,8 +26,8 @@ async function searchReader(Query){
 }
 
 async function handleAddFileExcel(reqFile){
-    const minAge=await Policy.find({ten_quy_dinh:'tuoi_toi_thieu'})
-    const maxAge=await Policy.find({ten_quy_dinh:'tuoi_toi_da'})
+    const minAge=await checkminage(today,nam_sinh)
+    const maxAge=await checkmaxage(today,nam_sinh)
 
     const uploadPath = path.join('./src/public/uploads/addReader',reqFile.originalname+'')
     const result=excelToJson({
@@ -54,7 +54,7 @@ async function handleAddFileExcel(reqFile){
     for(let i=0;i<length;i++){
         const nam_sinh=new Date(result.Reader[i].ngay_sinh)
         const today=new Date()
-        const checkAge=today.getFullYear()-nam_sinh.getFullYear()
+
 
         try{
             const validAccount=await Account.find({ten_tai_khoan:result.Reader[i].email})
@@ -62,7 +62,7 @@ async function handleAddFileExcel(reqFile){
             if(validAccount.length!=0){
                 continue;
             }
-            if(checkAge<minAge||checkAge>maxAge){
+            if(minAge==false||maxAge==false){
                 continue;
             }
             //
@@ -116,8 +116,8 @@ async function handleAddReader(reqBody){
     const checkAge=today.getFullYear()-nam_sinh.getFullYear()
 
     const checkEmail=await Reader.find({"email":reqBody.email})
-    const minAge=await Policy.find({ten_quy_dinh:'tuoi_toi_thieu'})
-    const maxAge=await Policy.find({ten_quy_dinh:'tuoi_toi_da'})
+    const minAge=await checkminage(today,nam_sinh)
+    const maxAge=await checkmaxage(today,nam_sinh)
 
     const data={
         reader:"",
@@ -125,10 +125,10 @@ async function handleAddReader(reqBody){
         errorMessage:""
     }
 
-    if(checkAge<minAge[0].gia_tri){    
+    if(minAge==false){    
         data.errorMessage="Không đủ tuổi đăng ký"
     }
-    else if(checkAge>maxAge[0].gia_tri){
+    else if(maxAge==false){
         data.errorMessage="Vượt quá độ tuổi đăng ký"
     }
     else if(checkEmail.toString()!=''){
@@ -165,9 +165,7 @@ async function editReader(reqParam){
 async function handleEditReader(reqParam,reqBody){
     const nam_sinh=new Date(reqBody.ngay_sinh)
     const today=new Date()
-    const checkAge=today.getFullYear()-nam_sinh.getFullYear()
 
-    
     let reader= await Reader.findById(reqParam.id)
     const account=await Account.findById(reader.id_account)
     const checkEmail=await Reader.find({"email":reqBody.email})
@@ -186,8 +184,9 @@ async function handleEditReader(reqParam,reqBody){
         reader:'',
         account:''
     }
-
-    if(checkAge<18){
+    const minAge=await checkminage(today,nam_sinh)
+    const maxAge=await checkmaxage(today,nam_sinh)
+    if(minAge==false){
         dataReturn.error="Không đủ độ tuổi"
         const redirectUrl=urlHelper.getEncodedMessageUrl('/librarian/reader/',{
             type:'error',
@@ -195,7 +194,7 @@ async function handleEditReader(reqParam,reqBody){
         })
         return redirectUrl
     }
-    else if(checkAge>55){
+    else if(maxAge==false){
         dataReturn.error="Vượt quá tuổi đăng ký"
         const redirectUrl=urlHelper.getEncodedMessageUrl('/librarian/reader/',{
             type:'error',
@@ -287,7 +286,62 @@ async function handleDeleteReader(reqParam){
         await card[i].remove()
     }
 }
-
+async function checkminage(today,namsinh){
+    console.log('today')
+    console.log(today.getDate(),today.getMonth(),today.getFullYear())
+    const minAge=await Policy.find({ten_quy_dinh:'tuoi_toi_thieu'})
+    const year=today.getFullYear()-namsinh.getFullYear()
+    const month=today.getMonth()-namsinh.getMonth()
+    const day=today.getDate()-namsinh.getDate()
+    if(year<minAge[0].gia_tri){
+        return false
+    }
+    else if (year==minAge[0].gia_tri){
+        if(month<0){
+            return false
+        }
+        else if(month==0){
+            if(day<0){
+                return false
+            }
+            else{
+                return true
+            }
+        }
+        else{
+            return true
+        }
+    }else{
+        return true
+    }
+}
+async function checkmaxage(today,namsinh){
+    const maxAge=await Policy.find({ten_quy_dinh:'tuoi_toi_da'})
+    const year=today.getFullYear()-namsinh.getFullYear()
+    const month=today.getMonth()-namsinh.getMonth()
+    const day=today.getDate()-namsinh.getDate()
+    if(year>maxAge[0].gia_tri){
+        return false
+    }
+    else if (year==maxAge[0].gia_tri){
+        if(month<0){
+            return true
+        }
+        else if(month==0){
+            if(day>0){
+                return false
+            }
+            else{
+                return true
+            }
+        }
+        else{
+            return false
+        }
+    }else{
+        return true
+    }
+}
 
 module.exports={
     searchReader,
