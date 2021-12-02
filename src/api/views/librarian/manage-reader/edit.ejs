@@ -3,58 +3,64 @@
     <div class="modal-dialog" style="max-width: 50%;" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <strong>Nhập thông tin độc giả</strong>
+                <h4 class="modal-title page-title" id="staticBackdropLabel">
+                    NHẬP THÔNG TIN ĐỘC GIẢ
+                </h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div >
-                    <form class="container" action="/librarian/reader/<%= reader.id %>/edit?_method=put" method="post">
-                        <div class="row input-row">
-                            <div class="col input-item">
-                                <label for>Nhập họ tên</label>
-                                <input placeholder="Your full name" class="input-primary" type="text" name="ho_ten" value="<%= reader.ho_ten %>" required>                
+                <div class="container">
+                    <form class="row info-container needs-validation"  action="/librarian/reader/<%= reader._id %>/edit?_method=put" method="post">
+                        <div class="row input-row ">
+                            <div class="col input-item" id="form_<%= key %>">
+                                <input class="filepond " type="file" accept="image/*"  id="anh_bia-<%=reader._id %> " name="anh_bia">
                             </div>
+
                             <div class="col input-item">
-                                <label >Nhập giới tính</label>
-                                <select class="input-primary" name="gioi_tinh">
-                                    <% if(reader.gioi_tinh=="Nam"){ %> 
-                                        <option selected value="Nam" label="Nam"></option>
-                                        <option value="Nữ" label="Nữ"></option>
-                                        <option value="Khác" label="Khác"></option>
-                                    <% } %> 
-                                    <% if(reader.gioi_tinh=="Nữ"){ %> 
-                                        <option value="Nam" label="Nam"></option>
-                                        <option selected value="Nữ" label="Nữ"></option>
-                                        <option value="Khác" label="Khác"></option>
-                                    <% } %> 
-                                    <% if(reader.gioi_tinh=="Khác"){ %> 
-                                        <option value="Nam" label="Nam"></option>
-                                        <option value="Nữ" label="Nữ"></option>
-                                        <option selected value="Khác" label="Khác"></option>
-                                    <% } %> 
-                                </select>                                   
+                                <div class="col input-item">
+                                    <label for>Nhập họ tên</label>
+                                    <input placeholder="Your full name" class="input-primary" type="text" name="ho_ten" value="<%= reader.ho_ten %>" required>                
+                                </div>
+                                <div class="col input-item">
+                                    <label >Nhập giới tính</label>
+                                    <select class="input-primary" name="gioi_tinh">
+                                        <% if(reader.gioi_tinh=="Nam"){ %> 
+                                            <option selected value="Nam" label="Nam"></option>
+                                            <option value="Nữ" label="Nữ"></option>
+                                            <option value="Khác" label="Khác"></option>
+                                        <% } %> 
+                                        <% if(reader.gioi_tinh=="Nữ"){ %> 
+                                            <option value="Nam" label="Nam"></option>
+                                            <option selected value="Nữ" label="Nữ"></option>
+                                            <option value="Khác" label="Khác"></option>
+                                        <% } %> 
+                                        <% if(reader.gioi_tinh=="Khác"){ %> 
+                                            <option value="Nam" label="Nam"></option>
+                                            <option value="Nữ" label="Nữ"></option>
+                                            <option selected value="Khác" label="Khác"></option>
+                                        <% } %> 
+                                    </select>     
+    
+                                </div>
+                                <div class="col input-item">     
+                                    <label >Nhập email</label>
+                                    <input placeholder="Your email" class="input-primary" type="email" name="email" value="<%= reader.email %>" required>                                  
+                                </div>
+                                <div class="col input-item">
+                                    <label >Nhập ngày sinh</label>
+                                    <input  class="input-primary" type="date" name="ngay_sinh" value="<%= reader.ngay_sinh.toISOString().split('T')[0] %>" required>                                   
+                                </div>
+                                <div class="col input-item">
+                                    <label >Nhập địa chỉ</label>
+                                    <textarea rows="4" placeholder="Your address" class="input-primary" type="text" name="dia_chi"  required><%= reader.dia_chi %></textarea>                                 
+                                </div>                               
+                                <div class="col input-item">
+                                    <label >Ngày lập thẻ</label>
+                                    <input class="input-primary" type="date" name="ngay_lap_the" value="<%= reader.ngay_lap_the.toISOString().split('T')[0] %>" required>                                      
+                                </div>
                             </div>
                         </div>
-                        <div class="row input-row">
-                            <div class="col input-item">     
-                                <label >Nhập email</label>
-                                <input placeholder="Your email" class="input-primary" type="email" name="email" value="<%= reader.email %>" required>                                  
-                            </div>
-                            <div class="col input-item">
-                                <label >Nhập ngày sinh</label>
-                                <input  class="input-primary" type="date" name="ngay_sinh" value="<%= reader.ngay_sinh.toISOString().split('T')[0] %>" required>                                   
-                            </div>
-                        </div>
-                        <div class="row input-row">
-                            <div class="col input-item">
-                                <label >Nhập địa chỉ</label>
-                                <textarea rows="4" placeholder="Your address" class="input-primary" type="text" name="dia_chi" value="<%= reader.dia_chi %>" required></textarea>                                 
-                            </div>                               
-                            <div class="col input-item">
-                                <label >Ngày lập thẻ</label>
-                                <input class="input-primary" type="date" name="ngay_lap_the" value="<%= reader.ngay_lap_the.toISOString().split('T')[0] %>" required>                                      
-                            </div>
-                        </div>
+
                         
                         <div class="d-flex justify-content-end">
                             <button class="submit-btn" type="submit" >Submit</button>
@@ -66,3 +72,11 @@
         </div>
     </div>
 </div>
+
+<style>
+    #form_<%=key%> .filepond--root .filepond--drop-label {
+        background-image: url('<%=reader.anh_bia %>');
+    }
+
+
+</style>

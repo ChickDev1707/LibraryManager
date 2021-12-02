@@ -6,6 +6,7 @@ const fs=require('fs')
 const path=require('path')
 const excelToJson = require('convert-excel-to-json');
 const urlHelper=require('../../helpers/url')
+const imageMimeTypes = ['image/jpeg', 'image/png', 'images/gif']
 
 async function searchReader(Query){
     const search={}
@@ -13,7 +14,15 @@ async function searchReader(Query){
       search.ho_ten=new RegExp(Query,"i")
     }
     const reader=await Reader.find(search)
-    return reader
+
+    const arr=[]
+    const lengthOfReader=reader.length
+    for(let i=0;i<lengthOfReader;i++){
+        let r=await Reader.findOne({email:reader[i].email})
+        arr.push({...r._doc,anh_bia:r.anh_bia})
+    }
+    
+    return arr
 }
 
 async function handleAddFileExcel(reqFile){
@@ -148,16 +157,10 @@ async function handleAddReader(reqBody){
 async function editReader(reqParam){
     const reader= await Reader.findById(reqParam.id)
 
-    const Data={
-      id:reader.id,
-      ho_ten:reader.ho_ten,
-      email:reader.email,
-      gioi_tinh:reader.gioi_tinh,
-      ngay_sinh:reader.ngay_sinh.toISOString().split('T')[0],
-      dia_chi:reader.dia_chi,
-      ngay_lap_the:reader.ngay_lap_the.toISOString().split('T')[0],
-  }
-  return Data
+    const r=await Reader.findOne({email:reader.email})
+
+
+  return {...r._doc,anh_bia:r.anh_bia}
 }
 async function handleEditReader(reqParam,reqBody){
     const nam_sinh=new Date(reqBody.ngay_sinh)
@@ -210,7 +213,18 @@ async function handleEditReader(reqParam,reqBody){
             return redirectUrl
         }   
         else{
-        
+            if (reqBody.anh_bia != null || reqBody.anh_bia !=''){
+                try{
+                    const avatar = JSON.parse(reqBody.anh_bia)
+                    if (avatar != null && imageMimeTypes.includes(avatar.type)) {
+                        reader.bf_anh_bia = new Buffer.from(avatar.data, 'base64')
+                        reader.kieu_anh_bia = avatar.type
+                    }
+                }catch(e){
+                    // console.log(e)
+                }
+
+            } 
             reader.ho_ten=reqBody.ho_ten
             reader.email=reqBody.email
             reader.gioi_tinh=reqBody.gioi_tinh
@@ -232,7 +246,14 @@ async function handleEditReader(reqParam,reqBody){
         }
     }
     else{
-        
+        if (reqBody.anh_bia != null){
+            const avatar = JSON.parse(reqBody.anh_bia)
+            if (avatar != null && imageMimeTypes.includes(avatar.type)) {
+                reader.bf_anh_bia = new Buffer.from(avatar.data, 'base64')
+                reader.kieu_anh_bia = avatar.type
+            }
+        } 
+
             reader.ho_ten=reqBody.ho_ten
             reader.email=reqBody.email
             reader.gioi_tinh=reqBody.gioi_tinh
@@ -266,6 +287,8 @@ async function handleDeleteReader(reqParam){
         await card[i].remove()
     }
 }
+
+
 module.exports={
     searchReader,
     handleAddFileExcel,
