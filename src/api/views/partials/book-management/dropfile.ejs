@@ -1,0 +1,33 @@
+<link rel="stylesheet" href="/public/css/components/form-excel.css" type="text/css">
+
+<div class="modal fade " id="addFileExcel" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-fullscreen-xs-down" role="document">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <strong>SELECT YOUR FILE</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div  class="modal-body">               
+                <form class="" action="/librarian/books/import" enctype="multipart/form-data" method="post">
+                    <div class="body">
+                        <div class="drag-area">
+                            <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                            <p>Drag & Drop to Upload File</p>
+                            <span>OR</span>
+
+                            <input class="custom-file-input" id="file" type="file" name="uploadfile"
+                                    accept='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel' 
+                                >
+                            <br>
+                        </div>
+                    </div>
+                    
+                        <button style="margin:20px 0px 0px 300px;" type="submit" value="Upload Excel" class="icon-text-btn green-btn">
+                            <i class="far fa-file-excel"></i>
+                            Tải tệp excel 
+                        </button>  
+                </form> 
+            </div>
+        </div>
+    </div>
+</div>

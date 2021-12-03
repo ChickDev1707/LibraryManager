@@ -1,10 +1,13 @@
-const BorrowReturnCard = require('../../models/borrow-return-card')
-const Reader = require('../../models/reader')
-const BookHead = require('../../models/book-head')
 const mongoose = require('mongoose');
+const BorrowReturnCard = require('../../models/borrow-return-card')
+const Reader = require('../../models/reader');
+const BookHead = require('../../models/book-head');
+const RegisterBorrowCard = require('../../models/register-borrow-card');
 const UserAccount = require('../../models/user-account');
 const Policy = require("../../models/policy");
+
 const { getBorrowBookPolicies, getFinePolicies } = require('./policy');
+
 
 //function 
 async function findReader(option, string){
@@ -40,15 +43,20 @@ async function findReader(option, string){
 
 
 //check reader
- async function checkReader(maDocGia){
+ async function checkReader(readerId, amount){
     try{
-        const reader = await findReader("id", maDocGia);
-        const policy = await getFinePolicies();
+        const reader = await findReader("id", readerId);
+        const Finepolicy = await getFinePolicies();
+        const borowPolicy = await getBorrowBookPolicies();
+        const borowHistory = reader.account.lich_su_dk;
+        const maximum =  parseInt(borowPolicy.maxAllowedBorrowBook) - parseInt(borowHistory.length)
 
         if(!reader)
             return ({ok: false, message:"Không tìm thấy thông tin độc giả"})
-        else if(parseFloat(reader.tien_no) > parseFloat(policy.maxAllowedDebt))
+        else if(parseFloat(reader.tien_no) > parseFloat(Finepolicy.maxAllowedDebt))
             return ({ok: false, message:"Độc giả nợ tiền vượt quá qui định"})
+        else if(maximum - amount < 0)
+            return ({ok: false, message:`Độc giả đăng ký và mượn quá số lượng quy định, chỉ có thể mượn thêm tối đa ${maximum} cuốn`})
         else
             return ({ok: true, message:"Khả dụng"}) 
     }
@@ -59,21 +67,18 @@ async function findReader(option, string){
 }
 
 //check lich_su_dk
-async function checkBorrowHistory(maDocGia, dauSach){
+async function checkBorrowHistory(readerId, bookId){
 
     try{
-        const reader = await findReader("id", maDocGia);
-        const policy = await getBorrowBookPolicies();
-        const account = reader.account;
+        const reader = await findReader("id", readerId);
+        const lich_su_dk = reader.account.lich_su_dk; 
+
         if(!reader.account)
-            return {ok: false, message: "Không tìm thấy thông tin tài khoản của độc giả!"}
-        const lich_su_dk = reader.account.lich_su_dk;  
-        if(parseInt(lich_su_dk.length) < parseInt(policy.maxAllowedBorrowBook))
-            return {ok: true, message: "Khả dụng!"};
-        else if(lich_su_dk.indexOf(dauSach)!=-1)
-            return {ok: true, message: "Khả dụng!"};      
+            return {ok: false, message: "Không tìm thấy thông tin tài khoản của độc giả!"}        
+        else if(lich_su_dk.indexOf(bookId)!=-1)
+            return {ok: false, message: "Độc giả đang đăng ký hoặc đang mượn sách này!"}; 
         else
-            return {ok: false, message: "Độc giả mượn quá số lượng quy định!"};
+            return {ok: true, message: "khả dụng!"};              
             
     }catch(err){
         console.log(err);
@@ -86,7 +91,7 @@ async function getBRC(dauSach, maDocGia){
     var query = {
         "doc_gia": maDocGia, 
         "dau_sach": dauSach, 
-        $or:[{"tinh_trang": 1}, {"tinh_trang": 0}]
+        "ngay_tra": null
     }
 
     const borrowCard = await BorrowReturnCard.findOne(query)
@@ -98,8 +103,7 @@ async function getBRC(dauSach, maDocGia){
             dau_sach: borrowCard.dau_sach,
             ma_sach: borrowCard.ma_sach
         }
-        return result;
-        
+        return result;   
     }
     else{
         return null;
@@ -107,112 +111,75 @@ async function getBRC(dauSach, maDocGia){
         
 }
 
-//Update quyenSach 
-async function updateQuyenSach(dauSach, maSach, tinhTrang){
-    var query = {"_id": dauSach, "cac_quyen_sach._id": maSach}
-    var update = {
-        $inc: { "so_luong_kha_dung": tinhTrang?1:-1},
-        "cac_quyen_sach.$.tinh_trang": tinhTrang
+//
+async function getBorrowRegisterCard(readerId, bookHeadId){
+    var query = {
+        "doc_gia": maDocGia, 
+        "cac_dau_sach": dauSach, 
+       "tinh_trang": {$in: [0, 1]}
     }
-    var result = await BookHead.updateOne(query, update);
-    return (result)
+
+    const borrowCard = await BorrowReturnCard.findOne(query)
+    if(borrowCard) 
+    {   var result = {
+            _id: borrowCard._id,
+            tinh_trang: borrowCard.tinh_trang,
+            ma_doc_gia: borrowCard.ma_doc_gia,
+            dau_sach: borrowCard.dau_sach,
+            ma_sach: borrowCard.ma_sach
+        }
+        return result;   
+    }
+    else{
+        return null;
+    }
 }
 
-//update BorrowReturnCard: "tinh_trang": 0 --> "tinh_trang": 1
-async function updateBRC(id, dauSach, maSach, ngayMuon){
-    try{
-        var query = {"_id": id,"dau_sach": dauSach ,"tinh_trang": 0}
-        var update = {"ngay_muon":ngayMuon ,"tinh_trang": 1, "ma_sach": maSach}
-        var option = {useFindAndModify: false, new: false}
+//Update quyenSach 
+async function updateQuyenSach(bookHeadId, bookId){
+    var query = {
+        "_id": bookHeadId, 
+        "cac_quyen_sach":{
+            "_id": bookId,
+            "tinh_trang": true
+        }
+    };
+    var update = {
+        $inc: { "so_luong_kha_dung": -1},
+        "cac_quyen_sach.$.tinh_trang": false
+    };
+    var option = {"fields": {"cac_quyen_sach.$": 1}, new: false, useFindAndModify: false}
 
-        const result = await BorrowReturnCard.findOneAndUpdate(query, update, option)
-        
-        if(result!=null){
-            if(result.ma_sach != maSach){
-                await updateQuyenSach(dauSach, result.ma_sach, true);
-                await updateQuyenSach(dauSach, maSach, false);
-               
-            }
-            return ({success: 1, updated: 1, message:`Cập nhật phiếu đăng ký thành phiếu mượn thành công!`})
-        }    
-        else
-            return ({success: 0, updated: 0, message:`Cập nhật phiếu đăng ký thành phiếu mượn không thành công!`})
-
-    }
-    catch(err){
-        console.log(err);
-        return ({success: 0, updated: 0, message:`Cập nhật phiếu đăng ký thành phiếu mượn không thành công!`})
-    }  
+    var book = await BookHead.findOneAndUpdate(query, update, option );
+    return book;
 }
 
 //Update "lich_su_dk"
-async function updateBorrowHisory(maDocGia, maSach){
+async function updateBorrowHisory(readerId, bookHeadId){
     try{
-        var reader = await Reader.findById(maDocGia);
-        var result = await UserAccount.updateOne({"ten_tai_khoan": reader.email},{"$push": { "lich_su_dk": maSach }})
+        var reader = await Reader.findById(readerId);
+        var result = await UserAccount.updateOne({"ten_tai_khoan": reader.email},{"$push": { "lich_su_dk": bookHeadId }})
     }catch(err){
         console.log(err);
     }
 }
 
 
-
-//get _id of "cac_quyen_sach", set "so_luong_kha_dung" = "so_luong_kha_dung" - 1
-async function selectBookChild(dauSach){
-    var query = {"_id": dauSach, so_luong_kha_dung: {$gt: 0}, "cac_quyen_sach.tinh_trang": true};
-    var update = {  
-        $inc: { "so_luong_kha_dung": -1},
-        $set:{"cac_quyen_sach.$.tinh_trang": false}
-    }
-    var option = {
-        "fields": {"so_luong_kha_dung": 1, "cac_quyen_sach.$": 1},
-        new: false, 
-        useFindAndModify: false
-    }
-
-    try{
-        const result = await BookHead.findOneAndUpdate(query, update, option)
-        if(result)
-            return result.cac_quyen_sach[0]._id;
-        else
-            return null
-    }catch{
-        return null;
-    }
-}
-
 //Insert new BorrowReturnCard: "tinh_trang": 1 
-async function saveBRC(maDocGia, dauSach, maSach, ngay_muon){
+async function saveBRC(readerId, bookHeadId, bookId, dateBorrow){
     try{
-        // var ma_sach = await selectBookChild(dauSach);
-        // if(ma_sach == null)
-        //     return ({success: 0, updated: 0, message:`Sách đã được mượn hết!`}) 
 
-        var query = {
-            "_id": dauSach, 
-            "cac_quyen_sach":{
-                "_id": maSach,
-                "tinh_trang": true
-            }
-        };
-        var update = {
-            $inc: { "so_luong_kha_dung": -1},
-            "cac_quyen_sach.$.tinh_trang": false
-        };
-        var option = {"fields": {"cac_quyen_sach.$": 1}, new: false, useFindAndModify: false}
+        var book = await  updateQuyenSach(bookHeadId, bookId)
 
-        var sach = await BookHead.findOneAndUpdate(query, update, option );
-
-        if(sach){
+        if(book){
             const borrowReturnCard = new BorrowReturnCard({
-                doc_gia: maDocGia,
-                dau_sach: dauSach,
-                ma_sach: maSach,
-                ngay_muon: ngay_muon,
-                tinh_trang: 1
+                doc_gia: readerId,
+                dau_sach: bookHeadId,
+                ma_sach: bookId,
+                ngay_muon: dateBorrow
             })
-            borrowReturnCard.save();
-            await updateBorrowHisory(maDocGia, dauSach)
+            await borrowReturnCard.save();
+            await updateBorrowHisory(readerId, bookHeadId)
             return ({ success: 1, updated: 1, message:`Thêm phiếu phiếu mượn thành công!`})
         }else{
             return ({ success: 0, updated: 0, message:`Sách không khả dụng!`})
@@ -263,47 +230,31 @@ async function findBook(option, value){
     var nSuccess=[];
     var nErrors=[];
 
+    const readerChecked = await checkReader(maDocGia, dsDauSach.length);
+    if(!readerChecked.ok){
+        nErrors.push({success: 0, updated: 0, message:readerChecked.message});
+        return {nSuccess, nErrors}
+    }
+
     for(let i =0; i< dsDauSach.length; i++){
         try{
             var book = await BookHead.findOne({"_id": dsDauSach[i], "cac_quyen_sach._id": dsMaSach[i] });
             if(!book){
                 nErrors.push({success: 0, updated: 0, message:`${dsDauSach[i]} và ${dsMaSach[i]} là cặp ID không hợp lệ!`, dau_sach: dsDauSach[i], ten_dau_sach: "", ma_sach: dsMaSach[i]});
+                continue;
             }
-            else{
-                const check = await checkBorrowHistory(maDocGia, dsDauSach[i])
-                if(!check.ok){
-                    nErrors.push({success: 0, updated: 0, message:check.message, dau_sach: book._id, ten_dau_sach: book.ten_dau_sach, ma_sach: dsMaSach[i]});
-                } 
-                else{
-                    
-                    const borrowCard = await getBRC(dsDauSach[i], maDocGia);
-
-                    if(!borrowCard){ 
-                        //Chưa mượn sách
-                        var result = await saveBRC(maDocGia, dsDauSach[i], dsMaSach[i], ngayMuon);
-
-                        if(result.success)
-                            nSuccess.push({...result, message:`${result.message}`, dau_sach: book._id, ten_dau_sach: book.ten_dau_sach, ma_sach: dsMaSach[i]});
-                        else
-                            nErrors.push({...result, message:`${result.message}`, dau_sach: book._id, ten_dau_sach: book.ten_dau_sach, ma_sach: dsMaSach[i]});
-                    }
-                    else if(borrowCard.tinh_trang == 0)
-                    {
-                        //Đã đăng ký mượn sách nhưng chưa đến lấy
-                        var result = await updateBRC(borrowCard._id, dsDauSach[i], dsMaSach[i], ngayMuon);
-                        if(result.success)
-                            nSuccess.push({...result, message:`${result.message}`,  dau_sach: book._id, ten_dau_sach: book.ten_dau_sach, ma_sach: dsMaSach[i]});
-                        else
-                            nErrors.push({...result, message:`${result.message}`,  dau_sach: book._id, ten_dau_sach: book.ten_dau_sach, ma_sach: dsMaSach[i]});
-                    }
-                    else
-                    {
-                        //Đã mượn lấy sách nhưng chưa trả
-                        nErrors.push({success: 0, updated: 0, message:`Độc giả đã mượn sách này nhưng chưa trả!`, dau_sach: book._id, ten_dau_sach: book.ten_dau_sach, ma_sach: dsMaSach[i]});
-                    }  
-                }
+            const borrowHis = await checkBorrowHistory(maDocGia, dsDauSach[i]);
+            if(!borrowHis.ok){
+                nErrors.push({success: 0, updated: 0, message: borrowHis.message, dau_sach: dsDauSach[i], ten_dau_sach: "", ma_sach: dsMaSach[i]});
+                continue;
             }
-                         
+
+            var result = await saveBRC(maDocGia, dsDauSach[i], dsMaSach[i], ngayMuon);
+            if(result.success)
+                nSuccess.push({...result, message:`${result.message}`, dau_sach: book._id, ten_dau_sach: book.ten_dau_sach, ma_sach: dsMaSach[i]});
+            else
+                nErrors.push({...result, message:`${result.message}`, dau_sach: book._id, ten_dau_sach: book.ten_dau_sach, ma_sach: dsMaSach[i]}); 
+
         }
         catch(err){
             console.log(err)
@@ -402,33 +353,27 @@ async function getBookBorrowByID(readerId, childId){
     if(book == null)
         return {success: false, book: null, message: "Không tìm thấy thông tin sách, vui lòng kiểm tra lại!"}
     else {
-        const borrowQueryMaSach = {
-            "ma_sach": childId, 
-            "tinh_trang": {$in: [0, 1]}
+        const borrowHis = await checkBorrowHistory(readerId, book._id);
+        if(!borrowHis.ok){
+            return {success: false, book: null, message: borrowHis.message}
         }
-
-        const borrowQueryDauSach = {
-            "dau_sach": book._id,
-            "doc_gia": readerId, 
-            "tinh_trang":  1
-        }
-
-        const borrowCards = await BorrowReturnCard.findOne(borrowQueryMaSach);
-        const readerBorrowCards = await BorrowReturnCard.findOne(borrowQueryDauSach);
-
-        if(borrowCards != null && borrowCards.doc_gia!=readerId)
+        else if(!book.cac_quyen_sach[0].tinh_trang)
             return {success: false, book: null, message: "Sách đã được đăng ký bởi người khác!"}
-        else if(readerBorrowCards != null)
-            return {success: false , book: null, message: "Độc giả đã mượn sách này nhưng chưa trả!"}
         else{
-            var newBook = {...book._doc, anh_bia: book.anh_bia};
-           
-            delete newBook.bf_anh_bia;
+            var newBook = {...book._doc, anh_bia: book.anh_bia};          
+            delete newBook.bf_anhs_bia;
             delete newBook.kieu_anh_bia;
             return {success: true, book: newBook, message: "Khả dụng"}
         }
             
     }
+}
+
+
+async function countBorrowRegister(readerId){
+    const countBorrow = await BorrowReturnCard.countDocuments({"doc_gia": readerId, "ngay_tra": null});
+    const countRegisterCard = await RegisterBorrowCard.countDocuments({"doc_gia": readerId, "tinh_trang": {$in: [0, 1]}});
+    return {borrow: countBorrow, register: countRegisterCard};
 }
 
 module.exports.findReader = findReader;
@@ -439,3 +384,4 @@ module.exports.saveBorrowData = saveBorrowData;
 module.exports.getBorrowCardOf = getBorrowCardOf;
 module.exports.updateBorrowData = updateBorrowData;
 module.exports.getBookBorrowByID = getBookBorrowByID;
+module.exports.countBorrowRegister = countBorrowRegister;

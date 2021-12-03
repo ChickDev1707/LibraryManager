@@ -27,10 +27,6 @@ const BorrowReturnCardSchema = new mongoose.Schema({
         type: Number,
         required: true,
         default: 0
-    },
-    tinh_trang:{
-        type: Number, //0: chưa lấy sách, 1: đã lấy sách, 2: đã trả sách
-        required: true
     }
 })
 

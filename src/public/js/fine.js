@@ -66,24 +66,13 @@ function submit(){
     var ngayThu = $("input#ngay_thanh_toan").val();
 
     if(isNaN(parseFloat(thanhToan))||parseFloat(thanhToan)<=0 ) {
-
-        let messageToast = document.getElementById('message-toast')
-        var toast = new bootstrap.Toast(messageToast)
-        changeToast({
-            type: "error",
-            message: "Số tiền thanh toán phải lơn hơn 0đ!" 
-        })
-        toast.show();
+        const result = { success: false, message: "Số tiền thanh toán phải lơn hơn 0đ!"   };
+        showToast(result)
         return;
     }
     else if(tienNo - thanhToan < 0){
-        let messageToast = document.getElementById('message-toast')
-        var toast = new bootstrap.Toast(messageToast)
-        changeToast({
-            type: "error",
-            message: "Số tiền thanh toán không được vượt quá số tiền nợ!" 
-        })
-        toast.show();
+        const result = { success: false, message: "Số tiền thanh toán không được vượt quá số tiền nợ!"  };
+        showToast(result)
         return;
     }else{
         $.ajax({
@@ -97,28 +86,33 @@ function submit(){
 
                if(result.success){
                     $(`table tbody td#tien_no_${maDocGia}`).html(Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(result.noMoi))     
-               }
-
-               let messageToast = document.getElementById('message-toast')
-               var toast = new bootstrap.Toast(messageToast)
-               changeToast({
-                       type: result.success?"success":"error",
-                       message: result.message 
-               })
-               toast.show();
+                    $('#payModal').modal('hide'); 
+                }
                   
-
-
+               showToast(result)
             },
             error: function (e) {
-                let messageToast = document.getElementById('message-toast')
-                var toast = new bootstrap.Toast(messageToast)
-                changeToast({
-                    type: "error",
-                    message: "Thanh toán nợ không thành công!" 
-                })
-                toast.show();
+                const result = { success: false, message: "Thanh toán nợ không thành công!" };
+                showToast(result)
             }
         });
     }
 }
+
+function showToast(result){
+    let messageToast = document.getElementById('message-toast');
+    messageToast.parentElement.style.zIndex = 9999;
+    messageToast.classList.remove('d-none');
+    var toast = new bootstrap.Toast(messageToast)
+    changeToast({
+            type: result.success?"success":"error",
+            message: result.message 
+    })
+    toast.show();
+}
+
+$(document).ready(function(){
+    $('#message-toast').on('hidden.bs.toast', function () {
+            $('#message-toast').addClass('d-none')
+    })
+})

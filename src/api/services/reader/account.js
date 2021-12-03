@@ -1,8 +1,4 @@
-
-
-const multer = require('multer')
-const path = require('path')
-const fs = require('fs')
+const {countBorrowRegister} = require('../librarian/borrow')
 
 const Reader = require("../../models/reader");
 const UserAccount = require("../../models/user-account");
@@ -17,7 +13,8 @@ async function getProfileByAccountId(id){
             return null;
         
         var reader = await Reader.findOne({id_account: account._id});
-        return {...reader._doc, anh_bia:reader.anh_bia};
+        var count = await countBorrowRegister(reader._id);
+        return {...reader._doc, anh_bia:reader.anh_bia, borrow: count.borrow, register: count.register};
 
     }catch(err){
         console.log(err);

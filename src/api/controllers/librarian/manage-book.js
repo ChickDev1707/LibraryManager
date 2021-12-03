@@ -1,7 +1,22 @@
 const BookCategory = require('../../models/book-category');
-const { getAllBook, getBookCategory, saveBookData, getBookByID, deleteBookData, updateBookData, deleteBookChild, addBookChild } = require('../../services/librarian/manage-book-service');
+const { getAllBook, getBookCategory, saveBookData, getBookByID, deleteBookData, updateBookData, deleteBookChild, addBookChild, importBooksByExcel } = require('../../services/librarian/manage-book-service');
 const ejs = require('ejs');
 const path = require('path')
+const multer=require('multer')
+const XLSX=require('xlsx')
+const urlHelper=require('../../helpers/url')
+
+
+const uploadPath = path.join('./src/public', '/uploads/addBook')
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, uploadPath)
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.originalname)
+    }
+  })
+const uploadBook = multer({ storage: storage })
 
 //Render all books page
 async function all(req, res){
@@ -49,16 +64,16 @@ async function saveBook(req, res){
     var editPath =  rootPath.concat('\\src\\api\\views\\partials\\book-management\\edit_add.ejs');
     var rowPath = rootPath.concat('\\src\\api\\views\\partials\\book-management\\row.ejs')
     if(result.success){
-        ejs.renderFile(editPath, {book: result.book, bookCategories: result.category}, function(err, str){
-            result.newModal = str
-            ejs.renderFile(rowPath, {book: result.book}, function(err, str1){
-                result.newRow = str1;
-                res.json(result);
-            });
-         });
+        const redirectUrl =urlHelper.getEncodedMessageUrl('/librarian/books/',{
+            type:'success',
+            message:"Thêm thành công!"
+        })
+        result.redirect = redirectUrl
+        res.json(result);
     }else{
         result.newModal = "";
         result.newRow = "";
+        result.redirect = ""
         res.json(result);
     }
    
@@ -86,17 +101,12 @@ async function bookDetail(req, res){
     }
 }
 
-
+//--------------------Book update--------------------
 
 //Update book
 async function updateBook(req, res){
     //Middleware error
-    if(req.error)
-    {
-        res.json({success: false, message: req.message})
-    }
-    else {
-        var id = req.params['id'];
+    var id = req.params['id'];
         //new book
         let newBook = {
             ten_dau_sach: req.body.ten_dau_sach,
@@ -112,7 +122,6 @@ async function updateBook(req, res){
         const result = await updateBookData(id, newBook, req.body.anh_bia)
        
         res.json(result)
-    }
 }
 
 
@@ -154,6 +163,26 @@ async function addChildBook(req, res){
     res.json(result)
 }
 
+async function importBooks(req, res){
+    if(req.file){
+        const result = await importBooksByExcel(req.file);
+        var redirectUrl = ''
+        if(result){
+            redirectUrl =urlHelper.getEncodedMessageUrl('/librarian/books/',{
+                type:'success',
+                message:"Thêm thành công!"
+            })
+        }else{
+            redirectUrl = urlHelper.getEncodedMessageUrl('/librarian/books/',{
+                type:'error',
+                message:"Thêm không thành công!"
+            })
+        }
+        res.redirect(redirectUrl)
+         
+    
+    }
+}
 
 module.exports = {
     all,
@@ -162,5 +191,7 @@ module.exports = {
     updateBook,
     deleteBook,
     deleteChildBook,
-    addChildBook
+    addChildBook,
+    uploadBook,
+    importBooks
 };
