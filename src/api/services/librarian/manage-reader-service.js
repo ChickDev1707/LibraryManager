@@ -26,8 +26,7 @@ async function searchReader(Query){
 }
 
 async function handleAddFileExcel(reqFile){
-    const minAge=await checkminage(today,nam_sinh)
-    const maxAge=await checkmaxage(today,nam_sinh)
+
 
     const uploadPath = path.join('./src/public/uploads/addReader',reqFile.originalname+'')
     const result=excelToJson({
@@ -54,7 +53,8 @@ async function handleAddFileExcel(reqFile){
     for(let i=0;i<length;i++){
         const nam_sinh=new Date(result.Reader[i].ngay_sinh)
         const today=new Date()
-
+        const minAge=await checkminage(today,nam_sinh)
+        const maxAge=await checkmaxage(today,nam_sinh)
 
         try{
             const validAccount=await Account.find({ten_tai_khoan:result.Reader[i].email})
@@ -80,6 +80,9 @@ async function handleAddFileExcel(reqFile){
             const ngay_lap_the=today.getFullYear()+'-'+month+'-'+day
 
             // console.log("ngay lap the",ngay_lap_the,"ngay sinh : ", result.Reader[i].ngay_sinh)
+            const defaultImgPath = path.join(__dirname.split('\\').slice(0, -3).join('\\'),'/public/assets/images/user.png')
+            defaultImg = JSON.stringify(base64_encode(defaultImgPath));
+    
 
             try{
                 const reader=new Reader({
@@ -91,6 +94,16 @@ async function handleAddFileExcel(reqFile){
                     ngay_lap_the:ngay_lap_the,
                     id_account:account._id
                 })
+                try{
+                    const avatar = JSON.parse(defaultImg)
+                    if (avatar != null && imageMimeTypes.includes(avatar.type)) {
+                        reader.bf_anh_bia = new Buffer.from(avatar.data, 'base64')
+                        reader.kieu_anh_bia = avatar.type
+                    }
+                  
+                }catch(e){
+                    console.log(e)
+                }
                 await reader.save()
             }catch(e){
                 console.log(e)
@@ -140,6 +153,8 @@ async function handleAddReader(reqBody){
             mat_khau:"reader",
             vai_tro:"reader"
         })
+        const defaultImgPath = path.join(__dirname.split('\\').slice(0, -3).join('\\'),'/public/assets/images/user.png')
+        defaultImg = JSON.stringify(base64_encode(defaultImgPath));
 
         data.reader=new Reader({
             ho_ten:reqBody.ho_ten,
@@ -148,8 +163,20 @@ async function handleAddReader(reqBody){
             ngay_sinh:reqBody.ngay_sinh,
             dia_chi:reqBody.dia_chi,
             ngay_lap_the:reqBody.ngay_lap_the,
+            bf_anh_bia: defaultImg.Data,
             id_account:data.addAccount.id,
+
         })
+        try{
+            const avatar = JSON.parse(defaultImg)
+            if (avatar != null && imageMimeTypes.includes(avatar.type)) {
+                data.reader.bf_anh_bia = new Buffer.from(avatar.data, 'base64')
+                data.reader.kieu_anh_bia = avatar.type
+            }
+            
+        }catch(e){
+            console.log(e)
+        }
     }
     return data
 }
@@ -342,7 +369,11 @@ async function checkmaxage(today,namsinh){
         return true
     }
 }
-
+function base64_encode(file) {
+    var file_buffer   = fs.readFileSync(file); 
+    var type = 'image/' +  file.split('.').pop()
+    return {data: file_buffer.toString('base64'), type: type}
+}
 module.exports={
     searchReader,
     handleAddFileExcel,
