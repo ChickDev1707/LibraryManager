@@ -9,7 +9,7 @@ async function handleEmptyEmail(){
         allNameReader:[]
     }
     
-    kq.allBorrowReturnCard=await BorrowReturnCard.find({tinh_trang:1})
+    kq.allBorrowReturnCard=await BorrowReturnCard.find({ngay_tra:null})
     kq.allNameReader=await danh_sach_ten_doc_gia(kq.allBorrowReturnCard)
     return kq
 
@@ -24,7 +24,7 @@ async function handleHasEmail(queryEmail){
     search.email=new RegExp(queryEmail,'i')
     const reader=await Reader.find({email:search.email})
     try{
-        kq.allBorrowReturnCard=await BorrowReturnCard.find({doc_gia:reader[0]._id.toString(),tinh_trang:1})
+        kq.allBorrowReturnCard=await BorrowReturnCard.find({doc_gia:reader[0]._id.toString(),ngay_tra:null})
         kq.allNameReader=await danh_sach_ten_doc_gia(kq.allBorrowReturnCard)
     }catch(e){
         
@@ -45,14 +45,13 @@ async function confirmCard(borrowReturnCard){
 
         card.ngay_tra=ngay_tra    //thêm ngày trả
         card.so_ngay_tra_tre=tinh_ngay_tra_tre(today,card.ngay_muon)  //tính số ngày trả trễ
-        card.tinh_trang=2     //thay đổi tình trạng thành đã trả sách
 
         try{
             
             if(card.so_ngay_tra_tre>0){
                 const reader=await Reader.findById(card.ma_doc_gia)
                 const email=reader.email
-                reader.tien_no=card.so_ngay_tra_tre*1000   //xử lý tiền nợ
+                reader.tien_no+=card.so_ngay_tra_tre*1000   //xử lý tiền nợ
                 await reader.save()
                 //
                 const userAccount=await UserAccount.find({ten_tai_khoan:email})
@@ -74,7 +73,7 @@ async function confirmCard(borrowReturnCard){
             allBorrowReturnCard:[],
             allNameReader:[]
         }
-        kq.allBorrowReturnCard=await BorrowReturnCard.find({tinh_trang:1})
+        kq.allBorrowReturnCard=await BorrowReturnCard.find({ngay_tra:null})
         kq.allNameReader=await danh_sach_ten_doc_gia(kq.allBorrowReturnCard)
         return kq
 }
@@ -83,7 +82,7 @@ async function unConfirmCard(){
         allBorrowReturnCard:[],
         allNameReader:[]
     }
-    kq.allBorrowReturnCard=await BorrowReturnCard.find({tinh_trang:1})
+    kq.allBorrowReturnCard=await BorrowReturnCard.find({ngay_tra:null})
     kq.allNameReader=await danh_sach_ten_doc_gia(kq.allBorrowReturnCard)
     return kq
 }
