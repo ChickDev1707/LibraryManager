@@ -137,7 +137,7 @@ async function getPolicyByName(name){
   return pol
 }
 async function getPolicyValueByName(name){
-  const pol = await Policy.find({ten_quy_dinh: name})
+  const pol = await Policy.findOne({ten_quy_dinh: name})
   return Number(pol.gia_tri)
 }
 function getPolicyValue(pol){

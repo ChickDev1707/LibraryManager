@@ -1,18 +1,17 @@
-window.onload = function(){
-  const params = new URLSearchParams(window.location.search)
-  if(params.get('message')){
-    let messageToast = document.getElementById('message-toast')
-    messageToast.classList.remove('d-none')
-    var toast = new bootstrap.Toast(messageToast)
-    changeToast({
-      type: params.get('type'),
-      message: params.get('message')
-    })
-    toast.show()
-    setTimeout(function(){
-      messageToast.classList.add('d-none')
-    }, 5000)
-  }
+
+const params = new URLSearchParams(window.location.search)
+if(params.get('message')){
+  let messageToast = document.getElementById('message-toast')
+  messageToast.classList.remove('d-none')
+  var toast = new bootstrap.Toast(messageToast)
+  changeToast({
+    type: params.get('type'),
+    message: params.get('message')
+  })
+  toast.show()
+  setTimeout(function(){
+    messageToast.classList.add('d-none')
+  }, 5000)
 }
 function changeToast(data){
   clearToastIcons()

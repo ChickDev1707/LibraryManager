@@ -73,7 +73,6 @@ async function createNewBorrowReturnCard(readerID, bookHeadID, bookId){
 // notification
 async function saveNewNotification(registerBorrowCardId, not){
   let registerBorrowCard = await RegisterBorrowCard.findById(registerBorrowCardId).populate('doc_gia')
-  let a = registerBorrowCard.doc_gia.email
   let readerAccount = await Account.findOne({ten_tai_khoan: registerBorrowCard.doc_gia.email})
 
   readerAccount.thong_bao.unshift(not)

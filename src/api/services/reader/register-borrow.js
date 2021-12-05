@@ -80,7 +80,7 @@ async function handleRegisterSuccess(req){
   const bookHeadIds = JSON.parse(req.body.bookHeads)
   const reader = await Reader.findOne({email: account.ten_tai_khoan})
   await handleSuccessWithCart(account, bookHeadIds)
-  await addNewRegisterBorrowCard(reader._id, bookHeadIds)
+  await addNewRegisterBorrowCard(req, account, reader._id, bookHeadIds)
   await saveNewNotification(reader.ho_ten)
   var io = req.app.get('socket-io');
   io.emit("librarian-new-notification", 'new notification');
@@ -91,12 +91,37 @@ async function handleSuccessWithCart(account, bookHeadIds){
   await updateAvailableAmountOfBookHeads(bookHeadIds)
 }
 
-async function addNewRegisterBorrowCard(readerId, bookHeads){
+async function addNewRegisterBorrowCard(req, account, readerId, bookHeads){
   const newCard = new RegisterBorrowCard({
     doc_gia: readerId,
     cac_dau_sach: bookHeads,
   })
   await newCard.save();
+
+  await setDenyRegisterCardTimeout(req, account, newCard._id)
+}
+
+async function setDenyRegisterCardTimeout(req, account, cardId){
+  let timeLimit = await policyServices.getPolicyValueByName('thoi_han_dang_ky')
+  setTimeout(async function(){
+    let card = await RegisterBorrowCard.findById(cardId)
+    if(card){
+      card.tinh_trang = 2
+      await card.save();
+      await saveNewDenyNotification(req, account)
+    }
+  }, timeLimit*10000)
+}
+async function saveNewDenyNotification(req, account){
+  let not={
+    tieu_de: 'Đăng ký thất bại',
+    noi_dung: 'Phiếu đăng ký của bạn quá hạn và đã bị hủy'
+  }
+  account.thong_bao.unshift(not)
+  account.thong_bao_moi = true
+  await account.save()
+  var io = req.app.get('socket-io');
+  io.emit("reader-new-notification", 'new notification');
 }
 
 async function updateAvailableAmountOfBookHeads(bookHeadIds){
