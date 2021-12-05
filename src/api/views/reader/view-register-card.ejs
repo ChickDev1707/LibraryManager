@@ -1,66 +1,16 @@
 
 <%- contentFor('head') %>
-<title>register card</title>
-<style>
-  .item-container{
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); 
-  }
-  .item{
-    border-radius: .5rem;
-    overflow: hidden;
-  }
-  .item .top{
-    position: relative;
-    padding: .5rem 1rem 2.5rem;
-    color: white;
-  }
-  .item .top .content .icon{
-    width: 2.5rem;
-    height: 2.5rem;
-    text-align: center;
-    border-radius: 50%;
-    line-height: 2.5rem;
-    font-size: 1.2rem;
-    color: white;
-    background-color: gray;
-    margin-right: .5rem;
-  }
-  .item p{
-    margin: 0;
-  }
-  .item button{
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    margin-top: 1rem;
-    border: none;
-    width: 100%;
-    font-size: .8rem;
-    padding: .25rem 0;
-    background-color: rgba(42, 42, 42, .4);
-    color: white;
-  }
-  .pending{
-    background-color: #ff9f43;
-  }
-  .confirmed{
-    background-color: #1dd1a1;
-  }
-  .canceled{
-    background-color: #ee5253;
-  }
-</style>
+<title>Phiếu đăng ký mượn</title>
+<link rel="stylesheet" href="/public/css/pages/reader/view-register-borrow.css">
+
 <%- contentFor('body') %> 
 <%- include('../partials/header/reader-header.ejs') %> 
 
-<div class="container">
-  <h2>Các phiếu đăng ký mượn sách của bạn</h2>
-  <div class="d-flex justify-content-end" style="margin: 2rem 0 1rem 0">
+<div class="page-content-wrapper">
+  <h2 class="page-title">Phiếu đăng ký mượn sách</h2>
+  <div class="d-flex justify-content-end" style="margin: 0 0 1rem 0">
     <div class="dropdown">
-      <button class="btn btn-secondary dropdown-toggle" type="button" id="sort-register-card" data-bs-toggle="dropdown" aria-expanded="false">
-        Tùy chọn
-      </button>
+      <button class="submit-btn dropdown-toggle" type="button" id="sort-register-card" data-bs-toggle="dropdown" aria-expanded="false">Tùy chọn</button>
       <ul class="dropdown-menu" aria-labelledby="sort-register-card">
         <li><a class="dropdown-item" href="/reader/register-tickets">Tất cả</a></li>
         <li><a class="dropdown-item" href="/reader/register-tickets?status=0">Đang chờ</a></li>
@@ -69,24 +19,29 @@
       </ul>
     </div>
   </div>
-  <div class="container">
+  <div>
     <div class="item-container">
       <% registerCards.forEach(card =>{ %>
         <div class="item">
-          <div class="top 
-            <% if(card.tinh_trang == 0){ %>
-              <%= 'pending' %> 
-            <% }else if(card.tinh_trang == 1){ %>
-              <%= 'confirmed' %>   
-            <% }else{ %>
-              <%= 'canceled' %> 
-            <% } %>">
-            <div class="content d-flex">
-              <div class="icon"><i class="fas fa-book"></i></div>
-              <div>
-                <p><i class="fas fa-calendar-alt"></i> <%= card.ngay_dang_ky %> </p>
+          <div class="main">
+            <div class="body
+              <% if(card.tinh_trang == 0){ %>
+                <%= 'pending' %> 
+              <% }else if(card.tinh_trang == 1){ %>
+                <%= 'confirmed' %>   
+              <% }else{ %>
+                <%= 'canceled' %> 
+              <% } %>">
+              <div class="top">
+                <div class="card-icon">
+                  <img src="/public/assets/images/card.png" alt="">
+                </div>
+              </div>
+              <div class="info-container">
+                <h6>Phiếu đăng ký</h6>
+                <p><i class="fas fa-calendar-alt"></i> Ngày mượn: <%= card.ngay_dang_ky.toLocaleDateString('vi') %></p>
                 <p>Đầu sách: <%= card.cac_dau_sach.length %> </p>
-                <p>Tình trạng: 
+                <p class="status">Tình trạng: 
                   <% if(card.tinh_trang == 0){ %>
                     <%= 'Đang chờ' %> 
                   <% }else if(card.tinh_trang == 1){ %>
@@ -97,12 +52,13 @@
                 </p>
               </div>
             </div>
-            <button type="button" data-bs-toggle="collapse" data-bs-target="#<%= card._id %>" aria-expanded="false" aria-controls="collapseExample1">More-info</button>
+            <button type="button" data-bs-toggle="collapse" data-bs-target="#card_<%= card._id %>" aria-expanded="false" aria-controls="card_<%= card._id %>">Chi tiết</button>
           </div>
-          <div class="collapse" id="<%= card._id %>">
+          <div class="collapse" id="card_<%= card._id %>">
             <div class="card card-body">
+              <h6><i class="fas fa-book"></i> Sách mượn</h6>
               <% card.cac_dau_sach.forEach(bookHead=>{ %>
-                <p><%= bookHead.ten_dau_sach %> </p>
+                <p><%= bookHead.ten_dau_sach %>
               <% }) %> 
             </div>
           </div>

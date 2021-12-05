@@ -1,0 +1,14 @@
+table{
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+table thead{
+  background-color: var(--secondary);
+  color: white;
+}
+table .action-container{
+  display: flex;
+  max-width: 5rem;
+}
+table .action-container button{
+  margin-right: .75rem;
+}

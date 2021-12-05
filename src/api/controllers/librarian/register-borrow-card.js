@@ -1,51 +1,54 @@
 const registerBorrowCardService = require('../../services/librarian/register-borrow-card-service.js')
+const urlHelper = require('../../helpers/url')
 
-// get all RegisterBorrowCard
-async function getAllRegisterBorrowCard(req, res){
-    try{
-        //deny overdue RegisterBorrowCards
-        await registerBorrowCardService.denyOverdueRegisterBorrowCard()
-        //get RegisterBorrowCard
-        const registerBorrowCard = await registerBorrowCardService.getAllRegisterBorrowCard()
-
-        res.render('librarian/register-borrow-card/all.ejs', {
-            registerBorrowCard: registerBorrowCard
-        })
-    }catch{
-        console.log(error)
-        res.redirect('/librarian/register-borrow-card')
-    }
+// confirm register borrow
+async function getConfirmRegisterPage(req, res){
+	const registerBorrowCards = await registerBorrowCardService.getUnconfirmedRegisterBorrowCard()
+	res.render('librarian/register-borrow-card/confirm-register', {
+		registerBorrowCards	
+	})
 }
 
-// deny RegisterBorrowCard
-async function denyRegisterBorrowCard(req, res){
-    try{
-        await registerBorrowCardService.denyRegisterBorrowCard(req.params.id)
-        
-        res.redirect('/librarian/register-borrow-card/')
-    }catch{
-        console.log(error)
-        res.redirect('/librarian/register-borrow-card/')
-    }
-}
-// confirm RegisterBorrowCard
 async function confirmRegisterBorrowCard(req, res){
-    try{
-        //create RegisterBorrowCard
-        await registerBorrowCardService.createBorrowReturnCard(req.params.registerBorrowCardId)
-        // update RegisterBorrowCard status
-        await registerBorrowCardService.updateRegisterBorrowCardStatus(req.params.registerBorrowCardId)
+	await registerBorrowCardService.createBorrowReturnCard(req.params.id)
+	await registerBorrowCardService.updateRegisterBorrowCardStatus(req.params.id, 1)
 
-        res.redirect('/librarian/register-borrow-card/')
-    }catch{
-        res.redirect('/librarian/register-borrow-card')
-        console.log(error) 
-    }
+	const notification = {
+    tieu_de: 'Đăng ký thành công',
+    noi_dung: `Bạn đã đăng ký mượn sách thành công tại thư viện` 
+  }
+	await registerBorrowCardService.saveNewNotification(req.params.id, notification)
+	var io = req.app.get('socket-io');
+  io.emit("reader-new-notification", 'new notification');
+
+	const redirectUrl = urlHelper.getEncodedMessageUrl(`/librarian/confirm-register-borrow/`, {
+		type: 'success',
+		message: 'Đã xác nhận phiếu đăng kí mượn sách'
+	})
+	res.redirect(redirectUrl)
+}
+
+async function denyRegisterBorrowCard(req, res){
+	await registerBorrowCardService.denyRegisterBorrowCard(req.params.id)
+
+	const notification = {
+    tieu_de: 'Đăng ký thất bại',
+    noi_dung: `Bạn đã bị hủy phiếu đăng ký` 
+  }
+	await registerBorrowCardService.saveNewNotification(req.params.id, notification)
+	var io = req.app.get('socket-io');
+  io.emit("reader-new-notification", 'new notification')
+
+	const redirectUrl = urlHelper.getEncodedMessageUrl(`/librarian/confirm-register-borrow/`, {
+		type: 'success',
+		message: 'Đã từ chối phiếu đăng kí mượn sách'
+	})
+	res.redirect(redirectUrl)
 }
 
 module.exports = {
-    getAllRegisterBorrowCard,
-    denyRegisterBorrowCard,
-    confirmRegisterBorrowCard
+	getConfirmRegisterPage,
+	confirmRegisterBorrowCard,
+	denyRegisterBorrowCard,
 }
 

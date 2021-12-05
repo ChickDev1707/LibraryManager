@@ -8,7 +8,8 @@
 .input-item label{
   font-weight: 600;
   font-size: .9rem;
-  color: var(--primary);
+  margin-bottom: .3rem;
+  color: var(--secondary);
 }
 .input-item input, textarea, select{
   padding: .5rem 1rem;

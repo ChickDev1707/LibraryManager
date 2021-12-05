@@ -1,34 +1,32 @@
-<div>
-    <h1>Search Books</h1>
-    <form action="/" method="get">
-        <div class="row">
-            <div class="col-sm-2">
-                <select class="form-select" name="option" >
-                    <option label="Title" value="title">
-                    <option label="Category" value="category">
-                    <option label="Publisher " value="publisher">
-                </select>
-            </div>
-            <div class="col-sm-9">
-                <input class="form-control" type="text"  placeholder="Search..."  name="searchBox" value="<%= searchOptions.searchBox %>">
-            </div>
-            <div class="col-sm-1">
-                <button class="btn btn-primary" type="submit">Search</button>
-            </div>
-        </div>
-        <br>
-    </form>
+<h2 class="page-title">Tra cứu sách</h2>
+
+<form class="search-bar" action="/" method="GET">
+    <select name="option" >
+        <option label="Tên sách" value="title">
+        <option label="Tác giả" value="author">
+        <option label="Thể loại" value="category">
+        <option label="Nhà xuất bản" value="publisher">
+    </select>
+    <input name="searchBox" placeholder="Tìm kiếm sách ..." type="text" value="<%= searchOptions.searchBox %>">
+    <button type="submit"><i class="fas fa-search"></i>Tìm kiếm</button>  
+</form>
+<div class="result-header">
+    <%if (searchOptions.searchBox) { %>
+        <div class="hide-overflow-text"><i class="far fa-lightbulb"></i> Kết quả tìm kiếm cho từ khoá '<span><%= searchOptions.searchBox %></span>'</div>
+    <% } %>
 </div>
-<h1>Books</h1>
-<div>
-    <div class="row">
-        <% bookHeads.forEach(bookHead => { %>
-            <div class="col">
-                <a href="/book-head/<%= bookHead.id %>">
-                    <img width="200" height="300" src="../../../public/assets/images/default-book-cover.png">
-                </a>
-                <div><%= bookHead.ten_dau_sach %></div> 
-            </div>                
-        <% }) %>  
-    </div>
+
+<div class="grid">
+    <% bookHeads.forEach(bookHead => { %>
+        <div class="grid-item">
+            <a class="grid-item-content" href="/book-head/<%= bookHead.id %>">
+                <img class="item-img" src="<%=  bookHead.anh_bia%>">
+                <div class="item-content">
+                    <div class="title" class="hide-overflow-text"><%= bookHead.ten_dau_sach %></div>
+                    <div class="author" class="hide-overflow-text"><i class="fas fa-user-tie"></i> <%= bookHead.tac_gia %></div>
+                </div>
+            </a> 
+        </div>                
+    <% }) %>
 </div>
+

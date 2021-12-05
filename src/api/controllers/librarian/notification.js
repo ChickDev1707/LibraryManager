@@ -5,8 +5,8 @@ async function returnNotifications(req, res){
   res.setHeader("Content-Type", "application/json");
   res.statusCode  =  200;
   res.json({
-        newNot: librarianAccount.thong_bao_moi,
-        notifications: librarianAccount.thong_bao
+    newNot: librarianAccount.thong_bao_moi,
+    notifications: librarianAccount.thong_bao
   });
 }
 async function clientSideReadNotEvent(req, res){

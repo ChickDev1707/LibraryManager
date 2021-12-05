@@ -1,37 +1,58 @@
-<%- contentFor('head') %> 
-<title>Readers</title>
-<%- contentFor('body') %> 
-<%- include('../../partials/header/librarian-header.ejs') %> 
-<div >
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Tên độc giả</th>
-                <th>Email</th>
-                <th>Giới tính</th>
-                <th>Ngày sinh</th>
-                <th>Địa chỉ</th>
-                <th>Ngày lập thẻ</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><%= reader.ho_ten %></td>
-                <td><%= reader.email %></td>
-                <td><%= reader.gioi_tinh %></td>
-                <td><%= reader.ngay_sinh.toDateString() %></td>
-                <td><%= reader.dia_chi %></td>
-                <td><%= reader.ngay_lap_the.toDateString() %></td>
-            </tr>
-        </tbody>
-    </table>
-    <div >
-        <a href="/librarian/reader" >Cancel</a>
-        <a href="/librarian/reader/<%= reader.id %>/edit" >Edit</a>
-        <form action="/librarian/reader/<%= reader.id %>?_method=DELETE" method="post">
-            <button type="submit">Delete</button>
-        </form>
+
+<div class="modal fade " id="viewReader<%= key %>" role="dialog" tabindex="-1">
+    <div class="modal-dialog" style="max-width: 50%;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">          
+                <h4 class="modal-title page-title" id="staticBackdropLabel">
+                    XEM THÔNG TIN ĐỘC GIẢ
+                </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <form>
+                    <div class="row input-row">
+                            <div class="col input-item" id="form_<%=key %>">
+                                <input disabled class="filepond " type="file" accept="image/*"  name="anh_bia">
+                            </div>
+                            <div class="col input-item">
+                                <div class="col input-item">
+                                    <label for>Họ tên</label>
+                                    <input disabled style="min-width: 320px;" placeholder="Your full name" class="input-primary" type="text" name="ho_ten" value="<%= reader.ho_ten %>">  
+                                </div>
+                                <div class="col input-item">
+                                    <label >Giới tính</label>
+                                    <input disabled class="input-primary" type="text" value="<%= reader.gioi_tinh %>">             
+                                </div>
+                                <div class="col input-item">     
+                                    <label >Email</label>
+                                    <input disabled placeholder="Your email" class="input-primary" type="email" name="email" value="<%= reader.email %>">
+                                </div>
+                                <div class="col input-item">
+                                    <label >Ngày sinh</label>
+                                    <input disabled style="min-width: 320px;" class="input-primary" type="date" name="ngay_sinh" value="<%= reader.ngay_sinh.toISOString().split('T')[0] %>" >   
+                                </div>
+                                <div class="col input-item">
+                                    <label >Địa chỉ</label>
+                                    <input disabled class="input-primary" type="text" value="<%= reader.dia_chi %>">
+                                    
+                                </div> 
+                                <div class="col input-item">
+                                    <label >Ngày lập thẻ</label>
+                                    <input disabled class="input-primary" type="date" name="ngay_lap_the" value="<%= reader.ngay_lap_the.toISOString().split('T')[0] %>" >
+                                </div>
+                            </div>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
     </div>
-   
 </div>
-<%- contentFor('head') %>
+<style>
+    #form_<%=key%> .filepond--root .filepond--drop-label {
+        background-image: url('<%=reader.anh_bia %>');
+    }
+
+
+</style>

@@ -14,10 +14,9 @@ const notificationController = require('../controllers/librarian/notification')
 const {checkNewBorrow} = require('../middlewares/borrow-book')
 
 const confirmBook=require('../controllers/librarian/confirm-return-book.js')
-
 const readerController=require('../controllers/librarian/manage-reader')
-// index
-router.route('/').get(userAuth.checkAuthenticatedAsLibrarian)
+
+router.use(userAuth.checkAuthenticatedAsLibrarian)
 // auth
 router.delete('/logout', authController.logOut)
 
@@ -25,6 +24,9 @@ router.delete('/logout', authController.logOut)
 router.route('/books')
       .get(bookController.all)
       .post(bookMiddleWares.checkNewBook, bookController.saveBook)
+
+router.route('/books/import')
+      .post(bookController.uploadBook.single('uploadfile'), bookController.importBooks)      
 
 router.route('/books/:id')
       .get(bookController.bookDetail)
@@ -34,12 +36,10 @@ router.route('/books/:id')
 
 router.delete('/books/:id/:child', bookController.deleteChildBook)
 
-// manage reader
 router.route('/reader')
       .get(readerController.getAllReader)
-      .post(readerController.addReader)
-
-router.get('/reader/new', readerController.newReader)
+      .post(readerController.uploadReader.single('uploadfile'),readerController.addReader)
+// router.get('/reader/new', readerController.newReader)
 
 router.route('/reader/:id')
       .get(readerController.getReader)
@@ -56,26 +56,23 @@ router.route('/borrow')
 
 router.get("/borrow/books", borrowController.getBorrowBook)
 
-router.route('/borrow/confirm')
-      .get(borrowController.confirmForm)
-      .post(borrowController.updateBorrowForm)
-
+// fine
 router.route('/fine')
       .get(fineController.getAllFine)
       .post(fineController.saveFine)
 
-router.route('/xacnhantrasach')
+router.route('/confirm-return-book')
       .get(confirmBook.getConfirmReturnBook)
       .put(confirmBook.putConfirmReturnBook)
 //manage register-borrow-card
-router.route('/register-borrow-card')
-      .get(registerBorrowCardController.getAllRegisterBorrowCard)
+router.route('/confirm-register-borrow')
+      .get(registerBorrowCardController.getConfirmRegisterPage)
 
-router.route('/register-borrow-card/deny/:id')
+router.route('/confirm-register-borrow/confirm/:id')
+      .put(registerBorrowCardController.confirmRegisterBorrowCard)
+
+router.route('/confirm-register-borrow/deny/:id')
       .put(registerBorrowCardController.denyRegisterBorrowCard)
-
-router.route('/register-borrow-card/confirm/:registerBorrowCardId')
-      .post(registerBorrowCardController.confirmRegisterBorrowCard)
 
 //report
 router.route('/month-report')

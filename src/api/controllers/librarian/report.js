@@ -4,6 +4,7 @@ const BookHead = require('../../models/book-head')
 const Reader = require('../../models/reader')
 
 const reportService = require('../../services/librarian/report')
+
 //get month report pages
 async function getMonthReportPage(req, res){
     if(!req.query.month){
@@ -16,36 +17,42 @@ async function getMonthReportPage(req, res){
         await reportArray.sort((a, b)=>{
             return b.count -a.count
         })
-        const {label, data, sum} = await reportService.getChartValue(reportArray)
+        const {label, data, sum, ratio} = await reportService.getChartValue(reportArray)
 
         res.render('librarian/report/month-report.ejs',{
             month: req.query.month,
             reportArray: reportArray,
             label: label,
             data: data,
-            sum: sum
+            sum: sum,
+            ratio: ratio
         })
     }catch{
-        res.redirect('back')
+        res.redirect('/')
         console.log(error) 
     }
 }
 
-
+//get day report page
 async function getDayReportPage(req, res){
     if(!req.query.date){
         let today = new Date()
-        let thisDate = today.getFullYear() + "-" + (today.getMonth()+1) + "-" +today.getDate()
+        let thisDate = ''
+        if(today.getDate() >9){
+            thisDate = today.getFullYear() + "-" + (today.getMonth()+1) + "-" +today.getDate()
+        }else{
+            thisDate = today.getFullYear() + "-" + (today.getMonth()+1) + "-0" +today.getDate()
+        }
         req.query.date = thisDate
     }
-    try{   
+    try{  
         const borrowReturnCards = await reportService.getDayReportArray(req.query.date)
         res.render('librarian/report/day-report.ejs',{
             borrowReturnCards: borrowReturnCards,
             date: req.query.date
         })
     }catch{
-        res.redirect('back')
+        res.redirect('/')
         console.log(error) 
     }
 }

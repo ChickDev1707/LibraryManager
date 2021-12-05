@@ -1,0 +1,53 @@
+<%- contentFor('head') %>
+<title>Xác nhận đăng ký</title>
+<link rel="stylesheet" href="/public/css/pages/librarian/register-borrow-card.css">
+<%- contentFor('body') %> 
+<%- include('../../partials/header/librarian-header.ejs') %> 
+
+<div class="page-content-wrapper">
+  <h2 class="page-title">Xác nhận đăng ký mượn sách</h2>
+  <h5>Danh sách phiếu đăng ký</h5>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">STT</th>
+        <th scope="col">Độc giả</th>
+        <th scope="col">Đầu sách</th>
+        <th scope="col">Ngày đăng ký</th>
+        <th scope="col">Xác nhận</th>
+        <th scope="col">Từ chối</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% registerBorrowCards.forEach((registerBorrowCard, i) => { %>
+        <tr key= <%= registerBorrowCard._id %> > 
+          <th scope="row"><%= i+1 %></th>
+          <td scope="col">
+            <%= registerBorrowCard.doc_gia.ho_ten %>
+          </td>
+          <td scope="col">
+            <% registerBorrowCard.cac_dau_sach.forEach(cac_dau_sach => { %>
+              <div>
+                <a href="/book-head/<%= cac_dau_sach.id %>"><%= cac_dau_sach.ten_dau_sach %></a>
+              </div>              
+            <% }) %>  
+          </td>
+          <td scope="col"><%= registerBorrowCard.ngay_dang_ky.toLocaleDateString("VN", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %></td>
+          <td scope="col">
+            <form action="/librarian/confirm-register-borrow/confirm/<%= registerBorrowCard.id %>?_method=PUT" method="post">
+              <button class="btn-confirm icon-btn" type="submit"><i class="far fa-check-circle fa-lg"></i></button>
+            </form> 
+          </td>
+          <td scope="col">
+            <form action="/librarian/confirm-register-borrow/deny/<%= registerBorrowCard.id %>?_method=PUT" method="post">
+              <button class="btn-deny icon-btn" type="submit"><i class="fas fa-ban fa-lg"></i></button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+
+

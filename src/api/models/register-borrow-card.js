@@ -13,9 +13,9 @@ const RegisterBorrowCard = new mongoose.Schema({
   },
   cac_dau_sach: [{ type: mongoose.Schema.Types.ObjectId, ref: 'BookHead' }],
   tinh_trang:{
-    type: Number, //0 chưa cofirm, 1 đã confirm, 2 bị từ chối (quá hạn/ bị thủ thư từ chối)
+    type: Number, // 0 chưa cofirm, 1 đã confirm (đã lấy sách), 2 bị từ chối (quá hạn/ bị thủ thư từ chối)
     required: true,
-    default: false
+    default: 0
   }
 })
 

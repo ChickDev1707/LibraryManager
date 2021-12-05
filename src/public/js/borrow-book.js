@@ -5,9 +5,6 @@ function deleteBook(id){
 }
 
 function submit(){
-    let messageToast = document.getElementById('message-toast')
-    var toast = new bootstrap.Toast(messageToast)
-
     var dau_sach = [];
     var ma_sach= [];
     $("#borrow_table tbody td.dau_sach").each(function() {
@@ -20,22 +17,16 @@ function submit(){
 
     if(dau_sach.length <=0 || ma_sach.length <=0)
     {  
-        changeToast({
-                type: "error",
-                message: "Vui lòng chọn sách trước khi tạo phiếu!" 
-        })
-        toast.show();
+        const result = { success: false, message:"Vui lòng chọn sách trước khi tạo phiếu!"   };
+        showToast(result);
         return ;
     }
 
     var ma_doc_gia = $("#reader_id").val();
     if(ma_doc_gia == "")
     {
-        changeToast({
-                type: "error",
-                message: "Vui lòng nhập thông tin độc giả để tạo phiếu!" 
-        })
-        toast.show();
+        const result = { success: false, message:"Vui lòng nhập thông tin độc giả để tạo phiếu!"  };
+        showToast(result);
         return ;
     }
 
@@ -97,11 +88,8 @@ function submit(){
             $('#result_modal').modal('show')
         },
         error: function (e) {
-            changeToast({
-                type: "error",
-                message: "Không thành công!" 
-            })
-            toast.show();
+            const result = { success: false, message:"Không thành công!"  };
+            showToast(result);
         }
     });
 }
@@ -114,9 +102,6 @@ function checkDate(dateString){
 
 
 function subConfirm(){
-    let messageToast = document.getElementById('message-toast')
-    var toast = new bootstrap.Toast(messageToast)
-
     var ids = []
     $("input.confirm_input:checked").each(function() {
         ids.push($(this).val())
@@ -124,11 +109,8 @@ function subConfirm(){
 
     if(ids.length == 0)
     {
-        changeToast({
-            type: "error",
-            message: "Vui lòng chọn phiếu đăng ký cần xác nhận lấy sách!"
-        })
-        toast.show();
+        const result = { success: false, message:"Vui lòng chọn phiếu đăng ký cần xác nhận lấy sách!" };
+        showToast(result);
         return ;
     }   
 
@@ -152,11 +134,8 @@ function subConfirm(){
             success: function (result) {
                 console.log(result)
                 if(result.nErrors==0 && result.nSuccess==0){
-                    changeToast({
-                        type: "error",
-                        message: result.message
-                    })
-                    toast.show();
+                    const result = { success: false, message: result.message };
+                    showToast(result);
                     return ;
                 }
                 
@@ -170,19 +149,13 @@ function subConfirm(){
                 });
                
                 if(result.nSuccess.length > 0){
-                    changeToast({
-                            type: "success",
-                            message: `Xác nhận thành công phiếu có mã:\n${result.nSuccess.join(',\n')}`
-                    })
-                    toast.show();
+                    const result = { success: true, message: `Xác nhận thành công phiếu có mã:\n${result.nSuccess.join(',\n')}` };
+                    showToast(result);
                 }
                 
                 if(result.nErrors.length > 0){
-                    changeToast({
-                        type: "error",
-                        message: `Xác nhận không thành công phiếu có mã:\n${result.nSuccess.join(',\n')}`
-                    })
-                    toast.show();
+                    const result = { success: false, message: `Xác nhận không thành công phiếu có mã:\n${result.nSuccess.join(',\n')}` };
+                    showToast(result);
                 }
 
                
@@ -190,11 +163,8 @@ function subConfirm(){
                 
             },
             error: function (e) {
-                changeToast({
-                    type: "error",
-                    message: `Xác nhận không thành công`
-                })
-                toast.show();
+                const result = { success: false, message: `Xác nhận không thành công!` };
+                showToast(result);
                 return ;
             }
         });
@@ -210,13 +180,8 @@ function addBorrowBook(event){
 
     if($(`td#ma_quyen_sach_${ma_sach}`).length > 0)
     {
-        let messageToast = document.getElementById('message-toast')
-        var toast = new bootstrap.Toast(messageToast)
-        changeToast({
-                type: "error",
-                message: "Sách này đã được thêm!" 
-        })
-        toast.show();
+        const result = { success: false, message: "Sách này đã được thêm!" };
+        showToast(result);
         return false;
     }
     else{
@@ -230,13 +195,8 @@ function addBorrowBook(event){
                     var bookBorrow = result.book;
                     if($(`tr#dau_sach_${bookBorrow._id}`).length > 0)
                     {
-                        let messageToast = document.getElementById('message-toast')
-                        var toast = new bootstrap.Toast(messageToast)
-                        changeToast({
-                                type: "error",
-                                message: "Đầu sách này đã được thêm!" 
-                        })
-                        toast.show();
+                        const result = { success: false, message: "Đầu sách này đã được thêm!" }
+                        showToast(result)
                         return false;
                     }else{
                         var content =  
@@ -267,22 +227,11 @@ function addBorrowBook(event){
                     }
                    
                 }
-                let messageToast = document.getElementById('message-toast')
-                var toast = new bootstrap.Toast(messageToast)
-                changeToast({
-                        type: result.success?"success":"error",
-                        message: result.success?"Thêm thành công!":result.message 
-                })
-                toast.show();
+                showToast(result)
             },
             error: function (e) {
-                let messageToast = document.getElementById('message-toast')
-                var toast = new bootstrap.Toast(messageToast)
-                changeToast({
-                        type: "error",
-                        message: "Thêm sách không thành công!" 
-                })
-                toast.show();
+                const result = { success: false, message: "Thêm sách không thành công!" };
+                showToast(result);
             }
         })
 
@@ -290,3 +239,22 @@ function addBorrowBook(event){
     }
     
 }
+
+
+function showToast(result){
+    let messageToast = document.getElementById('message-toast');
+    messageToast.parentElement.style.zIndex = 9999;
+    messageToast.classList.remove('d-none');
+    var toast = new bootstrap.Toast(messageToast)
+    changeToast({
+            type: result.success?"success":"error",
+            message: result.message 
+    })
+    toast.show();
+}
+
+$(document).ready(function(){
+    $('#message-toast').on('hidden.bs.toast', function () {
+            $('#message-toast').addClass('d-none')
+    })
+})

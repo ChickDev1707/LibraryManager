@@ -5,6 +5,7 @@
 @import url('./elements/input.css');
 @import url('./elements/button.css');
 @import url('./elements/title.css');
+@import url('./elements/table.css');
 
 *{
   box-sizing: border-box;
@@ -12,13 +13,14 @@
 body{
   background-color: var(--background);
 }
-table thead{
-  background-color: var(--primary);
-  color: white;
-}
+
 button{
+  border: none;
   cursor: pointer;
   border-radius: .25rem;
+}
+a{
+  text-decoration: none;
 }
 
 /* logo-link */
@@ -36,5 +38,16 @@ button{
 .page-content-wrapper{
   margin: 0 10rem;
   background-color: white;
-  padding: 0 3rem;
+  padding: 2rem 3rem;
+  min-height: 100vh;
+}
+
+/* hide overflow text */
+.hide-overflow-text{
+  overflow: hidden;
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1; 
+  /* ẩn phẩn văn bản dài phía sau thay bằng dấu '...', tùy chỉnh số dòng bằng '-webkit-line-clamp' */
 }

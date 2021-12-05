@@ -18,10 +18,6 @@ const UseAccount = new mongoose.Schema({
     type: Array,
     default: []
   },
-  lich_su_dk:{
-    type: Array,
-    default: []
-  },
   sach_yeu_thich:{
     type:Array,
     default:[]

@@ -1,0 +1,9 @@
+@import url('../../components/link-tabs.css');
+
+.btn-confirm:hover{
+  color: var(--green-primary) !important;
+}
+
+.btn-deny:hover{
+  color: var(--red-primary) !important;
+}

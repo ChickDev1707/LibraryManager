@@ -14,15 +14,34 @@
   border-radius: .5rem;
   padding: 1rem;
   text-decoration: none;
-  color: var(--accent);
+  color: var(--secondary);
   margin-bottom: .5rem;
 }
 .not-item p{
   margin: 0;
 }
-.not-item .title{
+.not-item .title-wrapper{
+  display: flex;
+  align-items: center;
   text-transform: uppercase;
-  font-weight: bold;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.not-item .title-wrapper .not-img{
+  width: 2rem;
+  height: 2rem;
+}
+.not-item .title-wrapper .not-img img{
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+.not-item .title-wrapper .not-img{
+  margin-right: .5rem;
+  padding: .25rem;
+  background-color: white;
+  border-radius: 10%;
 }
 .not-item .date{
   font-size: .8rem;

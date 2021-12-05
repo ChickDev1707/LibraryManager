@@ -1,6 +1,5 @@
-
 const socket = io('http://localhost:3000/');     
-socket.on('new-notification', (notification) => {
+socket.on('librarian-new-notification', (notification) => {
   loadNotifications()
 });
 window.onload = function(){
@@ -40,18 +39,22 @@ function addNotificationFromData(notPanel, data){
     notPanel.appendChild(notItem)
   })
 }
+
 function createNotItem(notification){
   let item = createItem('a', 'not-item')
   item.href = '/librarian/xacnhantrasach'
-
   let noteWrapper = document.createElement('div')
-  let title = createItem('p', 'title', `<i class="far fa-envelope-open"></i> ${notification.tieu_de}`)
-  let content = createItem('p', 'content', `${notification.noi_dung}`)
-  let date = createItem('p', 'date', `${notification.ngay}`)
-
-  noteWrapper.appendChild(title)
-  noteWrapper.appendChild(content)
-  noteWrapper.appendChild(date)
+  
+  noteWrapper.innerHTML=`
+    <div class="title-wrapper">
+      <div class="not-img">
+        <img src="/public/assets/images/register/comment.png" alt="">
+      </div>
+      <span>${notification.tieu_de}</span>
+    </div>
+    <p class="content">${notification.noi_dung}</p>
+    <p class="date">${getTimeString(notification.ngay)}</p>
+  `
   item.appendChild(noteWrapper)
   return item
 }
@@ -61,9 +64,13 @@ function createItem(tagName, className, inner){
   if(inner) item.innerHTML = inner
   return item
 }
-$('#notification-btn').click(function(){
+$('#notification-btn').on("click", (function(){
   $.post('/librarian/api/notification', {
     newNot: true
   })
   $(this).css('background-color', 'var(--primary)')
-})
+}))
+function getTimeString(date){
+  let utcDate = new Date(date)
+  return utcDate.toUTCString()
+}

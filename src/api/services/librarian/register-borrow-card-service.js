@@ -1,102 +1,92 @@
 const Reader = require('../../models/reader.js')
 const RegisterBorrowCard = require('../../models/register-borrow-card.js')
 const BorrowReturnCard = require('../../models/borrow-return-card.js')
-const BookHead = require('../../models/book-head.js');
+const BookHead = require('../../models/book-head.js')
+const Account = require('../../models/user-account')
+const policyService = require('../../services/librarian/policy.js')
+const Policy = require('../../models/policy.js')
 
-
-// deny overdue RegisterBorrowCard
-async function denyOverdueRegisterBorrowCard(){
-    let date = new Date();
-    date.setDate(date.getDate()-3)
-    //update all quantity available of book-head before deny overdue RegisterBorrowCard
-    let registerBorrowCards = await RegisterBorrowCard.find({ngay_dang_ky: {$lte: date}, tinh_trang: 0})
-    for await (const registerBorrowCard of registerBorrowCards){
-        for await (const bookHeadId of registerBorrowCard.cac_dau_sach){
-            const filter = {_id: bookHeadId}
-            const update = {$inc: {so_luong_kha_dung: 1}}
-            await BookHead.findOneAndUpdate(filter, update, {useFindAndModify: false})
-        }
-    }
-    // deny all overdue RegisterBorrowCard
-    const filter = {ngay_dang_ky: {$lte: date}, tinh_trang: 0}
-    const update = {tinh_trang: 2}
-    await RegisterBorrowCard.find(filter).updateMany(update).exec()
+// confirm register borrow
+async function getUnconfirmedRegisterBorrowCard(){
+  let registerBorrowCard = await RegisterBorrowCard.find({tinh_trang: 0})
+    .populate('doc_gia')
+    .populate('cac_dau_sach')
+    .sort({ngay_dang_ky: 1})
+    .exec()
+  return registerBorrowCard
 }
 
-//get all RegisterBorrowCard
-async function getAllRegisterBorrowCard(){
-    let registerBorrowCard = await RegisterBorrowCard.find({tinh_trang: 0})
-        .populate('doc_gia')
-        .populate('cac_dau_sach')
-        .sort({ngay_dang_ky: 1})
-        .exec()
-    return registerBorrowCard
+async function updateRegisterBorrowCardStatus(registerBorrowCardId, status){
+  const filter = {_id: registerBorrowCardId}
+  const update = {tinh_trang: status}
+  await RegisterBorrowCard.findOneAndUpdate(filter, update, {useFindAndModify: false})
 }
 
-// deny RegisterBorrowCard
-async function denyRegisterBorrowCard(registerBorrowCardId){
-    //update quantity available of book-head
-    let registerBorrowCard = await RegisterBorrowCard.findById(registerBorrowCardId)
-    for await(const bookHeadId of registerBorrowCard.cac_dau_sach){
-        const filter = {_id: bookHeadId}
-        const update = {$inc: {so_luong_kha_dung: 1}}
-        let bookHead = await BookHead.findOneAndUpdate(filter, update , {useFindAndModify: false})
-    }
-    //deny RegisterBorrowCard
-    await RegisterBorrowCard.findByIdAndRemove(registerBorrowCardId, {useFindAndModify: false}).exec();
-}
-
-//update RegisterBorrowCard status 
-async function updateRegisterBorrowCardStatus(registerBorrowCardId){
-    const filter = {_id: registerBorrowCardId}
-    const update = {tinh_trang: 1}
-    await RegisterBorrowCard.findOneAndUpdate(filter, update, {useFindAndModify: false})
-}
-
-//create borrow-return-card & update book status
 async function createBorrowReturnCard(registerBorrowCardId){
-    const registerBorrowCard = await RegisterBorrowCard.findById(registerBorrowCardId)
-    for await (const bookHeadId of registerBorrowCard.cac_dau_sach){
-        let bookHead = await BookHead.findById(bookHeadId)
-        for await (const book of bookHead.cac_quyen_sach){
-            if(book.tinh_trang == true){ 
-                // create new borrow-return-card
-                createNewBorrowReturnCard(registerBorrowCard.doc_gia, bookHeadId, book._id)
-                // update book status
-                updateBookStatus(bookHeadId, book._id)
-                break
-            }
-        }
+  const registerBorrowCard = await RegisterBorrowCard.findById(registerBorrowCardId)
+  for await (const bookHeadId of registerBorrowCard.cac_dau_sach){
+    let bookHead = await BookHead.findById(bookHeadId)
+    for await (const book of bookHead.cac_quyen_sach){
+      if(book.tinh_trang == true){ 
+          // create new borrow-return-card
+        createNewBorrowReturnCard(registerBorrowCard.doc_gia, bookHeadId, book._id)
+          // update book status
+        updateBookStatus(bookHeadId, book._id)
+        break
+      }
     }
+  }
+}
+
+
+async function denyRegisterBorrowCard(registerBorrowCardId){
+  //update quantity available of book-head
+  let registerBorrowCard = await RegisterBorrowCard.findById(registerBorrowCardId)
+  for await(const bookHeadId of registerBorrowCard.cac_dau_sach){
+    const filter = {_id: bookHeadId}
+    const update = {$inc: {so_luong_kha_dung: 1}}
+    let bookHead = await BookHead.findOneAndUpdate(filter, update , {useFindAndModify: false})
+  }
+
+  //deny RegisterBorrowCard
+  await RegisterBorrowCard.findOneAndUpdate({_id: registerBorrowCardId},{tinh_trang: 2}).exec();
+}
+
+
+async function updateBookStatus(bookHeadId, bookId){
+  const filter = {_id: bookHeadId, "cac_quyen_sach._id": bookId}
+  const update = {"cac_quyen_sach.$.tinh_trang": false}
+  await BookHead.findOneAndUpdate(filter, update, {useFindAndModify: false}).exec()
+}
+
+async function createNewBorrowReturnCard(readerID, bookHeadID, bookId){
+  let borrowReturnCard = new BorrowReturnCard({
+    doc_gia: readerID,
+    dau_sach: bookHeadID,
+    ma_sach: bookId,
+    ngay_tra: null,
+    so_ngay_tra_tre: 0,
+  })
+  await borrowReturnCard.save()
+}
+
+// notification
+async function saveNewNotification(registerBorrowCardId, not){
+  let registerBorrowCard = await RegisterBorrowCard.findById(registerBorrowCardId).populate('doc_gia')
+  let a = registerBorrowCard.doc_gia.email
+  let readerAccount = await Account.findOne({ten_tai_khoan: registerBorrowCard.doc_gia.email})
+
+  readerAccount.thong_bao.unshift(not)
+  readerAccount.thong_bao_moi = true
+  await readerAccount.save()
 }
 
 module.exports={
-    denyOverdueRegisterBorrowCard,
-    getAllRegisterBorrowCard,
-    denyRegisterBorrowCard,
-    updateRegisterBorrowCardStatus,
-    createBorrowReturnCard
-}
-
-//-------subfunction--------
-// update book status
-async function updateBookStatus(bookHeadId, bookId){
-    const filter = {_id: bookHeadId, "cac_quyen_sach._id": bookId}
-    const update = {"cac_quyen_sach.$.tinh_trang": false}
-    await BookHead.findOneAndUpdate(filter, update, {useFindAndModify: false}).exec()
-}
-
-//create borrow-return-card
-async function createNewBorrowReturnCard(readerID, bookHeadID, bookId){
-    let borrowReturnCard = new BorrowReturnCard({
-        doc_gia: readerID,
-        dau_sach: bookHeadID,
-        ma_sach: bookId,
-        ngay_muon: null, 
-        ngay_tra: null,
-        so_ngay_tra_tre: 0,
-        tinh_trang: 0, 
-    })
-    await borrowReturnCard.save()
+  getUnconfirmedRegisterBorrowCard,
+  updateRegisterBorrowCardStatus,
+  createBorrowReturnCard,
+  denyRegisterBorrowCard,
+  saveNewNotification
+  // denyOverdueRegisterBorrowCard, 
 }
 
