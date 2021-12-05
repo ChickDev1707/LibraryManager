@@ -137,8 +137,13 @@ function saveNewBook(event){
         if(!$(form).isValid())
         {
                 $(form).addClass("was-validated")
-                const result = {success: false, message: "Vui lòng điển đủ thông tin!" }
-                showToast(result)
+                let messageToast = document.getElementById('message-toast')
+                var toast = new bootstrap.Toast(messageToast)
+                changeToast({
+                        type: "warning",
+                        message: "Vui lòng điển đủ và chính xác thông tin!" 
+                })
+                toast.show();
                 return;
         };
 

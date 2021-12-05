@@ -31,7 +31,7 @@
             <h4 scope="col" class="">
                 Nhà xuất bản: <%= book.nha_xuat_ban %></h4>
             <h4 scope="col" class="">
-                Ngày nhập sách: <%= book.ngay_nhap.toLocaleDateString('en-GB')%>
+                Ngày nhập sách: <%= book? new Date(book.ngay_nhap).toLocaleDateString('en-GB').split('/').reverse().join('-'):''%>
             </h4>
             <h4 scope="col" class="">
                 Giá: <%= Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(book.gia) %>

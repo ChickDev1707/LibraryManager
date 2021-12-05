@@ -31,6 +31,16 @@ function submit(){
     }
 
     var ngay_muon = $("#ngay_muon").val();
+
+    if(!checkDate(ngay_muon)){
+        changeToast({
+            type: "error",
+            message: "Ngày mượn không được vượt quá thời gian hiện tại!" 
+        })
+        toast.show();
+        return ;
+    }
+
     $.ajax({
         type: "POST",
         contentType: "application/json",
@@ -39,6 +49,15 @@ function submit(){
         dataType: 'json',
         cache: false,
         success: function (result) {
+            if(result.error){
+                changeToast({
+                    type: "error",
+                    message: result.message 
+                })
+                toast.show();
+                return ;
+            }
+
             $("table#result_table tbody").empty();
             result.nSuccess.map((item)=>{
                 var row = `
@@ -75,6 +94,12 @@ function submit(){
     });
 }
 
+function checkDate(dateString){
+    var date = new Date(dateString);
+    var toDate = new Date();
+    return date <= toDate
+}
+
 
 function subConfirm(){
     var ids = []
@@ -90,6 +115,14 @@ function subConfirm(){
     }   
 
     var ngayMuon = $("#ngay_muon").val()
+    if(!checkDate(ngayMuon)){
+        changeToast({
+            type: "error",
+            message: "Ngày lấy không được vượt quá thời gian hiện tại!" 
+        })
+        toast.show();
+        return ;
+    }
     $.ajax({
             type: "POST",
             contentType: "application/json",
@@ -184,7 +217,7 @@ function addBorrowBook(event){
                                 </td>
                                 <td scope="col" class="align-middle text-wrap" >${bookBorrow.gia}</td>
                                 <td class="align-middle text-wrap">
-                                    <button class="icon-button delete-button" onclick="deleteBook('${bookBorrow._id}')">
+                                    <button class="icon-btn danger" onclick="deleteBook('${bookBorrow._id}')">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </td> 

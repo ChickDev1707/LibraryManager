@@ -7,6 +7,7 @@ const UserAccount = require('../../models/user-account');
 const Policy = require("../../models/policy");
 
 const { getBorrowBookPolicies, getFinePolicies } = require('./policy');
+const RegisterBorrowCard = require('../../models/register-borrow-card.js')
 
 
 //function 
@@ -368,7 +369,6 @@ async function getBookBorrowByID(readerId, childId){
             
     }
 }
-
 
 async function countBorrowRegister(readerId){
     const countBorrow = await BorrowReturnCard.countDocuments({"doc_gia": readerId, "ngay_tra": null});
