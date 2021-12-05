@@ -4,10 +4,7 @@ const Reader = require('../../models/reader');
 const BookHead = require('../../models/book-head');
 const RegisterBorrowCard = require('../../models/register-borrow-card');
 const UserAccount = require('../../models/user-account');
-const Policy = require("../../models/policy");
-
 const { getBorrowBookPolicies, getFinePolicies } = require('./policy');
-const RegisterBorrowCard = require('../../models/register-borrow-card.js')
 
 
 //function 
