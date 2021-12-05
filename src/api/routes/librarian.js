@@ -24,6 +24,9 @@ router.route('/books')
       .get(bookController.all)
       .post(bookMiddleWares.checkNewBook, bookController.saveBook)
 
+router.route('/books/import')
+      .post(bookController.uploadBook.single('uploadfile'), bookController.importBooks)      
+
 router.route('/books/:id')
       .get(bookController.bookDetail)
       .put(bookMiddleWares.checkUpdateBook, bookController.updateBook)

@@ -1,10 +1,14 @@
 const ObjectId = require('mongodb').ObjectId;
+const fs=require('fs')
+const path=require('path')
+const excelToJson = require('convert-excel-to-json');
+var XLSX = require('xlsx')
+const urlHelper=require('../../helpers/url')
 
 const Book = require('../../models/book-head')
 const BookCategory = require('../../models/book-category')
-
+const {checkBody} = require('../../middlewares/book-check')
 const imageMimeTypes = ['image/jpeg', 'image/png', 'images/gif']
-
 
 
 //Get all book
@@ -184,6 +188,7 @@ function saveBookCover(book, avatarEncoded){
     if (avatarEncoded == null) 
         return
     const avatar = JSON.parse(avatarEncoded)
+    
     if (avatar != null && imageMimeTypes.includes(avatar.type)) {
         book.bf_anh_bia = new Buffer.from(avatar.data, 'base64')
         book.kieu_anh_bia = avatar.type
@@ -208,6 +213,82 @@ async function softDeleteBook(id){
     }
 }
 
+async function importBooksByExcel(reqFile){
+
+    const uploadPath = path.join('./src/public/uploads/addBook',reqFile.originalname+'')
+    var workbook = XLSX.readFile(uploadPath);
+    var sheet_name_list = workbook.SheetNames;
+    var xlData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]], 
+        {
+            header:["stt", "ten_dau_sach", "the_loai", "tac_gia", "nha_xuat_ban", "nam_xuat_ban", "ngay_nhap", "gia", "so_luong", "tom_tat"],
+            raw: false,
+            range: 1
+        });
+
+    var defaultImg = "";
+    var categories  = [];
+    try{
+        const defaultImgPath = path.join(__dirname.split('\\').slice(0, -3).join('\\'),'/public/assets/images/default-book-cover.png')
+        defaultImg = JSON.stringify(base64_encode(defaultImgPath));
+        categories = await BookCategory.find();
+    }catch(err){
+        console.log(err);
+        return;
+    }
+
+    for await (const bookItem of xlData){
+        if(checkBody( bookItem).error){
+            continue;
+        }  
+
+        try{
+            const book = new Book({
+                ten_dau_sach: bookItem.ten_dau_sach,
+                the_loai: categories.find(item=>item.ten_the_loai == bookItem.the_loai)._id,
+                tac_gia: bookItem.tac_gia,
+                nha_xuat_ban: bookItem.nha_xuat_ban,
+                nam_xuat_ban: parseInt(bookItem.nam_xuat_ban),
+                ngay_nhap: new Date(bookItem.ngay_nhap),
+                gia: parseInt(bookItem.gia),
+                so_luong: parseInt(bookItem.so_luong),
+                so_luong_kha_dung: parseInt(bookItem.so_luong),
+                tom_tat: bookItem.tom_tat
+            })
+
+
+            //Add book into cac_quyen_sach of BookHead
+            for(let i=0;i<book.so_luong;i++)
+            {
+                var bookChild = {
+                    _id: new ObjectId(),
+                    tinh_trang: true
+                }
+                book.cac_quyen_sach.push(bookChild)
+            } 
+
+            //Add default book cover
+            saveBookCover(book, defaultImg);
+            await book.save()
+
+        }catch(err){
+            console.log(err);
+        }     
+    }
+     
+    fs.unlink(uploadPath,function(err){
+        if(err) console.log(err);
+    });
+    return true;
+}
+
+//encode image 
+function base64_encode(file) {
+    var file_buffer   = fs.readFileSync(file); 
+    var type = 'image/' +  file.split('.').pop()
+    return {data: file_buffer.toString('base64'), type: type}
+}
+
+
 module.exports.getBookByID = getBookByID;
 module.exports.getAllBook = getAllBook;
 module.exports.getBookCategory = getBookCategory;
@@ -216,3 +297,4 @@ module.exports.deleteBookData = deleteBookData;
 module.exports.updateBookData = updateBookData;
 module.exports.deleteBookChild = deleteBookChild;
 module.exports.addBookChild = addBookChild;
+module.exports.importBooksByExcel = importBooksByExcel;

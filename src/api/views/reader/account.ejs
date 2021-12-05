@@ -1,31 +1,47 @@
 <%- contentFor('head') %> 
+<link rel="stylesheet" href="../../../public/css/pages/user/account.css">
 <title>Tài khoản</title>
-<link rel="stylesheet" href="/public/css/pages/user/account.css">
-<script defer src="/public/js/account.js"></script>
-<script defer src="/public/js/static-tabs.js"></script>
 
 <%- contentFor('body') %> 
 <%- include('../partials/header/reader-header.ejs') %>
-<div class="page-content-wrapper">
-    <h2 class="page-title">Thông tin tài khoản</h2>
-    <div class="main-container">
-        <div class="avatar-container">   
-            <form action="/reader/account" method="put" id="update_avatar_form">
+<div class="page-content-wrapper profile-container">
+    <div class="row justify-content-lg-center pt-4 ">
+        <div class="col-lg-6 col-md-6 col-sm-12 mx-3 d-flex flex-column justify-content-lg-start align-content-end align-item-end">   
+            <form  
+                action="/reader/account" 
+                method="put"
+                id="update_avatar_form"
+                class="position-relative shadow"
+            >
                 <input class="filepond info" type="file" accept="image/*"  id="anh_bia" name="anh_bia">
-                <button class="submit-btn btn-save-avatar  d-none" type="submit">Lưu ảnh</button>
+                <button class="icon-text-btn btn-save-avatar d-none px-5" type="submit">Lưu</button>
             </form>
+            
         </div>
-        <div class="edit-panel-main tabs">
-            <div class="nav-btn">
-                <button data-nav-index="1">Thông tin cá nhân</button>
-                <button data-nav-index="2">Mật khẩu</button>
-                <button data-nav-index="3">Thư viện</button>
-            </div>
-            <div class="nav-content">
-                <div class="content">
-                    <form class="container" action="/reader/account" method="PUT" id="update_info_form">
-                        <div class="d-inline-flex justify-content-between edit-header">  
-                            <h5 class="text-start my-auto">Thông tin liên hệ</h5> 
+        <div class="col-lg-5 col-md-6 col-sm-12 mx-3 d-flex flex-column justify-content-start align-content-start align-item-start">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profileTab" type="button" role="tab" aria-controls="home" aria-selected="true">Thông tin cá nhân</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="account-tab" data-bs-toggle="tab" data-bs-target="#accountTab" type="button" role="tab" aria-controls="profile" aria-selected="false">Mật khẩu</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="library-tab" data-bs-toggle="tab" data-bs-target="#libaryTab" type="button" role="tab" aria-controls="contact" aria-selected="false">Thư viện</button>
+                </li>
+              </ul>
+              <div class="tab-content" id="ex1-content">
+                <div
+                  class="tab-pane fade show active" id="profileTab" role="tabpanel" aria-labelledby="ex1-tab-1"
+                >
+                    <form
+                        action="/reader/account" 
+                        method="PUT"
+                        id="update_info_form"
+                        class="row"
+                    >
+                        <div class="d-inline-flex justify-content-between info-header">  
+                            <h4 class="text-start my-auto"> Thông tin cá nhân của bạn</h4> 
                             <button class="icon-btn" type="button" onclick="editProfile()" id="btn-edit-pro">
                                 <i class="fas fa-pencil-alt"></i>
                             </button>
@@ -33,127 +49,201 @@
                                 <i class="fas fa-times"></i>
                             </button>
                         </div>
-                        <div class="row input-row">
-                            <div class="col-8 input-item">
-                                <label for="ho_ten">Họ và Tên:</label>
-                                <input class=" info" id="ho_ten" type="text" name="ho_ten" value="<%= reader.ho_ten %>" placeholder="Họ và tên" required disabled >
-                            </div>
-                            <div class="col input-item">
-                                <label for="gioi_tinh"> Giới tính:</label>
-                                <select class="info" name="gioi_tinh" id="gioi_tinh" aria-placeholder="Giới tính" required disabled >
-                                    <option value="true" <%= reader.gioi_tinh == true?"selected": "" %> >Nam</option>
-                                    <option value="false" <%= reader.gioi_tinh == true?"selected": "" %> >Nữ</option>
-                                </select>
-                            </div>
+        
+                        <div class="input-item mt-3">
+                            <label class="" for="ho_ten">
+                                <strong>Họ và Tên:</strong>
+                            </label>
+                            <input
+                                class=" info"
+                                id="ho_ten"
+                                type="text"
+                                name="ho_ten"
+                                value="<%= reader.ho_ten %>"
+                                placeholder="Họ và tên"
+                                required
+                                disabled
+                            >
                         </div>
-                        <div class="row input-row">
-                            <div class="input-item">
-                                <label  for="ngay_sinh"> Ngày sinh:</label>
-                                <input class=" info" id="ngay_sinh" type="date" name="ngay_sinh" placeholder="Ngày sinh" required disabled
-                                    value="<%=reader.ngay_sinh.toLocaleDateString('en-GB').split('/').reverse().join('-') %>"  >
-                            </div>
+                        
+                        <div class="input-item mt-4">
+                            <label for="gioi_tinh">
+                                <strong>Giới tính:</strong>
+                            </label>
+                            <select 
+                                class="info" 
+                                name="gioi_tinh" 
+                                id="gioi_tinh" 
+                                aria-placeholder="Giới tính" 
+                                required
+                                disabled
+                            >
+                                <option value="true" <%= reader.gioi_tinh == true?"selected": "" %> >Nam</option>
+                                <option value="false" <%= reader.gioi_tinh == true?"selected": "" %> >Nữ</option>
+                            </select>
                         </div>
-                        <div class="row input-row">
-                            <div class="input-item">
-                                <label for="email">Email:</label>
-                                <input class=" info" id="email" type="email" name="email" value="<%= reader.email %>" placeholder="Email" required disabled>
-                            </div>
+        
+                        <div class="input-item mt-4">
+                            <label  for="ngay_sinh">
+                                <strong>Ngày sinh:</strong>
+                            </label>
+                            <input class=" info" 
+                                id="ngay_sinh" 
+                                type="date" 
+                                name="ngay_sinh" 
+                                value="<%=reader.ngay_sinh.toLocaleDateString('en-GB').split('/').reverse().join('-') %>" 
+                                placeholder="Ngày sinh" 
+                                required
+                                disabled
+                            >
                         </div>
-                        <div class="row input-row">
-                            <div class="input-item">
-                                <label for="dia_chi">Địa chỉ:</label>
-                                <textarea rows="4" class="info" id="dia_chi" type="text" name="dia_chi" value="<%=reader.dia_chi %>" placeholder="Địa chỉ" required disabled></textarea>
-                            </div>
+        
+                        <div class="input-item mt-4">
+                            <label for="email">
+                                <strong>Email:</strong>
+                            </label>
+                            <input 
+                                class=" info" 
+                                id="email" 
+                                type="email" 
+                                name="email"
+                                value="<%= reader.email %>"
+                                placeholder="Email" 
+                                required
+                                disabled
+                            >
                         </div>
-                        <div class="d-flex flex-row justify-content-end" >
-                            <button class="submit-btn btn-save-info d-none">Lưu</button>
+        
+                        <div class="input-item mt-4">
+                            <label for="dia_chi">
+                                <strong>Địa chỉ:</strong>
+                            </label>
+                            <input 
+                                class="info" 
+                                id="dia_chi" 
+                                type="text" 
+                                name="dia_chi" 
+                                value="<%=reader.dia_chi %>" 
+                                placeholder="Địa chỉ" 
+                                required
+                                disabled
+                            >
                         </div>
+        
+                        <div class="d-flex flex-row justify-content-end mt-4" >
+                            <button class="icon-text-btn btn-save-info d-none px-5">Lưu</button>
+                        </div>            
                     </form>
                 </div>
-                <div class="content">
-                    <form class="container" action="/reader/account" method="PUT"  id="update_pass_form">
-                        <div class="d-inline-flex justify-content-between edit-header">  
-                            <h5 class="text-start my-auto">Thay đổi mật khẩu</h5> 
-                            <button class="icon-btn btn-edit-pass" type="button" onclick="editPassword()" id="btn-edit-pass">
+                <div class="tab-pane fade" id="accountTab" role="tabpanel" aria-labelledby="ex1-tab-2">
+                    <form 
+                    class="row pass_container"
+                    action="/reader/account" 
+                    method="PUT"  
+                    id="update_pass_form"
+                    >
+                        <div class="mb-2 d-inline-flex justify-content-between password-header">  
+                            <h4 class="text-start my-auto">Thay đổi mật khẩu tài khoản của bạn</h4> 
+                            <button class="icon-btn btn-edit-pass d-none" type="button" onclick="editPassword()" id="btn-edit-pass">
                                 <i class="fas fa-pencil-alt"></i>
                             </button>
                             <button class="icon-btn d-none" type="button" onclick="cancelEditPass(false)" id="btn-cancel-edit-pass">
                                 <i class="fas fa-times"></i>
                             </button>
                         </div>
-                        <div class="row input-row">
-                            <div class="col input-item ">
-                                <label for="currentPass">Mật khẩu hiện tại:</label>
-                                <input class=" pass" id="currentPass" type="password" name="currentPass" placeholder="Mật khẩu hiện tại" required disabled >
-                            </div>
+        
+                        <div class="input-item mt-3">
+                            <label for="currentPass">
+                                <strong>Mật khẩu hiện tại:</strong>
+                            </label>
+                            <input 
+                                class=" pass" 
+                                id="currentPass" 
+                                type="password" 
+                                name="currentPass" 
+                                placeholder="Mật khẩu hiện tại"
+                                required
+                                    
+                            >
                         </div>
-                        <div class="row input-row">
-                            <div class="col input-item ">
-                                <label for="newPass"> Mật khẩu mới:</label>
-                                <input class=" pass" id="newPass" type="password" name="newPass" placeholder="Mật khậu mới" requireddisabled>
-                            </div>
+        
+                        <div class="input-item mt-4">
+                            <label for="newPass">
+                                <strong>Mật khẩu mới:</strong>
+                            </label>
+                            <input 
+                                class=" pass" 
+                                id="newPass" 
+                                type="password" 
+                                name="newPass" 
+                                placeholder="Mật khậu mới"
+                                required
+                                
+                            >
                         </div>
-                        <div class="row input-row">
-                            <div class="col input-item ">
-                                <label for="rePass">Xác nhận:</label>
-                                <input class=" pass" id="rePass" type="password" name="rePass" placeholder="Xác nhận"requireddisabled    >
-                            </div>
+                        
+                        <div class="input-item mt-4">
+                            <label for="rePass">
+                                <strong>Xác nhận:</strong>
+                            </label>
+                            <input 
+                                class=" pass" 
+                                id="rePass" 
+                                type="password" 
+                                name="rePass" 
+                                placeholder="Xác nhận"
+                                required
+                                    
+                            >
                         </div>
-                        <div class="d-flex flex-row justify-content-end mt-3" >
-                            <button class="submit-btn btn-save-pass d-none">Lưu</button>
+        
+                        <div class="d-flex flex-row justify-content-end mt-4" >
+                            <button class="icon-text-btn btn-save-pass px-5">Lưu</button>
                         </div>
                     </form>
                 </div>
-                <div class="content">
-                    <div class="container">
-                        <h4 class="medium-title">Thông tin thư viện của bạn</h4>
-                        <div class="row">
-                            <div class="lib-info-item">
-                              <div class="img">
-                                <img src="/public/assets/images/account/money.png" alt="">
-                              </div>
-                              <div class="info">
-                                <h6>Tiền nợ thư viện (vnđ)</h6>
-                                <h3>50</h3>
-                              </div>
-                            </div>
+                <div class="tab-pane fade library-container" id="libaryTab" role="tabpanel" aria-labelledby="ex1-tab-3">
+                    <div>
+                        <h4>Thông tin thư viện của bạn</h4>
+                    </div>
+                    <div class="my-3 library-content shadow-sm">
+                        <div class="icon-content">
+                            <img src="/public/assets/images/account/money.png" alt="">
                         </div>
-                        <div class="row">
-                            <div class="lib-info-item">
-                                <div class="img">
-                                    <img src="/public/assets/images/account/duration.png" alt="">
-                                  </div>
-                                  <div class="info">
-                                    <h6>Thời hạn thẻ (ngày)</h6>
-                                    <h3>150</h3>
-                                </div>
-                            </div>
+                        <div class="text-content">
+                              <h5><strong>Tiền nợ thư viện (vnđ)</strong></h5>  
+                              <h2> <strong><%=reader.tien_no %></strong></h2>
                         </div>
-                        <div class="row">
-                            <div class="lib-info-item">
-                                <div class="img">
-                                    <img src="/public/assets/images/account/card.png" alt="">
-                                  </div>
-                                  <div class="info">
-                                    <h6>Số sách đang mượn (cuốn)</h6>
-                                    <h3>5</h3>
-                                </div>
-                            </div>
+                    </div>
+                    <div class="my-4 library-content shadow-sm">
+                        <div class="icon-content">
+                            <img src="/public/assets/images/account/duration.png" alt="">
                         </div>
-                        <div class="row">
-                            <div class="lib-info-item">
-                                <div class="img">
-                                    <img src="/public/assets/images/account/edit.png" alt="">
-                                  </div>
-                                  <div class="info">
-                                    <h6>Số sách đăng ký (cuốn)</h6>
-                                    <h3>2</h3>
-                                </div>
-                            </div>
+                        <div class="text-content">
+                                <h5><strong>Thời hạn thẻ (ngày)</strong></h5>  
+                                <h2><strong>150</strong></h2>
+                        </div>
+                    </div>
+                    <div class="my-4 library-content shadow-sm">
+                        <div class="icon-content">
+                            <img src="/public/assets/images/account/card.png" alt="">
+                        </div>
+                        <div class="text-content">
+                                <h5><strong>Số sách đang mượn (cuốn)</strong></h5> 
+                                <h2><strong><%=reader.borrow %></strong></h2>
+                        </div>
+                        </div>
+                    <div class="my-4 library-content shadow-sm">
+                        <div class="icon-content">
+                            <img src="/public/assets/images/account/edit.png" alt="">
+                        </div>
+                        <div class="text-content">
+                            <h5><strong>Số sách đăng ký (cuốn)</strong></h5> 
+                            <h2> <strong><%=reader.register %></strong></h2>
                         </div>
                     </div>
                 </div>
-            </div>
+              </div>         
         </div>
     </div>
 </div> 
@@ -162,3 +252,4 @@
         background-image: url('<%=reader.anh_bia %>');
     }
 </style>
+<script src="/public/js/account.js"></script>

@@ -100,8 +100,14 @@ function submitEdit(event){
                                 var ngay = new Date(book.ngay_nhap)
                                 $(`tr#row_${result.book._id} td.name`).html(book.ten_dau_sach);
                                 $(`tr#row_${result.book._id} td.date`).html(ngay.toLocaleDateString('en-GB'));
+                                $(`tr#row_${result.book._id} td.category`).html(book.the_loai.ten_the_loai);
+                                $(`tr#row_${result.book._id} td.tac_gia`).html(book.tac_gia);
+                                $(`tr#row_${result.book._id} td.nha_xuat_ban`).html(book.nha_xuat_ban);       
+                                $(`tr#row_${result.book._id} td.nam_xuat_ban`).html(book.nam_xuat_ban);
                                 $(`tr#row_${result.book._id} td.price`).html(book.gia);
                                 $(`tr#row_${result.book._id} td.quantity`).html(book.so_luong);
+                                $(`tr#row_${result.book._id} td.tom_tat`).html(book.tom_tat);
+                                
                                 
                                 var url = 'url(' + result.anh_bia + ')'  
                                 $("button.filepond--file-action-button.filepond--action-remove-item").click()
@@ -112,23 +118,13 @@ function submitEdit(event){
 
                         }
 
-                        let messageToast = document.getElementById('message-toast')
-                        var toast = new bootstrap.Toast(messageToast)
-                        changeToast({
-                                type: result.success?"success":"error",
-                                message: result.message 
-                        })
-                        toast.show();
+                        console.log(result);
+                        showToast(result)
                         
                 },
                 error: function (err) {
-                        let messageToast = document.getElementById('message-toast')
-                        var toast = new bootstrap.Toast(messageToast)
-                        changeToast({
-                            type: "error",
-                            message: "Cập nhật không thành công!" 
-                        })
-                        toast.show();
+                        const result = {success: false, message: "Cập nhật không thành công!" }
+                        showToast(result)
                 }
         })
         return false;
@@ -141,14 +137,8 @@ function saveNewBook(event){
         if(!$(form).isValid())
         {
                 $(form).addClass("was-validated")
-
-                let messageToast = document.getElementById('message-toast')
-                var toast = new bootstrap.Toast(messageToast)
-                changeToast({
-                        type: "warning",
-                        message: "Vui lòng điển đủ thông tin!" 
-                })
-                toast.show();
+                const result = {success: false, message: "Vui lòng điển đủ thông tin!" }
+                showToast(result)
                 return;
         };
 
@@ -159,26 +149,13 @@ function saveNewBook(event){
                 timeout: 60000,
                 success: function (result) {
                         if(result.success){
-                                $("#all_modal").append(result.newModal)
-                                $("#all-book-table tbody").append(result.newRow) 
-                        }
-                        
-                        let messageToast = document.getElementById('message-toast')
-                        var toast = new bootstrap.Toast(messageToast)
-                        changeToast({
-                                type: result.success?"success":"error",
-                                message: result.message 
-                        })
-                        toast.show();
+                                window.location.href = result.redirect
+                        }         
+                        showToast(result)
                 },
                 error: function (e) {
-                        let messageToast = document.getElementById('message-toast')
-                        var toast = new bootstrap.Toast(messageToast)
-                        changeToast({
-                            type: "error",
-                            message: "Thêm không thành công!" 
-                        })
-                        toast.show();
+                        const result = {success: false, message: "Thêm không thành công!"}
+                        showToast(result)
                 }
         })
 
@@ -201,23 +178,12 @@ function deleteBook(id){
                         $(`tr#row_${id}`).remove();   
                     }
 
-                    let messageToast = document.getElementById('message-toast')
-                    var toast = new bootstrap.Toast(messageToast)
-                    changeToast({
-                        type: result.success?"success":"error",
-                        message: result.message 
-                    })
-                    toast.show();
+                    showToast(result)
                         
                 },
                 error: function (e) {
-                        let messageToast = document.getElementById('message-toast')
-                        var toast = new bootstrap.Toast(messageToast)
-                        changeToast({
-                            type: "error",
-                            message: "Xoá không thành công!" 
-                        })
-                        toast.show();
+                        const result = {success: false, message: "Xoá không thành công!"}
+                        showToast(result)
                 }
         })
 }
@@ -236,26 +202,14 @@ function deleteChild(childId, id){
                                 $(`#edit_modal_${id} #so_luong`).val(book.so_luong);
                                 $(`tr#row_${id} td.quantity`).html(book.so_luong);
                                 $(`#edit_modal_${id} tr#row_child_${childId}`).remove();
-
                         }
                 
-                        let messageToast = document.getElementById('message-toast')
-                        var toast = new bootstrap.Toast(messageToast)
-                        changeToast({
-                                type: result.success?"success":"error",
-                                message: result.message 
-                        })
-                        toast.show();
+                        showToast(result)
                         
                 },
                 error: function (e) {
-                        let messageToast = document.getElementById('message-toast')
-                        var toast = new bootstrap.Toast(messageToast)
-                        changeToast({
-                            type: "error",
-                            message: "Xoá không thành công!" 
-                        })
-                        toast.show();
+                        const result = {success: false, message: "Xoá không thành công!"}
+                        showToast(result)
                 }
         })
 
@@ -299,23 +253,12 @@ function addChildBook(id){
                     })     
                 }
 
-                let messageToast = document.getElementById('message-toast')
-                var toast = new bootstrap.Toast(messageToast)
-                changeToast({
-                type: result.success?"success":"error",
-                message: result.message 
-                })
-                toast.show();
+                showToast(result)
                 
         },
         error: function (e) {
-                let messageToast = document.getElementById('message-toast')
-                var toast = new bootstrap.Toast(messageToast)
-                changeToast({
-                    type: "error",
-                    message: "Thêm không thành công!" 
-                })
-                toast.show();
+                const result = {success: false, message: "Thêm không thành công!"}
+                showToast(result)
         }
 
     })
@@ -327,4 +270,44 @@ $(document).ready(function(){
                var id = e.target.id.split('-')[1];
                editInfo(id)
         })
+
+        $('#message-toast').on('hidden.bs.toast', function () {
+                $('#message-toast').addClass('d-none')
+        })
 })
+
+function ExportToExcel(type, fn, dl) {
+       
+        var dataTable = $("#all-book-table").clone().removeAttr('id');
+        dataTable = $(dataTable);
+        dataTable.attr('id', "table-data-export");
+        dataTable.addClass('d-none');
+        dataTable.find('th.change-col').remove();
+        dataTable.find('td.change-col').remove();
+        $(dataTable.find('td.date')).each(function() {
+                $( this ).text(  $( this ).text().split('/').reverse().join('-'))
+        });
+        dataTable.appendTo('div.table-responsive');
+        
+      
+
+        var elt = document.getElementById('table-data-export');
+        var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1", cellDates:true ,dateNF:'yyyy-mm-dd'});
+        dataTable.remove();
+        return dl ?
+        XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }):
+        XLSX.writeFile(wb, fn || ('Manage book.' + (type || 'xlsx')));
+        
+}
+
+function showToast(result){
+        let messageToast = document.getElementById('message-toast');
+        messageToast.parentElement.style.zIndex = 9999;
+        messageToast.classList.remove('d-none');
+        var toast = new bootstrap.Toast(messageToast)
+        changeToast({
+                type: result.success?"success":"error",
+                message: result.message 
+        })
+        toast.show();
+}

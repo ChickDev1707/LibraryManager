@@ -23,10 +23,9 @@ async function borrowForm(req, res, next){
         }else{
 
             const reader = await findReader(option, searchString);
-            const books = await findBook();
 
             res.render('librarian/borrow-book/new',{
-                books: reader?books:null,
+                books: null,
                 reader: reader,
                 option: option,
                 searchString: searchString,

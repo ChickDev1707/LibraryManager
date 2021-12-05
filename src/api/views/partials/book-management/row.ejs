@@ -1,10 +1,15 @@
 <tr id="row_<%=book._id%>">
-  <td scope="col" class="name"><%= index+1 %></td>
+  <td scope="col" class="index"><%= index+1 %></td>
   <td scope="col" class="name"><%= book.ten_dau_sach %></td>
+  <td scope="col" class="category d-none" ><%= book.the_loai.ten_the_loai%></td>
+  <td scope="col" class="author d-none" ><%= book.tac_gia%></td>
+  <td scope="col" class="nha_xuat_ban d-none" ><%= book.nha_xuat_ban%></td>
+  <td scope="col" class="nam_xuat_ban d-none" ><%= book.nam_xuat_ban%></td>
   <td scope="col" class="date"><%= book.ngay_nhap.toLocaleDateString('en-GB')%></td>
   <td scope="col" class="price"><%= book.gia %></td>
   <td scope="col" class="quantity"><%= book.so_luong %></td>
-  <td scope="col" class="action-container">  
+  <td scope="col" class="tom_tat d-none" ><%= book.tom_tat%></td>
+  <td scope="col" class="action-container change-col">  
     <form action="/book-head/<%= book._id %>" method="GET">
       <button type="submit" class="icon-btn"><i class="far fa-question-circle"></i></button>  
     </form>

@@ -16,9 +16,14 @@ async function checkNewBook(req, res, next){
 }
 
 async function checkUpdateBook(req, res, next){
-    let result = checkBody(req.body, false)
-    if(result.error)
-        return res.json({success: false, message: result.message})
+    
+    if(req.body.ten_dau_sach!=undefined){
+        let result = checkBody(req.body, false)
+        if(result.error)
+            return res.json({success: false, message: result.message})
+        else
+            return next();
+    } 
     else
         return next()    
 }
@@ -37,11 +42,9 @@ function checkBody(body, checkQuantity)
     )
         return {error: true, message: 'Vui lòng điển đầy đủ thông tin sách!'}
     else {
-
-        
-       
+ 
         if(isNaN(Date.parse(body.ngay_nhap)))
-            return {error: true, message: 'Vui lòng nhập đúng định dạng ngày!'}
+            return {error: true, message: 'Vui lòng nhập đúng định dạng ngày!,', date: Date.parse(body.ngay_nhap)}
 
         if(isNaN(body.nam_xuat_ban) || !Number.isInteger(parseFloat(body.nam_xuat_ban)) || parseFloat(body.nam_xuat_ban) < 0 )
             return {error: true, message: 'Vui lòng nhập đúng năm xuất bản'}
@@ -82,5 +85,6 @@ function checkYear(yearString){
 
 module.exports = {
     checkNewBook,
-    checkUpdateBook
+    checkUpdateBook,
+    checkBody
 } 
