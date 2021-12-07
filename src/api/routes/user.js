@@ -2,6 +2,8 @@ const express = require('express');
 const userAuth = require('../middlewares/user-auth.js')
 const authController = require('../controllers/user/auth.js');
 const searchBookController = require('../controllers/user/search-book.js')
+const urlHelper = require('../helpers/url.js')
+
 
 module.exports = function(passport){
   const router = express.Router();
@@ -9,12 +11,16 @@ module.exports = function(passport){
   // index
   router.route('/').get(userAuth.decideUserPage, searchBookController.searchBook)
 
+  const redirectUrl = urlHelper.getEncodedMessageUrl(`/login/`, {
+    type: 'error',
+    message: 'Sai tên đăng nhập hoặc mật khẩu'
+  })
   // login route
   router.route('/login')
         .get(userAuth.checkNotAuthenticated, authController.sendLoginPage)
         .post(userAuth.checkNotAuthenticated, passport.authenticate('local', {
           successRedirect: '/',
-          failureRedirect: '/login',
+          failureRedirect: redirectUrl,
           failureFlash: true
         }))
 

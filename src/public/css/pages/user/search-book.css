@@ -43,6 +43,7 @@
     padding: .5rem;
     object-fit: cover;
     border-radius: .25rem;
+    border: 1px solid gainsboro;
 }
 
 .grid-item:hover{

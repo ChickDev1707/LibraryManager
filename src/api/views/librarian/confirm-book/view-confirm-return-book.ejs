@@ -35,7 +35,7 @@
             <input type="checkbox" name="borrowReturnCard" value="<%= borrowReturnCard[i]._id %>">
             <label>Mã phiếu: <%= borrowReturnCard[i]._id %></label>
             <label>Tên độc giả: <%= allNameReader[i] %></label>
-            <label>Ngày mượn: <%= borrowReturnCard[i].ngay_muon.toISOString().split('T')[0] %></label><br>
+            <label>Ngày mượn: <%= borrowReturnCard[i].ngay_muon.split('T')[0] %></label><br>
         <% } %> 
 
     <% } %> 
