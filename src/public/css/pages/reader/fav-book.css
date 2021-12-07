@@ -13,7 +13,7 @@
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 .fav-book-item .info{
-  margin-left: 1rem;
+  margin-left: 7rem;
   flex: 1;
 }
 .fav-book-item .info>*{
