@@ -1,0 +1,70 @@
+footer{
+  background-color: var(--secondary);
+  color: white;
+}
+footer .top{
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+footer .bot{
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+footer .top{
+  display: flex;
+  justify-content: space-between;
+}
+footer .top .text-container{
+  max-width: 20rem;
+}
+footer .top .link-container{
+  display: flex;
+  flex-direction: column;
+}
+footer .top .link-container ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 1rem;
+  display: flex;
+}
+footer .top .social-media-container {
+  display: flex;
+  justify-content: flex-end;
+}
+footer .top .social-media-container div{
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 50%;
+  margin-left: 1rem;
+  font-size: 1.2rem;
+  line-height: 2.5rem;
+  text-align: center;
+  color: var(--primary);
+  background-color: transparent;
+  border: 2px solid var(--primary);
+  transition: .2s;
+}
+footer .top .social-media-container div:hover{
+  color: white;
+  background-color: var(--primary);
+}
+footer .top .link-container ul li a{
+  text-decoration: none;
+  color: white;
+  font-size: 1.1rem;
+  padding-left: 1.5rem;
+}
+footer .top .link-container ul li a:hover{
+  color: var(--primary);
+}
+footer .bot{
+  background-color:rgb(24, 23, 29);
+}
+footer .bot p{
+  text-align: center;
+  margin: 0;
+}
+footer .bot p span{
+  color: var(--accent);
+}
