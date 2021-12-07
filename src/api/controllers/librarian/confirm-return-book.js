@@ -8,14 +8,16 @@ const servicesConfirmReturnBook=require('../../services/librarian/confirm-book-r
 async function getConfirmReturnBook(req,res){
     let kq={
         allBorrowReturnCard:[],
-        allNameReader:[]
+        allNameReader:[],
+        allEmailReader:[]
     }
     if(req.query.email=='' || req.query.email==null){
         try{
             kq=JSON.parse(JSON.stringify(await servicesConfirmReturnBook.handleEmptyEmail()))       
             res.render('librarian/confirm-book/view-confirm-return-book',{
                 borrowReturnCard:kq.allBorrowReturnCard,
-                allNameReader:kq.allNameReader
+                allNameReader:kq.allNameReader,
+                allEmailReader:kq.allEmailReader
             })
         }catch(e){
             
@@ -26,7 +28,8 @@ async function getConfirmReturnBook(req,res){
             kq=JSON.parse(JSON.stringify(await servicesConfirmReturnBook.handleHasEmail(req.query.email)))
             res.render('librarian/confirm-book/view-confirm-return-book',{
                 borrowReturnCard:kq.allBorrowReturnCard,
-                allNameReader:kq.allNameReader
+                allNameReader:kq.allNameReader,
+                allEmailReader:kq.allEmailReader
             })
         }
         catch(e){
@@ -39,7 +42,8 @@ async function putConfirmReturnBook(req,res){
     const confirmReturnBook=req.body.selectBorrowReturnCard.split(',');
     let kq={
         allBorrowReturnCard:[],
-        allNameReader:[]
+        allNameReader:[],
+        allEmailReader:[]
     }
     try{
         kq=JSON.parse(JSON.stringify(await servicesConfirmReturnBook.confirmCard(confirmReturnBook)))
