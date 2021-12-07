@@ -1,0 +1,30 @@
+<%- contentFor('head') %> 
+<title>Thông tin tiền phạt</title>
+<!-- <link rel="stylesheet" href="/public/css/pages/user/search-book.css"> -->
+
+<%- contentFor('body') %> 
+<%- include('../partials/header/reader-header.ejs') %> 
+<div class="page-content-wrapper">
+  <h2 class="page-title">Thông tin tiền phạt</h2>
+  <h4 class="medium-title">Danh sách phiếu thu tiền phạt</h4>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>STT</th>
+        <th>Ngày thu tiền</th>
+        <th>Số tiền thu</th>
+        <th>Còn lại</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% fineCards.forEach((card, index) => { %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td><%= card.ngay_thu.toISOString().split('T')[0] %></td>
+          <td><%= card.so_tien_thu %></td>
+          <td><%= card.con_lai %></td>
+        </tr>
+      <% }); %> 
+    </tbody>
+  </table>
+</div>
