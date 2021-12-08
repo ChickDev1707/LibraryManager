@@ -71,8 +71,10 @@ async function comment(req, res){
     }
 }
 
+
+
 module.exports = {
     searchBook,
     showBookDetail,
-    comment
+    comment,
 }

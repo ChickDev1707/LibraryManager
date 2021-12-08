@@ -2,6 +2,7 @@ const express = require('express');
 const userAuth = require('../middlewares/user-auth.js')
 const authController = require('../controllers/user/auth.js');
 const searchBookController = require('../controllers/user/search-book.js')
+const allBookController = require('../controllers/user/all-book.js')
 const urlHelper = require('../helpers/url.js')
 
 
@@ -29,6 +30,9 @@ module.exports = function(passport){
   
   //comment book route
   router.route('/comment/:bookHeadId').post(searchBookController.comment)
+
+  router.route('/books/page/:id')
+        .get(userAuth.decideAllBookPage, allBookController.getPage)
   
   return router
 }
