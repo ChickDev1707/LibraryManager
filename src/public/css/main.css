@@ -6,6 +6,7 @@
 @import url('./elements/button.css');
 @import url('./elements/title.css');
 @import url('./elements/table.css');
+@import url('./components/footer.css');
 
 *{
   box-sizing: border-box;
@@ -39,7 +40,7 @@ a{
   margin: 0 10rem;
   background-color: white;
   padding: 2rem 3rem;
-  min-height: 100vh;
+  min-height: 120vh;
 }
 
 /* hide overflow text */

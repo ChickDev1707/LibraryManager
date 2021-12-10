@@ -16,6 +16,8 @@
                 <div><label>Nhà xuất bản:</label> <a href="/?option=publisher&searchBox=<%= bookHead.nha_xuat_ban %>"><%= bookHead.nha_xuat_ban %></a></div>
                 <div><label>Xuất bản năm:</label> <%= bookHead.nam_xuat_ban %></div>
                 <div><label>Giá:</label> <%= bookHead.gia %> VND</div>
+                <div><label>Số lượng:</label> <%= bookHead.so_luong %></div>
+                <div><label id="slkd-label">Số lượng khả dụng:</label> <span id="slkd-value"><%= bookHead.so_luong_kha_dung %></span></div>
                 <div class="destription">Mô tả</div>
                 <div class="hide-overflow-text"><%= bookHead.tom_tat %></div>
             </div>
@@ -70,7 +72,7 @@
     <div class="section-comment">
         <% bookHead.cac_nhan_xet.forEach(comment => { %>
             <div class="comment">
-                <img class="avatar" src="https://thelifetank.com/wp-content/uploads/2018/08/avatar-default-icon.png" alt="Avatar">
+                <img class="avatar" src="<%= comment.doc_gia.anh_bia %>" alt="Avatar">
                 <div class="comment-content">
                     <b><%= comment.doc_gia.ho_ten %></b>
                     <i><small><%= comment.ngay_dang.toLocaleDateString("VN", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %></small></i>

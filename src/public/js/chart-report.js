@@ -1,29 +1,4 @@
-//random color
-function randomColor(){
-    let random = "#" + Math.floor(Math.random()*16777215).toString(16);
-    return random
-}
-
-function getArrayRandomColor(data){
-    let arrayColor = []
-    data.forEach(element => {
-        arrayColor.push(randomColor())
-    });
-    return arrayColor
-}
-
 //config color
-const  borderColorConfig = [
-    'rgba(255, 0, 0)',
-    'rgb(255, 99, 132)',
-    'rgb(255, 159, 64)',
-    'rgb(255, 205, 86)',
-    'rgb(75, 192, 192)',
-    'rgb(54, 162, 235)',
-    'rgb(153, 102, 255)',
-    'rgb(201, 203, 207)'
-]
-
 const backgroundColorConfig = [
     'rgba(255, 0, 0, 0.5)',
     'rgba(255, 128, 0, 0.5)',
@@ -53,7 +28,6 @@ function onLoad(data, label, ratio){
                 label: '# of Votes',
                 data: ratios,
                 backgroundColor:backgroundColorConfig,
-                // borderColor: borderColorConfig,
                 borderWidth: 1
             }]
         }
@@ -69,7 +43,6 @@ function onLoad(data, label, ratio){
                 label: 'Lượt mượn',
                 data: datas,
                 backgroundColor: backgroundColorConfig,
-                // borderColor: borderColorConfig,
                 borderWidth: 1
             }]
         },

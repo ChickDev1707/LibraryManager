@@ -10,7 +10,7 @@
     <div class="crud-section">
     <div class="crud-row">
         <form class="search-bar" action="/librarian/confirm-return-book" method="get">
-                <input class="input-primary" type="text" name="email" placeholder="nhập email" required >
+                <input class="input-primary" type="text" name="email" placeholder="Nhập email" required >
                 <button class="icon-text-btn" type='submit'>
                     <i class="fas fa-search"></i>
                     Tìm kiếm 
@@ -28,18 +28,35 @@
     </div>
     </div>
 
-    <% if(borrowReturnCard){ %> 
-        <% const lengOfCard=borrowReturnCard.length %> 
+    <table class="table align-middle position-relative" id="readers_table">
+        <thead>
+            <tr>
+                <th></th>
+                <th class="w-20">Mã phiếu</th>
+                <th>Tên độc giả</th>
+                <th>Email</th>
+                <th>Ngày mượn</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if(borrowReturnCard){ %> 
+                <% const lengOfCard=borrowReturnCard.length %> 
+        
+                <% for(let i=0;i<lengOfCard;i++){ %> 
+                    <tr>
+                        <td><input type="checkbox" name="borrowReturnCard" value="<%= borrowReturnCard[i]._id %>"></td>
+                        <td><%= borrowReturnCard[i]._id %></td>
+                        <td><%= allNameReader[i] %></td>
+                        <td><%= allEmailReader[i] %></td>
+                        <td><%= borrowReturnCard[i].ngay_muon.split('T')[0] %></td>
+                    </tr>
 
-        <% for(let i=0;i<lengOfCard;i++){ %> 
-            <input type="checkbox" name="borrowReturnCard" value="<%= borrowReturnCard[i]._id %>">
-            <label>Mã phiếu: <%= borrowReturnCard[i]._id %></label>
-            <label>Tên độc giả: <%= allNameReader[i] %></label>
-            <label>Ngày mượn: <%= borrowReturnCard[i].ngay_muon.toISOString().split('T')[0] %></label><br>
-        <% } %> 
+                <% } %> 
+        
+            <% } %> 
 
-    <% } %> 
-
+        </tbody>
+    </table>
     <div class="d-flex justify-content-end">
         <form action="/librarian/confirm-return-book?_method=put" method="post" name="formSubmit">
             <input type="hidden" name="selectBorrowReturnCard"><br>

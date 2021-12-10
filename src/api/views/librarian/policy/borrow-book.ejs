@@ -22,6 +22,10 @@
           <label >Số sách tối đa được mượn/đăng ký (cuốn)</label>
           <input min="1" type="number" name="maxAllowedBorrowBook" value="<%= borrowBookPolicies.maxAllowedBorrowBook %>" >
         </div>
+        <div class="mb-3 input-item">
+          <label >Thời hạn đăng ký mượn sách (ngày)</label>
+          <input min="1" type="number" name="registerLimit" value="<%= borrowBookPolicies.registerLimit %>" >
+        </div>
         <button type="submit" class="submit-btn">Lưu</button>
       </form>
     </div>

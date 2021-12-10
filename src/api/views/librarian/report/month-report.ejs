@@ -11,58 +11,59 @@
 <%- contentFor('body') %> 
 <%- include('../../partials/header/librarian-header.ejs') %> 
 
-<body onload="onLoad('<%= data %>', '<%= label %>', '<%= ratio %>')">
-    <div class="page-content-wrapper">
-        <h2 class="page-title">Báo cáo tháng</h2>
-        <form class="d-flex justify-content-between my-4" action="/librarian/month-report" method="get" >
-            <div>
-                <input class="input-primary" type="month" name="month" value="<%= month %>">
-                <button class="submit-btn" type="submit" >Submit</button>
-            </div>
-            <button class="submit-btn" id="btnExport"  type="button" onclick="fnExportToExcel('xlsx')"><i class="fas fa-file-export"></i> Export</button>
-        </form>
-        
-        <h3 class="text-center">Thống kê tình hình mượn sách theo thể loại</h3>
-        <h4 class="medium-title">Biểu đồ</h4>
-        <div class="row my-4">
-            <div class="col-8">
-                <canvas id="myBarChart"></canvas>
-            </div>
-            <div class="col-4">
-                <canvas id="myPieChart"></canvas>
-            </div>
-        </div>
-
-        <h4 class="medium-title">Bảng thống kê</h4>
+<div class="page-content-wrapper">
+    <h2 class="page-title">Báo cáo tháng</h2>
+    <form class="d-flex justify-content-between my-4" action="/librarian/month-report" method="get" >
         <div>
-            <table id="reportTable" class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">STT</th>
-                        <th scope="col">Thể Loại</th>
-                        <th scope="col">Lượt Mượn</th>
-                        <th scope="col">Tỷ Lệ</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% reportArray.forEach((reportArray, i) => { %>
-                        <tr key= <%=reportArray.bookCategory%> >
-                            <td scope="col" class="text-wrap">
-                                <%= i + 1 %>
-                            </td>
-                            <td scope="col" class="text-wrap">
-                                <%= reportArray.bookCategory.ten_the_loai %>
-                            </td>
-                            <td scope="col" class="text-wrap">
-                                <%= reportArray.count %>
-                            </td>
-                            <td scope="col" class="text-wrap">
-                                <%= (100*(reportArray.count/ sum )).toFixed(1) %>%
-                            </td>
-                        </tr>
-                    <% }) %>
-                </tbody>
-            </table>
+            <input class="input-primary" type="month" name="month" value="<%= month %>">
+            <button class="submit-btn" type="submit" >Submit</button>
+        </div>
+        <button class="submit-btn" id="btnExport"  type="button" onclick="fnExportToExcel('xlsx')"><i class="fas fa-file-export"></i> Export</button>
+    </form>
+    
+    <h3 class="text-center">Thống kê tình hình mượn sách theo thể loại</h3>
+    <h4 class="medium-title">Biểu đồ</h4>
+    <div class="row my-4">
+        <div class="col-8">
+            <canvas id="myBarChart"></canvas>
+        </div>
+        <div class="col-4">
+            <canvas id="myPieChart"></canvas>
         </div>
     </div>
-</body>
+
+    <h4 class="medium-title">Bảng thống kê</h4>
+    <div>
+        <table id="reportTable" class="table">
+            <thead>
+                <tr>
+                    <th scope="col">STT</th>
+                    <th scope="col">Thể Loại</th>
+                    <th scope="col">Lượt Mượn</th>
+                    <th scope="col">Tỷ Lệ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% reportArray.forEach((reportArray, i) => { %>
+                    <tr key= <%=reportArray.bookCategory%> >
+                        <td scope="col" class="text-wrap">
+                            <%= i + 1 %>
+                        </td>
+                        <td scope="col" class="text-wrap">
+                            <%= reportArray.bookCategory.ten_the_loai %>
+                        </td>
+                        <td scope="col" class="text-wrap">
+                            <%= reportArray.count %>
+                        </td>
+                        <td scope="col" class="text-wrap">
+                            <%= (100*(reportArray.count/ sum )).toFixed(1) %>%
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    onLoad('<%= data %>', '<%= label %>', '<%= ratio %>')
+</script>
