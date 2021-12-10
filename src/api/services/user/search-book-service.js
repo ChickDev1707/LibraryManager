@@ -31,7 +31,7 @@ async function searchBook(searchBox, option){
             default: break 
         }
     }
-    const bookHeads = await query.exec() 
+    const bookHeads = await query.limit(20).exec() 
     return bookHeads
 }
 
@@ -64,5 +64,5 @@ async function comment(readerId, bookHeadId, commentInput){
 module.exports = {
     searchBook,
     showBookDetail,
-    comment
+    comment,
 }

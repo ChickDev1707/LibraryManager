@@ -153,7 +153,7 @@ async function handleAddReader(reqBody){
             mat_khau:"reader",
             vai_tro:"reader"
         })
-        const defaultImgPath = path.join(__dirname.split('\\').slice(0, -3).join('\\'),'/public/assets/images/user.png')
+        const defaultImgPath = path.join(__dirname.split('\\').slice(0, -3).join('\\'),'/public/assets/images/default-reader-avatar.png')
         defaultImg = JSON.stringify(base64_encode(defaultImgPath));
 
         data.reader=new Reader({

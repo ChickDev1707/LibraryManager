@@ -1,0 +1,25 @@
+<h2 class="page-title">Tất cả sách</h2>
+<div class="grid">
+  <% bookHeads.forEach(bookHead => { %>
+    <%- include('./book-item.ejs', {bookHead}) %>              
+  <% }) %>
+</div>
+<div class="page-wrapper">
+  <ul>
+    <%  
+      var start= pageIndex>= 3? pageIndex - 2: 1
+      var end = pageIndex< pageLimit-2? pageIndex + 2: pageLimit
+      var prev = pageIndex > 1? pageIndex - 1 : 1
+      var next = pageIndex < pageLimit? pageIndex + 1: pageLimit
+    %>
+    <li class="control-btn"><a href="/books/page/<%= prev %>"><i class="fas fa-angle-left"></i></a></li>
+    <% for(let i=start; i<= end; i++){ %> 
+      <% if(i != pageIndex){ %> 
+        <li><a href="/books/page/<%= i %>"><%= i %></a></li>
+      <% }else{ %> 
+      <li class="page-active"><a href="/books/page/<%= i %>"><%= i %></a></li>
+      <% } %> 
+    <% } %>
+    <li class="control-btn"><a href="/books/page/<%= next %>"><i class="fas fa-angle-right"></i></a></li>
+  </ul>
+</div>

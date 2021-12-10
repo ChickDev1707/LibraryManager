@@ -28,14 +28,14 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <div class="mb-3">
-                  <label class="form-label">Tên thể loại sách</label>
-                  <input type="text" name="categoryName" required class="form-control">
+                <div class="mb-3 input-item">
+                  <label >Tên thể loại sách</label>
+                  <input type="text" name="categoryName" required >
                 </div>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Thêm</button>
+                <button type="button" class="cancel-btn" data-bs-dismiss="modal">Đóng</button>
+                <button type="submit" class="submit-btn">Thêm</button>
               </div>
             </form>
           </div>
@@ -56,7 +56,7 @@
               <td class="category-id" hidden><%= category._id %></td>
               <td><%= index +1%></td>
               <td class="category-name"><%= category.ten_the_loai %></td>
-              <td><button type="button" onclick="loadCategoryInfoToEditForm(this)" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-category-modal">Sửa</button></td>
+              <td><button type="button" onclick="loadCategoryInfoToEditForm(this)" class="icon-btn" data-bs-toggle="modal" data-bs-target="#edit-category-modal"><i class="fas fa-edit"></i></button></td>
               <td><%- include('../../partials/delete-form-field.ejs', {url: `/librarian/policy/book-category/${category._id}`}) %></td>
             </tr>
             <% }) %> 
@@ -72,14 +72,14 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <div class="mb-3">
-                  <label class="form-label">Tên thể loại sách</label>
-                  <input id="edit-modal-category-name-input" type="text" name="categoryName" required class="form-control">
+                <div class="mb-3 input-item">
+                  <label >Tên thể loại sách</label>
+                  <input id="edit-modal-category-name-input" type="text" name="categoryName" required>
                 </div>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Cập nhật</button>
+                <button type="button" class="cancel-btn" data-bs-dismiss="modal">Đóng</button>
+                <button type="submit" class="submit-btn">Cập nhật</button>
               </div>
             </form>
           </div>
