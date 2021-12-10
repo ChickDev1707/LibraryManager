@@ -48,20 +48,30 @@ async function deleteSelectedBookHeadFromCart(req, res){
 // register borrow
 // ------------------------------
 async function registerBorrowBook(req, res){
-  let errorMessage = await registerBorrowServices.getRegisterErrorMessage(req)
-  if(errorMessage == ''){
-    await registerBorrowServices.handleRegisterSuccess(req)
-    const redirectUrl = urlHelper.getEncodedMessageUrl(`/reader/register-tickets/`, {
-      type: 'success',
-      message: 'Đăng ký mượn sách thành công'
+  const bookHeadIds = JSON.parse(req.body.bookHeads)
+  if(bookHeadIds.length == 0){
+    const redirectUrl = urlHelper.getEncodedMessageUrl(`/reader/cart/`, {
+      type: 'warning',
+      message: 'Bạn chưa chọn sách đăng ký'
     })
     res.redirect(redirectUrl)
   }else{
-    const redirectUrl = urlHelper.getEncodedMessageUrl(`/reader/cart/`, {
-      type: 'error',
-      message: errorMessage
-    })
-    res.redirect(redirectUrl)
+
+    let errorMessage = await registerBorrowServices.getRegisterErrorMessage(req)
+    if(errorMessage == ''){
+      await registerBorrowServices.handleRegisterSuccess(req)
+      const redirectUrl = urlHelper.getEncodedMessageUrl(`/reader/register-tickets/`, {
+        type: 'success',
+        message: 'Đăng ký mượn sách thành công'
+      })
+      res.redirect(redirectUrl)
+    }else{
+      const redirectUrl = urlHelper.getEncodedMessageUrl(`/reader/cart/`, {
+        type: 'error',
+        message: errorMessage
+      })
+      res.redirect(redirectUrl)
+    }
   }
   
 }

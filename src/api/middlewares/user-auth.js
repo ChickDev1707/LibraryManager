@@ -39,10 +39,24 @@ async function decideUserPage(req, res, next){
   }
   next()
 }
+async function decideAllBookPage(req, res, next){
+  const currentUser = await req.user
+  if(!currentUser){
+    req.allBookPage = "user/all-book.ejs"
+  }else{
+    if(currentUser.vai_tro == "librarian"){
+      req.allBookPage = "librarian/all-book.ejs" 
+    }else if(currentUser.vai_tro == "reader"){
+      req.allBookPage = "reader/all-book.ejs" 
+    }
+  }
+  next()
+}
 
 module.exports = {
   checkNotAuthenticated,
   checkAuthenticatedAsLibrarian,
   checkAuthenticatedAsReader,
-  decideUserPage
+  decideUserPage,
+  decideAllBookPage
 }

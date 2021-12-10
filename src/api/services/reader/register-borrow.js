@@ -5,6 +5,7 @@ const Reader = require('../../models/reader.js')
 const RegisterBorrowCard = require('../../models/register-borrow-card.js')
 const accountServices = require('../../services/account.js')
 const policyServices = require('../../services/librarian/policy.js')
+const {denyRegisterBorrowCard} = require('../../services/librarian/register-borrow-card-service.js')
 
 async function getBooksFromIds(bookHeadIds){
   let result = []
@@ -23,7 +24,7 @@ async function getManageCartError(req){
   const amountLimit = await policyServices.getPolicyValueByName('so_sach_muon_toi_da')
   const bookHead = await BookHead.findById(bookHeadId)
   const cart = account.gio_sach
-  if(cart.includes(bookHeadId)) return 'Sách đã được đăng ký'
+  if(cart.includes(bookHeadId)) return 'Sách đã được thêm vào giỏ đăng ký mượn'
   if(cart.length>= amountLimit) return 'Quá số lượng sách quy định'
   if(Number(bookHead.so_luong_kha_dung)<= 0) return 'Sách không khả dụng'
   return ''
@@ -57,7 +58,7 @@ async function getRegisterErrorMessage(req){
 
 async function checkInBorrowAndRegister(readerId, bookHeadIds, bookCart){
   const amountLimit = await policyServices.getPolicyValueByName('so_sach_muon_toi_da')
-  const activeRegisterCards = await RegisterBorrowCard.find({doc_gia: readerId, tinh_trang: 1})
+  const activeRegisterCards = await RegisterBorrowCard.find({doc_gia: readerId, tinh_trang: 0})
   const borrowReturnCards = await BorrowReturnCard.find({doc_gia: readerId, ngay_tra: null})
   const registerBookHeads = activeRegisterCards.reduce((prev, cur)=>{
     return prev.concat(...cur.cac_dau_sach.map(bookHead=> bookHead.toString()))
@@ -98,18 +99,14 @@ async function addNewRegisterBorrowCard(req, account, readerId, bookHeads){
   })
   await newCard.save();
 
-  await setDenyRegisterCardTimeout(req, account, newCard._id)
+  // await setDenyRegisterCardTimeout(req, account, newCard._id)
 }
 
 async function setDenyRegisterCardTimeout(req, account, cardId){
   let timeLimit = await policyServices.getPolicyValueByName('thoi_han_dang_ky')
   setTimeout(async function(){
-    let card = await RegisterBorrowCard.findById(cardId)
-    if(card){
-      card.tinh_trang = 2
-      await card.save();
-      await saveNewDenyNotification(req, account)
-    }
+    denyRegisterBorrowCard(cardId)
+    await saveNewDenyNotification(req, account)
   }, timeLimit*10000)
 }
 async function saveNewDenyNotification(req, account){

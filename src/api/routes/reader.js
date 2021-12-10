@@ -6,6 +6,7 @@ const registerBorrowController = require('../controllers/reader/register-borrow.
 const borrowBookController = require('../controllers/reader/borrow-book.js')
 const favoriteBookController=require('../controllers/reader/favorite-books')
 const accountController = require('../controllers/reader/account.js');
+const fineController = require('../controllers/reader/fine.js');
 const accountUpdateMiddleware = require('../middlewares/account-update')
 const notificationController = require('../controllers/reader/notification')
 // index
@@ -41,6 +42,9 @@ router.route("/account")
       .get(accountController.getUserProfile)
       .put(accountUpdateMiddleware.checkUpdateProfile, accountController.updateUser)
 
+//fine
+router.route('/fine')
+      .get(fineController.getFinePage)
 //reader
 router.route('/api/notification')
       .get(notificationController.returnNotifications)

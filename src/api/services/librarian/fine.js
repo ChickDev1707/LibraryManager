@@ -24,7 +24,7 @@ async function saveFineData(maDocGia, soTienThu, ngayThu) {
                 return ({ success: false, message: "Ngày thanh toán nợ không được vượt quá thời gian hiện tại!", noMoi: reader.tien_no })
 
             const fineCard = new Fine({
-                ma_doc_gia: maDocGia,
+                doc_gia: maDocGia,
                 so_tien_thu: soTienThu,
                 ngay_thu: ngayThu,
                 con_lai: tienNoMoi

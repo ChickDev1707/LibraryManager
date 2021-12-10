@@ -1,11 +1,11 @@
 const Policy = require('../../models/policy')
 const BookCategory = require('../../models/book-category')
+const BookHead = require('../../models/book-head.js')
 // reader
 async function getReaderPolicies(){
   const minAge = await getPolicyByName('tuoi_toi_thieu')
   const maxAge = await getPolicyByName('tuoi_toi_da')
   const cardExpireLimit = await getPolicyByName('thoi_han_the')
-  const val = getPolicyValue(minAge)
   return {
     minAge: getPolicyValue(minAge), 
     maxAge: getPolicyValue(maxAge),
@@ -52,34 +52,54 @@ async function getBookCategories(){
 }
 // add
 async function addNewBookCategory(categoryName){
-  const newCat = new BookCategory({ten_the_loai: categoryName})
-  await newCat.save()
+  const categories = await BookCategory.find({})
+  if(categoryHasExisted(categoryName, categories)) throw 'Tên thể loại đã tồn tại'
+  else{
+    const newCat = new BookCategory({ten_the_loai: categoryName})
+    await newCat.save()
+  }
 }
 // edit
 async function editBookCategory(category){
-  let dbCategory = await BookCategory.findById(category.id)
-  dbCategory.ten_the_loai = category.name
-  await dbCategory.save()
+  const categories = await BookCategory.find({})
+  if(categoryHasExisted(category.name, categories)) throw 'Tên thể loại đã tồn tại'
+  else{
+    let dbCategory = await BookCategory.findById(category.id)
+    dbCategory.ten_the_loai = category.name
+    await dbCategory.save()
+  }
+}
+function categoryHasExisted(target, categories){
+  const categoryNames = categories.map((cat)=> cat.ten_the_loai)
+  if(categoryNames.includes(target)) return true
+  else return false
 }
 // delete
 async function deleteBookCategory(categoryId){
-  let dbCategory = await BookCategory.findById(categoryId)
-  await dbCategory.remove()
+  const bookHeads = await BookHead.find({the_loai: categoryId})
+  if(bookHeads.length > 0) throw 'Có sách đang sử dụng thể loại này'
+  else{
+    let dbCategory = await BookCategory.findById(categoryId)
+    await dbCategory.remove()
+  }
 }
 
 // borrow book
 async function getBorrowBookPolicies(){
   const borrowLimit = await getPolicyByName('thoi_han_muon_sach')
   const maxAllowedBorrowBook = await getPolicyByName('so_sach_muon_toi_da')
+  const registerLimit = await getPolicyByName('thoi_han_dang_ky')
   return {
     borrowLimit: getPolicyValue(borrowLimit), 
     maxAllowedBorrowBook: getPolicyValue(maxAllowedBorrowBook),
+    registerLimit: getPolicyValue(registerLimit)
   }
 }
 
 async function updateBorrowBookPolicies(policiesInput){
   await handleUpdateBorrowLimitPolicy(policiesInput.borrowLimit)
   await handleUpdateMaxAllowedBorrowBookPolicy(policiesInput.maxAllowedBorrowBook)
+  await handleUpdateRegisterLimit(policiesInput.registerLimit)
 }
 async function handleUpdateBorrowLimitPolicy(borrowLimit){
   let borrowLimitPol = await getPolicyByName('thoi_han_muon_sach')
@@ -98,6 +118,15 @@ async function handleUpdateMaxAllowedBorrowBookPolicy(maxAllowedBorrowBook){
     maxAllowedBorrowBookPol.gia_tri = maxAllowedBorrowBook
   }
   await maxAllowedBorrowBookPol.save()
+}
+async function handleUpdateRegisterLimit(registerLimit){
+  let registerLimitPol = await getPolicyByName('thoi_han_dang_ky')
+  if(registerLimitPol == null){
+    registerLimitPol = new Policy({ten_quy_dinh: 'thoi_han_dang_ky', gia_tri: registerLimit})
+  }else{
+    registerLimitPol.gia_tri = registerLimit
+  }
+  await registerLimitPol.save()
 }
 
 // fine
