@@ -80,7 +80,7 @@ async function handleAddFileExcel(reqFile){
             const ngay_lap_the=today.getFullYear()+'-'+month+'-'+day
 
             // console.log("ngay lap the",ngay_lap_the,"ngay sinh : ", result.Reader[i].ngay_sinh)
-            const defaultImgPath = path.join(__dirname.split('\\').slice(0, -3).join('\\'),'/public/assets/images/user.png')
+            const defaultImgPath = path.join(__dirname.split('\\').slice(0, -3).join('\\'),'/public/assets/images/default-reader-avatar.png')
             defaultImg = JSON.stringify(base64_encode(defaultImgPath));
     
 

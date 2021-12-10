@@ -56,9 +56,9 @@
           </div>
           <div class="collapse" id="card_<%= card._id %>">
             <div class="card card-body">
-              <h6><i class="fas fa-book"></i> Sách mượn</h6>
+              <h6><i class="fas fa-book"></i> Sách đăng ký</h6>
               <% card.cac_dau_sach.forEach(bookHead=>{ %>
-                <p><%= bookHead.ten_dau_sach %>
+                <a href="/book-head/<%= bookHead._id%>"><%= bookHead.ten_dau_sach %></a>
               <% }) %> 
             </div>
           </div>

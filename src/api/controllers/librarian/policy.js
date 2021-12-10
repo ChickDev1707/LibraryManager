@@ -92,7 +92,7 @@ async function updatePolicyBorrowBook(req, res){
   Object.keys(policiesInput).forEach((key, index)=>{policiesInput[key] = Number(policiesInput[key])})
   // parse form field policies to number
   await policyService.updateBorrowBookPolicies(policiesInput)
-  const redirectUrl = urlHelper.getEncodedMessageUrl(`/reader/policy/borrow-book`, {
+  const redirectUrl = urlHelper.getEncodedMessageUrl(`/librarian/policy/borrow-book`, {
     type: 'success',
     message: 'Cập nhật quy định mượn sách thành công'
   })
@@ -110,7 +110,7 @@ async function updateFinePolicies(req, res){
   Object.keys(policiesInput).forEach((key, index)=>{policiesInput[key] = Number(policiesInput[key])})
   
   await policyService.updateFinePolicies(policiesInput)
-  const redirectUrl = urlHelper.getEncodedMessageUrl(`/reader/policy/fine`, {
+  const redirectUrl = urlHelper.getEncodedMessageUrl(`/librarian/policy/fine`, {
     type: 'success',
     message: 'Cập nhật quy định tiền phạt thành công'
   })

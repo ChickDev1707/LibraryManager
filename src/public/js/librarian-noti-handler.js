@@ -42,7 +42,7 @@ function addNotificationFromData(notPanel, data){
 
 function createNotItem(notification){
   let item = createItem('a', 'not-item')
-  item.href = '/librarian/confirm-return-book'
+  item.href = '/librarian/confirm-register-borrow'
   let noteWrapper = document.createElement('div')
   
   noteWrapper.innerHTML=`

@@ -15,7 +15,8 @@ async function showViewBorrowCardsPage(req, res){
 function getSearchOptions(readerId, status){
   let searchOptions = {ma_doc_gia: readerId}
   let reqStatus = status == undefined? -1: Number(status)
-  if(reqStatus>= 0) searchOptions.tinh_trang = reqStatus
+  if(reqStatus == 1) searchOptions.ngay_tra = null
+  else if(reqStatus == 2) searchOptions.ngay_tra = {$ne: null}
   return searchOptions
 }
 

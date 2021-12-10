@@ -49,8 +49,9 @@ async function getRegisterErrorMessage(req){
   const account = await accountServices.getCurrentUserAccount(req)
   const reader = await Reader.findOne({email: account.ten_tai_khoan})
   const fineLimit = await policyServices.getPolicyValueByName('tien_no_toi_da')
-  
   const borrowAndRegisterCheckError = await checkInBorrowAndRegister(reader._id, bookHeadIds, account.gio_sach)
+
+  if(await hasUnavailableBook(bookHeadIds)) return 'Có sách không khả dụng'
   if(borrowAndRegisterCheckError != '') return borrowAndRegisterCheckError
   if(reader.tien_no > fineLimit) return 'Bạn đang nợ quá số tiền quy định'
   return ''
@@ -63,12 +64,24 @@ async function checkInBorrowAndRegister(readerId, bookHeadIds, bookCart){
   const registerBookHeads = activeRegisterCards.reduce((prev, cur)=>{
     return prev.concat(...cur.cac_dau_sach.map(bookHead=> bookHead.toString()))
   }, [])
-  
+  const borrowReturnCardBookHeads = borrowReturnCards.reduce((prev, cur)=>{
+    return prev.concat(cur.dau_sach.toString())
+  }, [])
   if(registerBookHeads.length + borrowReturnCards.length + bookCart.length > amountLimit) return 'Số sách mượn quá số lượng quy định'
-  if(hasItemInArray(bookHeadIds, registerBookHeads) || hasItemInArray(bookHeadIds, registerBookHeads)) return 'Có sách đã được đăng ký hoặc mượn'
+  if(hasItemInArray(bookHeadIds, registerBookHeads)) return 'Có sách bạn đã đăng ký'
+  if(hasItemInArray(bookHeadIds, borrowReturnCardBookHeads)) return 'Có sách bạn đang mượn'
   return ''
 }
-
+async function hasUnavailableBook(bookHeadIds){
+  for(id of bookHeadIds){
+    const book = await BookHead.findById(id)
+    if(book.so_luong_kha_dung<= 0){
+      return true 
+    }
+    break
+  }
+  return false
+}
 function hasItemInArray(arr, container){
   for(item of arr){
     if(container.includes(item)) return true
@@ -137,6 +150,7 @@ async function searchRegisterCards(req){
 
   if(reqStatus>= 0) searchOptions.tinh_trang = reqStatus
   const registerBorrowCards = await RegisterBorrowCard.find(searchOptions).populate('cac_dau_sach').exec()
+  console.log(registerBorrowCards[0].cac_dau_sach)
   return registerBorrowCards
 }
 async function removeRegisterTicketsWithAccount(account, bookHeadIds){
