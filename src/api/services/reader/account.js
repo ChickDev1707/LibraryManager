@@ -6,6 +6,13 @@ const { getReaderPolicies } = require('../librarian/policy');
 const imageMimeTypes = ['image/jpeg', 'image/png', 'images/gif']
 
 
+function dateDiff(date) {
+    const currTime = (new Date()).getTime();
+    const time = (new Date(date)).getTime();
+    return parseInt((currTime - time) / (24 * 60 * 60 * 1000));
+}
+
+
 async function getProfileByAccountId(id) {
     try {
         const account = await UserAccount.findById(id);
@@ -13,8 +20,10 @@ async function getProfileByAccountId(id) {
             return null;
 
         var reader = await Reader.findOne({ id_account: account._id });
+        const policy = await getReaderPolicies();
+        const expire = policy.cardExpireLimit - dateDiff(reader.ngay_lap_the)
         var count = await countBorrowRegister(reader._id);
-        return { ...reader._doc, anh_bia: reader.anh_bia, borrow: count.borrow, register: count.register };
+        return { ...reader._doc, anh_bia: reader.anh_bia, borrow: count.borrow, register: count.register, expire: expire };
 
     } catch (err) {
         console.log(err);
