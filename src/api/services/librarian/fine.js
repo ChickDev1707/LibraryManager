@@ -4,7 +4,7 @@ const Reader = require("../../models/reader");
 
 async function getAllFineInfo() {
     const readers = await Reader
-        .find()
+        .find({ "tien_no": { $gt: 0 } })
         .select("_id email ho_ten ngay_sinh tien_no")
         .exec();
     return readers;
