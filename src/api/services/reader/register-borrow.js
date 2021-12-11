@@ -150,7 +150,6 @@ async function searchRegisterCards(req){
 
   if(reqStatus>= 0) searchOptions.tinh_trang = reqStatus
   const registerBorrowCards = await RegisterBorrowCard.find(searchOptions).populate('cac_dau_sach').exec()
-  console.log(registerBorrowCards[0].cac_dau_sach)
   return registerBorrowCards
 }
 async function removeRegisterTicketsWithAccount(account, bookHeadIds){
