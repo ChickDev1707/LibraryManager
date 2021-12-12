@@ -41,8 +41,7 @@
 }
 
 .grid-item{
-    padding: .5rem;
-    object-fit: cover;
+    padding: 1rem 1rem 1.75rem;
     border-radius: .25rem;
     border: 1px solid gainsboro;
 }
@@ -53,34 +52,28 @@
 }
 
 .grid-item-content{
-    object-fit: cover;
     text-decoration: none;
 }
 
 .item-img{
-    flex-shrink: 0;
-    display: block;
     object-fit: contain;
     height: 260px;
-    max-width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 10px;
-    padding-right: 10px;
+    width: 100%;
+    margin: 0 auto 1rem;
 }
 
-.item-content{
-    padding: 5px 20px;
+.overflow-text{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 11rem;
 }
-
 .title{
-    -webkit-line-clamp: 2;
     font-size: 1.1rem;
-    font-weight: 600;
+    font-weight: 600;   
 }
 
 .author{
-    -webkit-line-clamp: 1;
     color: gray;
 }
 .all-book-wrapper{
