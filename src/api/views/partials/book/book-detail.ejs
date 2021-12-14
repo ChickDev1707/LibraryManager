@@ -15,9 +15,9 @@
                 <div><label>Thể loại:</label> <a href="/?option=category&searchBox=<%= bookHead.the_loai.ten_the_loai %>"><%= bookHead.the_loai.ten_the_loai %></a></div>
                 <div><label>Nhà xuất bản:</label> <a href="/?option=publisher&searchBox=<%= bookHead.nha_xuat_ban %>"><%= bookHead.nha_xuat_ban %></a></div>
                 <div><label>Xuất bản năm:</label> <%= bookHead.nam_xuat_ban %></div>
-                <div><label>Giá:</label> <%= bookHead.gia %> VND</div>
-                <div><label>Số lượng:</label> <%= bookHead.so_luong %></div>
-                <div><label id="slkd-label">Số lượng khả dụng:</label> <span id="slkd-value"><%= bookHead.so_luong_kha_dung %></span></div>
+                <div class="price"><i class="fas fa-dollar-sign"></i> <%= bookHead.gia %> VND</div>
+                <div><span>Số lượng:</span> <%= bookHead.so_luong %></div>
+                <div class="no-available"><span>Số lượng khả dụng:</span> <span><%= bookHead.so_luong_kha_dung %></span></div>
                 <div class="destription">Mô tả</div>
                 <div class="hide-overflow-text"><%= bookHead.tom_tat %></div>
             </div>
@@ -49,22 +49,34 @@
     </div>
 
     <div class="section-form-comment">
-        <h3>Nhận xét</h3>
+        <h3 class="page-title">Nhận xét</h3>
         <% if(user == 'reader'){ %>
             <form class="form-comment" action="/comment/<%= bookHead.id %>" method="post">
-                <div class="input-item">
-                    <input type="text"  placeholder="Viết nhận xét..." name="commentInput">
+                <h4>Nhận xét của bạn</h4>
+                <div class="input-container">
+                    <img src="/public/assets/images/user.png" alt="">
+                    <div class="input-item">
+                        <textarea name="commentInput" rows="3"  placeholder="Viết nhận xét..."></textarea>
+                    </div>
                 </div>
-                <button class="submit-btn" type="submit">Nhận xét</button>
+                <div class="btn-container">
+                    <button class="submit-btn" type="submit">Nhận xét</button>
+                </div>
             </form>
         <% }else if(user == 'guest'){ %>
             <form class="form-comment" action="/login" method="GET">
-                <div class="input-item">
-                    <input type="text" name="message" value="Đăng nhập để viết nhận xét" hidden>
-                    <input type="text" name="type" value="info" hidden>
-                    <input type="text"  placeholder="Viết nhận xét..." name="commentInput">
+                <h4>Nhận xét của bạn</h4>
+                <div class="input-container">
+                    <img src="/public/assets/images/user.png" alt="">
+                    <div class="input-item">
+                        <textarea name="commentInput" rows="3"  placeholder="Viết nhận xét..."></textarea>
+                        <input type="text" name="message" value="Đăng nhập để viết nhận xét" hidden>
+                        <input type="text" name="type" value="info" hidden>
+                    </div>
                 </div>
-                <button class="submit-btn" type="submit">Nhận xét</button>
+                <div class="btn-container">
+                    <button class="submit-btn" type="submit">Nhận xét</button>
+                </div>
             </form>
         <% } %> 
     </div>

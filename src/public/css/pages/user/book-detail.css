@@ -45,10 +45,6 @@ label{
     color: var(--primary);
 }
 
-#slkd-label, #slkd-value{
-    color: var(--primary);
-}
-
 .destription{
     margin-top: 20px;
     margin-bottom: px;
@@ -83,20 +79,38 @@ label{
 
 .form-comment{
     display: flex;
+    flex-wrap: wrap;
+    border: 1px solid #dcdcdc;
+    border-radius: .5rem;
+    padding: 1rem;
+    flex-direction: column;
+}
+.form-comment .input-container img{
+    width: 55px;
+    height: 55px;
+}
+.form-comment .input-container{
+    display: flex;
+    align-items: flex-start;
     justify-content: space-between;
+}
+.form-comment .input-container .input-item{
+    flex: 1;
+    margin-left: 1.5rem;
+}
+/* .form-comment .input-container textarea{
+    width: 60rem;
+} */
+
+.form-comment .btn-container{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
 }
 
 .input-item input{
     border-radius: .25rem;
     border: 1px solid transparent;
-}
-
-.form-comment button{
-    display: block;
-    margin: 0;
-    padding-left: 10px;
-    padding-right: 10px;
-    margin-left: 20px;
 }
 
 .form-comment input:focus{
@@ -113,7 +127,7 @@ label{
     display: flex;
     padding-top: 10px;
     padding-bottom: 10px;
-    border-bottom: 1px rgb(241, 241, 241) solid;
+    border-bottom: 1px solid gainsboro;
 }
 
 .avatar{
@@ -144,4 +158,15 @@ label{
 
 .comment-content div{
     font-size: large;
+}
+.detail .price{
+    color: var(--red-primary);
+    font-weight: 600;
+    font-size: 1.75rem;
+}
+
+.detail .no-available{
+    color: var(--green-primary);
+    font-size: 1.2rem;
+    font-weight: 600;
 }
