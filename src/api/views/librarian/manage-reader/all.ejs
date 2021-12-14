@@ -1,6 +1,5 @@
 <%- contentFor('head') %> 
 <title>Quản lý độc giả</title>
-<link rel="stylesheet" href="/public/css/pages/user/account.css">
 <link rel="stylesheet" href="/public/css/components/search-bar.css">
 <link rel="stylesheet" href="/public/css/components/crud-section.css">
 <link rel="stylesheet" href="/public/css/components/filepond.css">
@@ -77,49 +76,49 @@
     <tbody>
 
     <% reader.forEach((reader,key)=>{ %> 
-    <tr>
-        <td><%= key +1 %></td>
-        <td ><%= reader.ho_ten %></td>
-        <td ><%= reader.email %></td>
-        <td ><%= reader.ngay_lap_the.toISOString().split('T')[0] %></td>
-        <td ><%= reader.dia_chi %></td>
-        <td >
-            <div class="action-container">
-                <div>
-                    <button 
-                    type="button"
-                    data-bs-toggle="modal" 
-                    data-bs-target="#viewReader<%= key %>" 
-                    class="icon-btn"
-                    >
-                    <i class="far fa-question-circle"></i>
-                    
-                </button>
-                <%- include('./view.ejs',{key:key,reader:reader}) %> 
-                </div>
-                
-                <div>
-                    <button 
+        <tr>
+            <td ><%= key +1 %></td>
+            <td ><%= reader.ho_ten %></td>
+            <td ><%= reader.email %></td>
+            <td ><%= reader.ngay_lap_the.toISOString().split('T')[0] %></td>
+            <td ><%= reader.dia_chi %></td>
+            <td >
+                <div class="action-container">
+                    <div>
+                        <button 
                         type="button"
                         data-bs-toggle="modal" 
-                        data-bs-target="#editReader<%= key %>" 
+                        data-bs-target="#viewReader<%= key %>" 
                         class="icon-btn"
                         >
-                        <i class="fas fa-edit"></i>
+                        <i class="far fa-question-circle"></i>
                         
                     </button>
-                    <%- include('./edit.ejs',{key:key,reader:reader}) %> 
+                    <%- include('./view.ejs',{key:key,reader:reader}) %> 
+                    </div>
+                    
+                    <div>
+                        <button 
+                            type="button"
+                            data-bs-toggle="modal" 
+                            data-bs-target="#editReader<%= key %>" 
+                            class="icon-btn"
+                            >
+                            <i class="fas fa-edit"></i>
+                            
+                        </button>
+                        <%- include('./edit.ejs',{key:key,reader:reader}) %> 
+                    </div>
+                    <form class="form-primary" action="/librarian/reader/<%= reader._id %>?_method=DELETE" method="POST">
+                        <button class="icon-btn danger" type="submit">
+                            <i class="far fa-trash-alt"></i>
+                            
+                        </button>
+                    </form>  
                 </div>
-                <form class="form-primary" action="/librarian/reader/<%= reader._id %>?_method=DELETE" method="POST">
-                    <button class="icon-btn danger" type="submit">
-                        <i class="far fa-trash-alt"></i>
-                        
-                    </button>
-                </form>  
-            </div>
-        </td>
-    </tr>
-<% }) %> 
+            </td>
+        </tr>
+    <% }) %> 
 </tbody>
 </table>
 

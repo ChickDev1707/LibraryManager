@@ -31,7 +31,11 @@
           <td><%= index + 1 %> </td>
           <td><%= card.dau_sach.ten_dau_sach %> </td>
           <td><%= card.ngay_muon.toLocaleDateString('vi') %> </td>
-          <td><%= card.remainDay %> </td>
+          <td>
+            <% if(card.ngay_tra == null){ %>
+              <%= card.remainDay %> 
+            <% } %>
+          </td>
           <td>
             <% if(card.ngay_tra == null){ %>
               <strong style="color: var(--red-primary);"><%= 'Chưa trả' %></strong>  

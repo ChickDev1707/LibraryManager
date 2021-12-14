@@ -57,9 +57,13 @@ async function confirmCard(borrowReturnCard){
                 await reader.save()
                 
             }
-            const book=await Book.findById(card.dau_sach)
-            book.so_luong_kha_dung+=1     //xử lý số lượng sách khả dụng
-            await book.save()
+            const bookHead=await Book.findById(card.dau_sach)
+            bookHead.so_luong_kha_dung+=1     //xử lý số lượng sách khả dụng
+            const book = bookHead.cac_quyen_sach.find((item)=> item._id.toString() == card.ma_sach)
+            if(book){
+                bookHead.cac_quyen_sach[bookHead.cac_quyen_sach.indexOf(book)].tinh_trang = true
+            }
+            await bookHead.save()
         }catch(e){
             console.log(e)
         }
