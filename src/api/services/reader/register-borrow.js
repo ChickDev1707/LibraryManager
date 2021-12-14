@@ -21,12 +21,8 @@ async function getBooksFromIds(bookHeadIds){
 async function getManageCartError(req){
   const bookHeadId = req.body.bookHeadId
   const account = await accountServices.getCurrentUserAccount(req)
-  const amountLimit = await policyServices.getPolicyValueByName('so_sach_muon_toi_da')
-  const bookHead = await BookHead.findById(bookHeadId)
   const cart = account.gio_sach
   if(cart.includes(bookHeadId)) return 'Sách đã được thêm vào giỏ đăng ký mượn'
-  if(cart.length>= amountLimit) return 'Quá số lượng sách quy định'
-  if(Number(bookHead.so_luong_kha_dung)<= 0) return 'Sách không khả dụng'
   return ''
 }
 async function saveBookHeadToCart(req){
