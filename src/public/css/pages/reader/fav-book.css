@@ -6,14 +6,15 @@
   align-items: center;
   padding: .5rem 2rem;
   color: var(--secondary);
-  border-left: .5rem solid var(--primary);
   margin-bottom: 1rem;
+  border: 1px solid gainsboro;
+  border-left: .5rem solid var(--primary);
 }
 .fav-book-item:hover{
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 .fav-book-item .info{
-  margin-left: 7rem;
+  margin-left: 4rem;
   flex: 1;
 }
 .fav-book-item .info>*{

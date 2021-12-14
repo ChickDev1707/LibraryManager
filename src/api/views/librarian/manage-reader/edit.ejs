@@ -3,9 +3,7 @@
     <div class="modal-dialog" style="max-width: 50%;" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="staticBackdropLabel">
-                    Cập nhật thông tin độc giả
-                </h4>
+                <h5 class="modal-title" id="staticBackdropLabel"> Cập nhật thông tin độc giả</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -74,9 +72,7 @@
 </div>
 
 <style>
-    #form_<%=key%> .filepond--root .filepond--drop-label {
+    form[id="form_<%=key%>"] .filepond--root .filepond--drop-label {
         background-image: url('<%=reader.anh_bia %>');
     }
-
-
 </style>

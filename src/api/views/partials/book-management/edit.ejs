@@ -4,9 +4,7 @@
     <div class="modal-dialog modal-xl modal-dialog-scrollable ">
       <div class="modal-content">
         <div class="modal-header py-2">
-          <h4 class="modal-title page-title" id="staticBackdropLabel">
-              CHỈNH SỬA THÔNG TIN ĐẦU SÁCH
-          </h4>
+          <h5 class="modal-title" id="staticBackdropLabel">Chỉnh sửa đầu sách</h5>
             <button id="" 
                 type="button" 
                 class="btn-close" 
@@ -21,8 +19,8 @@
             <form
                 action="/librarian/books/<%=book._id%>"
                 method="PUT"
-                class="row info-container needs-validation"
                 id="update_form_<%=book._id%>"
+                class="row info-container needs-validation update-form"
                 novalidate
                 onsubmit="return submitEdit(event)"
                 
@@ -34,6 +32,7 @@
                         name="anh_bia"
                         type="file"
                         accept="image/*"
+                        value="<%= book.anh_bia %>"
                     >
                 </div>
                 <div class="col-sm-12 col-md-12 col-xl-8">
@@ -324,7 +323,7 @@
   </div>
 
 <style>
-    #update_form_<%=book._id%> .filepond--root .filepond--drop-label {
+    form[id='update_form_<%=book._id%>'] .filepond--root .filepond--drop-label {
         background-image: url('<%=book.anh_bia %>');
     }
 </style>

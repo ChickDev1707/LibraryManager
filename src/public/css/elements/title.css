@@ -18,3 +18,8 @@
 .medium-title{
   margin-bottom: 1rem;
 }
+.modal-title{
+  font-weight: 600;
+  font-size: 1.5rem;
+  color: var(--primary);
+}
