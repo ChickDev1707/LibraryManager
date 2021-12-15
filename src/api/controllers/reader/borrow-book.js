@@ -13,7 +13,7 @@ async function showViewBorrowCardsPage(req, res){
   res.render('reader/view-borrow.ejs', {borrowCards})
 }
 function getSearchOptions(readerId, status){
-  let searchOptions = {ma_doc_gia: readerId}
+  let searchOptions = {doc_gia: readerId}
   let reqStatus = status == undefined? -1: Number(status)
   if(reqStatus == 1) searchOptions.ngay_tra = null
   else if(reqStatus == 2) searchOptions.ngay_tra = {$ne: null}
