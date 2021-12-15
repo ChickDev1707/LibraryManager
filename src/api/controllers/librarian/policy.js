@@ -27,7 +27,6 @@ async function addNewBookCategory(req, res){
   try{
     const categoryName = req.body.categoryName
     await policyService.addNewBookCategory(categoryName)
-    res.redirect('/librarian/policy/book-category')
     const redirectUrl = urlHelper.getEncodedMessageUrl(`/librarian/policy/book-category/`, {
       type: 'success',
       message: 'Đã thêm thể loại sách vào thư viện'
