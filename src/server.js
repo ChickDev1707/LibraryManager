@@ -74,4 +74,4 @@ db.once('open', ()=> console.log('connected to mongoose'))
 
 notificationConfig.init(io)
 // listen
-server.listen(process.env.port || port)
+server.listen(process.env.PORT || port)
