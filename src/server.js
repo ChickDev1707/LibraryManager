@@ -15,7 +15,6 @@ const path = require('path')
 const cors = require('cors')
 global.appRoot = path.resolve(__dirname, "..");
 // includes routes
-const librarianRoute = require('./api/routes/librarian.js')
 const librarianRoute=require('./api/routes/librarian')
 const readerRoute = require('./api/routes/reader.js')
 const userRoute = require('./api/routes/user.js')
