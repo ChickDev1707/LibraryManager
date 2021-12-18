@@ -56,7 +56,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use(cors())
 
-routes
+//routes
 app.use('/librarian', librarianRoute)
 app.use('/reader', readerRoute)
 app.use('/', userRoute(passport))

@@ -10,9 +10,7 @@ module.exports = function(passport){
   const router = express.Router();
 
   // index
-  router.route('/').get((req, res)=>{
-    res.send("xyz");
-  })
+  router.route('/').get(userAuth.decideUserPage, searchBookController.searchBook)
 
   const redirectUrl = urlHelper.getEncodedMessageUrl(`/login/`, {
     type: 'error',
