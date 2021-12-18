@@ -18,7 +18,7 @@ global.appRoot = path.resolve(__dirname, "..");
 // const librarianRoute = require('./api/routes/librarian.js')
 // const librarianRoute=require('./api/routes/librarian')
 // const readerRoute = require('./api/routes/reader.js')
-// const userRoute = require('./api/routes/user.js')
+const userRoute = require('./api/routes/user.js')
 
 const app = express()
 
@@ -59,7 +59,7 @@ app.use(cors())
 // routes
 // app.use('/librarian', librarianRoute)
 // app.use('/reader', readerRoute)
-// app.use('/', userRoute(passport))
+app.use('/', userRoute(passport))
 
 // database
 mongoose.connect(process.env.DATABASE_URL, {
