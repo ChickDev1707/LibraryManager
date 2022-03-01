@@ -4,7 +4,6 @@ const searchBookService = require('../../services/user/search-book-service.js')
 async function searchBook(req, res){
     try{
         const bookHeads = await searchBookService.searchBook(req.query.searchBox, req.query.option)
- 
         res.render(req.userPage, {
             bookHeads: bookHeads,
             searchOptions: req.query

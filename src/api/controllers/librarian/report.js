@@ -9,9 +9,15 @@ const reportService = require('../../services/librarian/report')
 async function getMonthReportPage(req, res){
     if(!req.query.month){
         let today = new Date()
-        let thisMonth = today.getFullYear() + '-' + (today.getMonth()+1)
+        let thisMonth = "2022-01"
+        if (today.getMonth > 8){
+            thisMonth = today.getFullYear() + '-' + (today.getMonth()+1)
+        }else{
+            thisMonth = today.getFullYear() + '-0' + (today.getMonth()+1)
+        }
         req.query.month = thisMonth
     }
+
     try{
         const reportArray = await reportService.getMonthReportArray(req.query.month)
         await reportArray.sort((a, b)=>{
@@ -37,13 +43,9 @@ async function getMonthReportPage(req, res){
 async function getDayReportPage(req, res){
     if(!req.query.date){
         let today = new Date()
-        let thisDate = ''
-        if(today.getDate() >9){
-            thisDate = today.getFullYear() + "-" + (today.getMonth()+1) + "-" +today.getDate()
-        }else{
-            thisDate = today.getFullYear() + "-" + (today.getMonth()+1) + "-0" +today.getDate()
-        }
-        req.query.date = thisDate
+        today = today.toISOString().split('T')[0]
+        req.query.date = today
+        console.log(today)
     }
     try{  
         const borrowReturnCards = await reportService.getDayReportArray(req.query.date)
