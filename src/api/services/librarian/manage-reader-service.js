@@ -40,7 +40,8 @@ async function handleAddFileExcel(reqFile){
             C:'ngay_sinh',
             D:'dia_chi',
             E:'email',
-            F:'gioi_tinh'
+            F:'gioi_tinh',
+            G:'ngay_lap_the'
         }
     })
     let length=0
@@ -77,7 +78,7 @@ async function handleAddFileExcel(reqFile){
             const today=new Date()
             const month=((today.getMonth()+1)<10)?('0'+(today.getMonth()+1)):(today.getMonth()+1)
             const day=(today.getDate()<10)?('0'+today.getDate()):(today.getDate())
-            const ngay_lap_the=today.getFullYear()+'-'+month+'-'+day
+            const ngay_lap_the= result.Reader[i].ngay_lap_the? result.Reader[i].ngay_lap_the : today.getFullYear()+'-'+month+'-'+day
 
             // console.log("ngay lap the",ngay_lap_the,"ngay sinh : ", result.Reader[i].ngay_sinh)
             const defaultImgPath = path.join(__dirname.split('\\').slice(0, -3).join('\\'),'/public/assets/images/default-reader-avatar.png')
@@ -118,8 +119,10 @@ async function handleAddFileExcel(reqFile){
         }
     } 
     fs.unlink(uploadPath,function(err){
-        if(err) throw err
-        // console.log('file delete!')
+        if(err){
+            console.log(err)
+        }
+        console.log('file delete!')
     })
 }
 
@@ -314,8 +317,6 @@ async function handleDeleteReader(reqParam){
     }
 }
 async function checkminage(today,namsinh){
-    console.log('today')
-    console.log(today.getDate(),today.getMonth(),today.getFullYear())
     const minAge=await Policy.find({ten_quy_dinh:'tuoi_toi_thieu'})
     const year=today.getFullYear()-namsinh.getFullYear()
     const month=today.getMonth()-namsinh.getMonth()

@@ -132,22 +132,22 @@
     <tr>
         <th>STT</th>
         <th>Tên độc giả</th>
-        <th>Ngày lập thẻ</th>
+        <th>Ngày sinh</th>
+        <th>Địa chỉ</th>
         <th>Email</th>
         <th>Giới tính</th>
-        <th>ngày sinh</th>
-        <th>Địa chỉ</th>
+        <th>Ngày lập thẻ</th>
     </tr>
     <% reader.forEach((reader,key)=>{ %>
          
         <tr>
             <td><%= key %></td>
             <td><%= reader.ho_ten %></td>
-            <td><%= reader.ngay_lap_the.toISOString().split('T')[0] %></td>
-            <td><%= reader.email %></td>
-            <td><%= reader.gioi_tinh %> </td>
             <td><%= reader.ngay_sinh.toISOString().split('T')[0] %> </td>
             <td><%= reader.dia_chi %></td>
+            <td><%= reader.email %></td>
+            <td><%= reader.gioi_tinh %> </td>
+            <td><%= reader.ngay_lap_the.toISOString().split('T')[0] %></td>
         </tr>
     <% }) %> 
 
