@@ -309,7 +309,7 @@ async function handleDeleteReader(reqParam){
     const account=await Account.findById(reader.id_account)
     await reader.remove()
     await account.remove()
-    const card=await BorrowReturnCard.find({ma_doc_gia:reqParam})
+    const card=await BorrowReturnCard.find({doc_gia:reqParam})
     const lengthOfCard=card.length
 
     for(let i=0;i<lengthOfCard;i++){
