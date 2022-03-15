@@ -6,8 +6,8 @@ window.onload = function(){
   loadNotifications()
 }
 function loadNotifications(){
-  let notPanel = document.querySelector('#notificationPanel .offcanvas-body')
-  notPanel.innerHTML = ""
+  let notificationCanvas = document.querySelector('#notification-canvas .offcanvas-body')
+  notificationCanvas.innerHTML = ""
   // clear notifications
   fetch('http://localhost:3000/librarian/api/notification')
     .then(data => {
@@ -15,47 +15,51 @@ function loadNotifications(){
     })
     .then(json => {
       if(json.notifications.length == 0){
-        let noNotPanel = createNoNotificationPanel()
-        notPanel.appendChild(noNotPanel)
+        let emptyNotificationPanel = createEmptyNotificationPanel()
+        notificationCanvas.appendChild(emptyNotificationPanel)
       }else{
-        addNotificationFromData(notPanel, json)
+        addNotificationFromData(notificationCanvas, json)
         if(json.newNot) $("#notification-btn").css('background-color', 'var(--new-not-color)')
       }
     })
   // has new not
 }
-function createNoNotificationPanel(){
+function createEmptyNotificationPanel(){
   let inner = 
   ` <img src='/public/assets/images/no-notifications.png' alt='...'/>
     <h4>Không có thông báo<h4/>
     <p>Bạn sẽ thấy các thông báo về tác vụ quản lý hiển thị ở đây.</p>
   `
-  return createItem('div', 'no-not-panel', inner)
+  return createItem('div', 'empty-notification-panel', inner)
 
 }
-function addNotificationFromData(notPanel, data){
+function addNotificationFromData(notificationCanvas, data){
   data.notifications.map(notification => {
-    let notItem = createNotItem(notification)
-    notPanel.appendChild(notItem)
+    let notificationItem = createNotificationItem(notification)
+    notificationCanvas.appendChild(notificationItem)
   })
 }
 
-function createNotItem(notification){
-  let item = createItem('a', 'not-item')
+function createNotificationItem(notification){
+  let item = createItem('a', 'wrapper-link')
   item.href = '/librarian/confirm-register-borrow'
-  let noteWrapper = document.createElement('div')
+  let notificationWrapper = document.createElement('div')
   
-  noteWrapper.innerHTML=`
-    <div class="title-wrapper">
-      <div class="not-img">
-        <img src="/public/assets/images/register/comment.png" alt="">
+  notificationWrapper.innerHTML=`
+    <div class="notification">
+      <div class="img-wrapper">
+        <div class="img-con">
+          <img src="/public/assets/images/register/comment.png" alt="">
+        </div>
       </div>
-      <span>${notification.tieu_de}</span>
+      <div class="content-con">
+        <p class="title">${notification.tieu_de}</p>
+        <p class="hide-overflow-text">${notification.noi_dung}</p>
+        <small>${getTimeString(notification.ngay)}</small>
+      </div>
     </div>
-    <p class="content">${notification.noi_dung}</p>
-    <p class="date">${getTimeString(notification.ngay)}</p>
   `
-  item.appendChild(noteWrapper)
+  item.appendChild(notificationWrapper)
   return item
 }
 function createItem(tagName, className, inner){
