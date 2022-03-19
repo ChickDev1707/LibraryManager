@@ -6,7 +6,7 @@ const path=require('path')
 const multer=require('multer')
 const XLSX=require('xlsx')
 const urlHelper=require('../../helpers/url')
-
+const {sendMail} = require('../../helpers/mailer')
 
 const uploadPath = path.join('./src/public', '/uploads/addReader')
 const storage = multer.diskStorage({
@@ -35,8 +35,10 @@ async function addReader(req,res){
         const data=await manageReaderService.handleAddReader(req.body)
         
         try {
-            const newreader= await data.reader.save()
+            const newReader= await data.reader.save()
             const newAccount=await data.addAccount.save()
+            const mailBody = getVerifyMailBody(newAccount._id)
+            sendMail(newAccount.ten_tai_khoan, mailBody)
             const redirectUrl=urlHelper.getEncodedMessageUrl('/librarian/reader/',{
                 type:'success',
                 message:"Tạo độc giả thành công"
@@ -85,6 +87,20 @@ async function deleteReader(req,res){
             message:"Không xóa được"
         })
         res.redirect(redirectUrl)
+    }
+}
+
+function getVerifyMailBody(accountId){
+    const html = `
+      click this button to verify
+      <form action="http://localhost:3000/verify-account" method="POST">
+        <input type="hidden" name="accountId" value="${accountId}">
+        <button type="submit">verify</button>
+      </form>
+    `
+    return {
+      subject: 'verify account',
+      html: html
     }
 }
 module.exports={

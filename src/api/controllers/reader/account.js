@@ -1,5 +1,7 @@
 const { getCurrentUserAccount } = require("../../services/account");
 const { getProfileByAccountId, updateUserProfile, updatePassword, updateAvatar } = require("../../services/reader/account");
+
+const Account = require('../../models/user-account')
 //Get user profile
 async function getUserProfile(req, res, next){
     try{
@@ -46,10 +48,14 @@ async function updateUser(req, res, next){
     
 }
 
-
+async function verifyReaderAccount(req, res){
+    await Account.findOneAndUpdate({_id: req.body.accountId}, {kich_hoat: true})
+    res.render('reader/verify-account.ejs')
+}
 
 module.exports= {
     getUserProfile,
     updateUser,
-    updateAvatar
+    updateAvatar,
+    verifyReaderAccount
 }

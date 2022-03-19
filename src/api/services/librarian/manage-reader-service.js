@@ -138,7 +138,7 @@ async function handleAddReader(reqBody){
     else if(maxAge==false){
         data.errorMessage="Vượt quá độ tuổi đăng ký"
     }
-    else if(!validateMailResult.data.smtp_check){
+    else if(!validateMailResult.is_smtp_valid.value){
         data.errorMessage = "Email không hợp lệ"
     }
     else if(readerWithMail.length != 0){

@@ -40,7 +40,6 @@ router.delete('/books/:id/:child', bookController.deleteChildBook)
 router.route('/reader')
       .get(readerController.getAllReader)
       .post(readerController.uploadReader.single('uploadfile'),readerController.addReader)
-// router.get('/reader/new', readerController.newReader)
 
 router.route('/reader/:id')
       .get(readerController.getReader)
