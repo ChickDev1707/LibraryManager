@@ -26,7 +26,7 @@ function sendMail(receiver, message){
   })
 }
 async function validateMail(email){
-  const api = `https://app.verify-email.org/api/v1/5MpRQi8qcDLQZl6BPDVxZi0C508QDXq93ktWlpozMolnscYMBb/verify/${email}`
+  const api = `https://api.hunter.io/v2/email-verifier?email=${email}&api_key=0385e643309b471f5031840e9c1327717a944c4b`
   return fetch(api)
     .then(res => res.json())
     .then(data => data);

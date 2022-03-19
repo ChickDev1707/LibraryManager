@@ -36,6 +36,7 @@ router.route('/books/:id')
 
 router.delete('/books/:id/:child', bookController.deleteChildBook)
 
+// manage reader
 router.route('/reader')
       .get(readerController.getAllReader)
       .post(readerController.uploadReader.single('uploadfile'),readerController.addReader)

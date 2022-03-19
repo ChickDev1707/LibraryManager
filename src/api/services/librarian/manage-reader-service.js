@@ -7,29 +7,29 @@ const path=require('path')
 const excelToJson = require('convert-excel-to-json');
 const urlHelper=require('../../helpers/url')
 const imageMimeTypes = ['image/jpeg', 'image/png', 'images/gif']
+const {dateDiff} = require('../../helpers/date')
+const {validateMail} = require('../../helpers/mailer')
 
-async function searchReader(Query){
-    const search={}
-    if(Query!=null || Query!=""){
-      search.ho_ten=new RegExp(Query,"i")
+async function searchReader(query){
+    const search = {}
+    if(query != null || query != ""){
+      search.ho_ten=new RegExp(query,"i")
     }
-    const reader=await Reader.find(search)
+    const searchResult = await Reader.find(search)
 
-    const arr=[]
-    const lengthOfReader=reader.length
-    for(let i=0;i<lengthOfReader;i++){
-        let r=await Reader.findOne({email:reader[i].email})
-        arr.push({...r._doc,anh_bia:r.anh_bia})
+    const readers = []
+    for(let i=0; i< searchResult.length; i++){
+        let reader = await Reader.findOne({email: searchResult[i].email})
+        readers.push({...reader._doc, anh_bia:reader.anh_bia})
     }
     
-    return arr
+    return readers
 }
 
 async function handleAddFileExcel(reqFile){
 
-
-    const uploadPath = path.join('./src/public/uploads/addReader',reqFile.originalname+'')
-    const result=excelToJson({
+    const uploadPath = path.join('./src/public/uploads/addReader', reqFile.originalName+'')
+    const result = excelToJson({
         sourceFile:uploadPath,
         header:{
             rows:1
@@ -44,21 +44,14 @@ async function handleAddFileExcel(reqFile){
             G:'ngay_lap_the'
         }
     })
-    let length=0
-    try{
-        length=result.Reader.length;
-    }
-    catch(e){
-        return
-    }
-    for(let i=0;i<length;i++){
-        const nam_sinh=new Date(result.Reader[i].ngay_sinh)
-        const today=new Date()
-        const minAge=await checkminage(today,nam_sinh)
-        const maxAge=await checkmaxage(today,nam_sinh)
+
+    for(let i = 0; i< result.Reader.length; i++){
+        const dateOfBirth= new Date(result.Reader[i].ngay_sinh)
+        const minAge= await checkMinAge(dateOfBirth)
+        const maxAge= await checkMaxAge(dateOfBirth)
 
         try{
-            const validAccount=await Account.find({ten_tai_khoan:result.Reader[i].email})
+            const validAccount= await Account.find({ten_tai_khoan:result.Reader[i].email})
             //check ràng buộc
             if(validAccount.length!=0){
                 continue;
@@ -127,14 +120,12 @@ async function handleAddFileExcel(reqFile){
 }
 
 async function handleAddReader(reqBody){
-    const nam_sinh=new Date(reqBody.ngay_sinh)
-    const today=new Date()
-    const checkAge=today.getFullYear()-nam_sinh.getFullYear()
+    const dateOfBirth=new Date(reqBody.ngay_sinh)
 
-    const checkEmail=await Reader.find({"email":reqBody.email})
-    const minAge=await checkminage(today,nam_sinh)
-    const maxAge=await checkmaxage(today,nam_sinh)
-
+    const readerWithMail= await Reader.find({"email": reqBody.email})
+    const minAge=await checkMinAge(dateOfBirth)
+    const maxAge=await checkMaxAge(dateOfBirth)
+    const validateMailResult = await validateMail(reqBody.email)
     const data={
         reader:"",
         addAccount:"",
@@ -147,7 +138,10 @@ async function handleAddReader(reqBody){
     else if(maxAge==false){
         data.errorMessage="Vượt quá độ tuổi đăng ký"
     }
-    else if(checkEmail.toString()!=''){
+    else if(!validateMailResult.data.smtp_check){
+        data.errorMessage = "Email không hợp lệ"
+    }
+    else if(readerWithMail.length != 0){
         data.errorMessage="Email đã được sử dụng!!!"
     }
     else{
@@ -193,8 +187,7 @@ async function editReader(reqParam){
   return {...r._doc,anh_bia:r.anh_bia}
 }
 async function handleEditReader(reqParam,reqBody){
-    const nam_sinh=new Date(reqBody.ngay_sinh)
-    const today=new Date()
+    const dateOfBirth=new Date(reqBody.ngay_sinh)
 
     let reader= await Reader.findById(reqParam.id)
     const account=await Account.findById(reader.id_account)
@@ -214,8 +207,8 @@ async function handleEditReader(reqParam,reqBody){
         reader:'',
         account:''
     }
-    const minAge=await checkminage(today,nam_sinh)
-    const maxAge=await checkmaxage(today,nam_sinh)
+    const minAge= await checkMinAge(dateOfBirth)
+    const maxAge= await checkMaxAge(dateOfBirth)
     if(minAge==false){
         dataReturn.error="Không đủ độ tuổi"
         const redirectUrl=urlHelper.getEncodedMessageUrl('/librarian/reader/',{
@@ -316,15 +309,16 @@ async function handleDeleteReader(reqParam){
         await card[i].remove()
     }
 }
-async function checkminage(today,namsinh){
-    const minAge=await Policy.find({ten_quy_dinh:'tuoi_toi_thieu'})
-    const year=today.getFullYear()-namsinh.getFullYear()
-    const month=today.getMonth()-namsinh.getMonth()
-    const day=today.getDate()-namsinh.getDate()
-    if(year<minAge[0].gia_tri){
+async function checkMinAge(dateOfBirth){
+    const today = new Date()
+    const minAge = await Policy.findOne({ten_quy_dinh:'tuoi_toi_thieu'})
+    const year = today.getFullYear() - dateOfBirth.getFullYear()
+    const month = today.getMonth() - dateOfBirth.getMonth()
+    const day = today.getDate() - dateOfBirth.getDate()
+    if(year < minAge.gia_tri){
         return false
     }
-    else if (year==minAge[0].gia_tri){
+    else if (year==minAge.gia_tri){
         if(month<0){
             return false
         }
@@ -343,15 +337,16 @@ async function checkminage(today,namsinh){
         return true
     }
 }
-async function checkmaxage(today,namsinh){
-    const maxAge=await Policy.find({ten_quy_dinh:'tuoi_toi_da'})
-    const year=today.getFullYear()-namsinh.getFullYear()
-    const month=today.getMonth()-namsinh.getMonth()
-    const day=today.getDate()-namsinh.getDate()
-    if(year>maxAge[0].gia_tri){
+async function checkMaxAge(dateOfBirth){
+    const today = new Date()
+    const maxAge = await Policy.findOne({ten_quy_dinh:'tuoi_toi_da'})
+    const year = today.getFullYear() - dateOfBirth.getFullYear()
+    const month = today.getMonth() - dateOfBirth.getMonth()
+    const day = today.getDate() - dateOfBirth.getDate()
+    if(year>maxAge.gia_tri){
         return false
     }
-    else if (year==maxAge[0].gia_tri){
+    else if (year==maxAge.gia_tri){
         if(month<0){
             return true
         }
@@ -370,6 +365,7 @@ async function checkmaxage(today,namsinh){
         return true
     }
 }
+
 function base64_encode(file) {
     var file_buffer   = fs.readFileSync(file); 
     var type = 'image/' +  file.split('.').pop()
@@ -381,5 +377,5 @@ module.exports={
     handleAddReader,
     editReader,
     handleEditReader,
-    handleDeleteReader
+    handleDeleteReader,
 }
