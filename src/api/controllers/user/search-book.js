@@ -1,5 +1,16 @@
 const searchBookService = require('../../services/user/search-book-service.js')
 
+//autocomplete search
+
+async function autocompleteSearch(req, res){
+    try{
+        await searchBookService.autocompleteSearch(req, res)
+    }catch(error){
+        res.redirect('/')
+        console.log(error)
+    }
+}
+
 //search book 
 async function searchBook(req, res){
     try{
@@ -76,4 +87,5 @@ module.exports = {
     searchBook,
     showBookDetail,
     comment,
+    autocompleteSearch
 }
