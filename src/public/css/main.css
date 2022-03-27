@@ -7,6 +7,7 @@
 @import url('./elements/title.css');
 @import url('./elements/table.css');
 @import url('./components/footer.css');
+@import url('./elements/icon.css');
 
 *{
   box-sizing: border-box;
@@ -51,4 +52,19 @@ a{
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1; 
   /* ẩn phẩn văn bản dài phía sau thay bằng dấu '...', tùy chỉnh số dòng bằng '-webkit-line-clamp' */
+}
+
+.invalid{
+  color: red;
+}
+.invalid input {
+  border-color: red;
+}
+
+.invalid select {
+  border-color: red;
+}
+
+.invalid textarea {
+  border-color: red;
 }

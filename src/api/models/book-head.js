@@ -60,7 +60,12 @@ const BookHeadSchema = new mongoose.Schema({
             required: true
         }
     }],
-    cac_nhan_xet: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }]
+    cac_nhan_xet: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
+    sao_danh_gia:{
+        type: Number,
+        required: true,
+        default: 0
+    }
 })
 
 
