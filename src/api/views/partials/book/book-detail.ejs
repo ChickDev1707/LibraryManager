@@ -1,97 +1,185 @@
 <script src="/public/js/register-borrow-book.js"></script>
-<link rel="stylesheet" href="/public/css/pages/user/book-detail.css">
+<link rel="stylesheet" href="/public/css/pages/user/book-detail.css" />
 <div class="page-content-wrapper">
-    <h2 class="page-title">Chi tiết sách</h2>
+  <h2 class="page-title">Chi tiết sách</h2>
 
-    <div class="row section-book-detail">
-        <div class="col-5">
-            <img class="img-fluid" src="<%= bookHead.anh_bia %>">
-        </div>
-
-        <div class="col-7">
-            <div class="detail">
-                <h2><%= bookHead.ten_dau_sach %></h2>
-                <div><label>Tác giả:</label> <a href="/?option=author&searchBox=<%= bookHead.tac_gia %>"><%= bookHead.tac_gia %></a></div>
-                <div><label>Thể loại:</label> <a href="/?option=category&searchBox=<%= bookHead.the_loai.ten_the_loai %>"><%= bookHead.the_loai.ten_the_loai %></a></div>
-                <div><label>Nhà xuất bản:</label> <a href="/?option=publisher&searchBox=<%= bookHead.nha_xuat_ban %>"><%= bookHead.nha_xuat_ban %></a></div>
-                <div><label>Xuất bản năm:</label> <%= bookHead.nam_xuat_ban %></div>
-                <div class="price"><i class="fas fa-dollar-sign"></i> <%= bookHead.gia %> VND</div>
-                <div><span>Số lượng:</span> <%= bookHead.so_luong %></div>
-                <div class="no-available"><span>Số lượng khả dụng:</span> <span><%= bookHead.so_luong_kha_dung %></span></div>
-                <div class="destription">Mô tả</div>
-                <div class="hide-overflow-text"><%= bookHead.tom_tat %></div>
-            </div>
-
-            <div class="action-button">
-                <% if(user == 'reader'){ %>
-                    <form action="/reader/cart" method="POST">
-                        <input name="bookHeadId" type="text" hidden value="<%= bookHead._id%>">
-                        <button class="submit-btn" type="submit"><i class="fas fa-cart-plus"></i> Đăng ký mượn</button>
-                    </form>
-                    <form action="/reader/favorite-books" method="POST">
-                        <input name="bookHeadIdFavorite" type="text" hidden value="<%= bookHead._id%>">
-                        <button class="outline-btn" type="submit"><i class="fas fa-heart"></i> Thêm vào yêu thích</button>
-                    </form>
-                <% }else if(user== 'guest'){ %>
-                    <form action="/login" method="GET">
-                        <input type="text" name="message" value="Đăng nhập để đăng ký mượn sách" hidden>
-                        <input type="text" name="type" value="info" hidden>
-                        <button class="submit-btn" type="submit"><i class="fas fa-cart-plus"></i> Đăng ký mượn</button>
-                    </form>
-                    <form action="/login" method="GET">
-                        <input type="text" name="message" value="Đăng nhập để thêm sách yêu thích" hidden>
-                        <input type="text" name="type" value="info" hidden>
-                        <button class="outline-btn" type="submit"><i class="fas fa-heart"></i> Thêm vào yêu thích</button>
-                    </form>
-                <% } %> 
-            </div>
-        </div>
+  <div class="row section-book-detail">
+    <div class="col-5">
+      <img class="img-fluid" src="<%= bookHead.anh_bia %>" />
     </div>
 
-    <div class="section-form-comment">
-        <h3 class="page-title">Nhận xét</h3>
+    <div class="col-7">
+      <div class="detail">
+        <h2><%= bookHead.ten_dau_sach %></h2>
+        <div>
+          <label>Tác giả:</label>
+          <a href="/?option=author&searchBox=<%= bookHead.tac_gia %>"
+            ><%= bookHead.tac_gia %></a
+          >
+        </div>
+        <div>
+          <label>Thể loại:</label>
+          <a
+            href="/?option=category&searchBox=<%= bookHead.the_loai.ten_the_loai %>"
+            ><%= bookHead.the_loai.ten_the_loai %></a
+          >
+        </div>
+        <div>
+          <label>Nhà xuất bản:</label>
+          <a href="/?option=publisher&searchBox=<%= bookHead.nha_xuat_ban %>"
+            ><%= bookHead.nha_xuat_ban %></a
+          >
+        </div>
+        <div><label>Xuất bản năm:</label> <%= bookHead.nam_xuat_ban %></div>
+        <div class="price">
+          <i class="fas fa-dollar-sign"></i> <%= bookHead.gia %> VND
+        </div>
+        <div><span>Số lượng:</span> <%= bookHead.so_luong %></div>
+        <div class="no-available">
+          <span>Số lượng khả dụng:</span>
+          <span><%= bookHead.so_luong_kha_dung %></span>
+        </div>
+        <div class="no-available">
+          <span>Số lượng bán:</span>
+          <span><%= bookHead.so_luong_ban %></span>
+        </div>
+        <div class="destription">Mô tả</div>
+        <div class="hide-overflow-text"><%= bookHead.tom_tat %></div>
+      </div>
+
+      <div class="action-button">
         <% if(user == 'reader'){ %>
-            <form class="form-comment" action="/comment/<%= bookHead.id %>" method="post">
-                <h4>Nhận xét của bạn</h4>
-                <div class="input-container">
-                    <img src="/public/assets/images/user.png" alt="">
-                    <div class="input-item">
-                        <textarea name="commentInput" rows="3"  placeholder="Viết nhận xét..."></textarea>
-                    </div>
-                </div>
-                <div class="btn-container">
-                    <button class="submit-btn" type="submit">Nhận xét</button>
-                </div>
-            </form>
-        <% }else if(user == 'guest'){ %>
-            <form class="form-comment" action="/login" method="GET">
-                <h4>Nhận xét của bạn</h4>
-                <div class="input-container">
-                    <img src="/public/assets/images/user.png" alt="">
-                    <div class="input-item">
-                        <textarea name="commentInput" rows="3"  placeholder="Viết nhận xét..."></textarea>
-                        <input type="text" name="message" value="Đăng nhập để viết nhận xét" hidden>
-                        <input type="text" name="type" value="info" hidden>
-                    </div>
-                </div>
-                <div class="btn-container">
-                    <button class="submit-btn" type="submit">Nhận xét</button>
-                </div>
-            </form>
-        <% } %> 
-    </div>
+        <form action="/reader/cart" method="POST">
+          <input
+            name="bookHeadId"
+            type="text"
+            hidden
+            value="<%= bookHead._id%>"
+          />
+          <button class="submit-btn" type="submit">
+            <i class="fas fa-cart-plus"></i> Đăng ký mượn
+          </button>
+        </form>
 
-    <div class="section-comment">
-        <% bookHead.cac_nhan_xet.forEach(comment => { %>
-            <div class="comment">
-                <img class="avatar" src="<%= comment.doc_gia.anh_bia %>" alt="Avatar">
-                <div class="comment-content">
-                    <b><%= comment.doc_gia.ho_ten %></b>
-                    <i><small><%= comment.ngay_dang.toLocaleDateString("VN", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %></small></i>
-                    
-                    <div><%= comment.noi_dung %></div>
-                </div>
-            </div>
-        <% }) %>   
+        <form action="/reader/bookCart" method="POST">
+          <input
+            name="bookHeadId"
+            type="text"
+            hidden
+            value="<%= bookHead._id%>"
+          />
+          <button class="submit-btn" type="submit" <%= bookHead.so_luong_ban==0?'disabled':''%>>
+            <i class="fas fa-cart-plus"></i> Thêm vào giỏ sách
+          </button>
+        </form>
+
+        <form action="/reader/favorite-books" method="POST">
+          <input
+            name="bookHeadIdFavorite"
+            type="text"
+            hidden
+            value="<%= bookHead._id%>"
+          />
+          <button class="outline-btn" type="submit">
+            <i class="fas fa-heart"></i> Thêm vào yêu thích
+          </button>
+        </form>
+        <% }else if(user== 'guest'){ %>
+        <form action="/login" method="GET">
+          <input
+            type="text"
+            name="message"
+            value="Đăng nhập để đăng ký mượn sách"
+            hidden
+          />
+          <input type="text" name="type" value="info" hidden />
+          <button class="submit-btn" type="submit">
+            <i class="fas fa-cart-plus"></i> Đăng ký mượn
+          </button>
+        </form>
+        <form action="/login" method="GET">
+          <input
+            type="text"
+            name="message"
+            value="Đăng nhập để thêm sách yêu thích"
+            hidden
+          />
+          <input type="text" name="type" value="info" hidden />
+          <button class="outline-btn" type="submit">
+            <i class="fas fa-heart"></i> Thêm vào yêu thích
+          </button>
+        </form>
+        <% } %>
+      </div>
     </div>
+  </div>
+
+  <div class="section-form-comment">
+    <h3 class="page-title">Nhận xét</h3>
+    <% if(user == 'reader'){ %>
+    <form
+      class="form-comment"
+      action="/comment/<%= bookHead.id %>"
+      method="post"
+    >
+      <h4>Nhận xét của bạn</h4>
+      <div class="input-container">
+        <img src="/public/assets/images/user.png" alt="" />
+        <div class="input-item">
+          <textarea
+            name="commentInput"
+            rows="3"
+            placeholder="Viết nhận xét..."
+          ></textarea>
+        </div>
+      </div>
+      <div class="btn-container">
+        <button class="submit-btn" type="submit">Nhận xét</button>
+      </div>
+    </form>
+    <% }else if(user == 'guest'){ %>
+    <form class="form-comment" action="/login" method="GET">
+      <h4>Nhận xét của bạn</h4>
+      <div class="input-container">
+        <img src="/public/assets/images/user.png" alt="" />
+        <div class="input-item">
+          <textarea
+            name="commentInput"
+            rows="3"
+            placeholder="Viết nhận xét..."
+          ></textarea>
+          <input
+            type="text"
+            name="message"
+            value="Đăng nhập để viết nhận xét"
+            hidden
+          />
+          <input type="text" name="type" value="info" hidden />
+        </div>
+      </div>
+      <div class="btn-container">
+        <button class="submit-btn" type="submit">Nhận xét</button>
+      </div>
+    </form>
+    <% } %>
+  </div>
+
+  <div class="section-comment">
+    <% bookHead.cac_nhan_xet.forEach(comment => { %>
+    <div class="comment">
+      <img class="avatar" src="<%= comment.doc_gia.anh_bia %>" alt="Avatar" />
+      <div class="comment-content">
+        <b><%= comment.doc_gia.ho_ten %></b>
+        <i
+          ><small
+            ><%= comment.ngay_dang.toLocaleDateString("VN", { weekday: 'long',
+            year: 'numeric', month: 'long', day: 'numeric' }) %></small
+          ></i
+        >
+
+        <div><%= comment.noi_dung %></div>
+      </div>
+    </div>
+    <% }) %>
+  </div>
 </div>

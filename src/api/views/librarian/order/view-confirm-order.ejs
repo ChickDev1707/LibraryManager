@@ -1,0 +1,123 @@
+<%- contentFor('head') %>
+<script
+  type="text/javascript"
+  src="/public/js/handler-submit-order.js"
+></script>
+<link rel="stylesheet" href="/public/css/components/crud-section.css" />
+<link rel="stylesheet" href="/public/css/components/search-bar.css" />
+
+<%- contentFor('body') %> <%- include('../../partials/header/librarian-header')
+%>
+<div class="page-content-wrapper">
+  <h2 class="page-title">Xác nhận đơn hàng</h2>
+  <div class="crud-section">
+    <div class="crud-row">
+      <form
+        class="search-bar"
+        action="/librarian/order"
+        method="get"
+      >
+        <input
+          class="input-primary"
+          type="text"
+          name="email"
+          placeholder="Nhập email"
+          required
+        />
+        <button class="icon-text-btn" type="submit">
+          <i class="fas fa-search"></i>
+          Tìm kiếm
+        </button>
+      </form>
+      <div class="btn-container">
+        <form
+          class="form-primary"
+          action="/librarian/order"
+          method="get"
+        >
+          <input type="text" name="email" value="" hidden />
+          <button class="icon-text-btn">
+            <i class="fas fa-sync-alt"></i>
+            Làm mới
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link <%= statusQuery==0?'active':'' %>" aria-current="page" href="/librarian/order?status=0">Chờ xác nhận</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link <%= statusQuery==1?'active':'' %>" href="/librarian/order?status=1">Chờ vận chuyển</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link <%= statusQuery==2?'active':'' %>" href="/librarian/order?status=2">Đang vận chuyển</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link <%= statusQuery==3?'active':'' %>" href="/librarian/order?status=3">Đã hoàn thành</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link <%= statusQuery==-1?'active':'' %>" href="/librarian/order?status=-1">Đã từ chối</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link <%= statusQuery==-2?'active':'' %>" href="/librarian/order?status=-2">Đã hủy</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link <%= statusQuery==-3?'active':'' %>" href="/librarian/order?status=-3">Không thành công</a>
+    </li>
+
+  </ul>
+  <table class="table align-middle position-relative" id="readers_table">
+    <thead>
+      <tr>
+        <th class="w-20">Mã phiếu</th>
+        <th>Email</th>
+        <th>Đơn hàng</th>
+        <th>Địa chỉ</th>
+        <th>Tổng tiền</th>
+        <th>Tình trạng</th>
+        <%if(statusQuery>-1&&statusQuery<3){%>
+          <th>Xác nhận</th>
+          <th>Hủy</th>
+        <%}%>
+
+      </tr>
+    </thead>
+    <tbody>
+      <% orders.forEach((order, i) => { %>
+      <tr id="row_<%= order._id %>">
+        <td><%= order._id %></td>
+        <td><%= order.tai_khoan.ten_tai_khoan%></td>
+        <td>
+          <% order.gio_hang.forEach(item => { %>
+            <div>
+              <a href="/book-head/<%= item.dau_sach._id %>"><%= item.dau_sach.ten_dau_sach %>,</a>
+            </div>              
+          <% }) %>
+        </td>
+        
+        <td><%= `${order.dia_chi.xa}- ${order.dia_chi.huyen}- ${order.dia_chi.tinh}` %></td>
+        <td><%= order.tong_tien %></td>
+        <td><%= order.da_thanh_toan?"Đã thanh toán":"Chưa thanh toán" %></td>
+        <%if(statusQuery>-1&&statusQuery<3){%>
+        <td><button onclick="updateOrder('<%= order._id %>', '<%= statusQuery %>', '1')"><i class="fas fa-check"></i></button></td>
+        <td><button onclick="updateOrder('<%= order._id %>', '<%= statusQuery %>', '-1')"><i class="fas fa-ban"></i></i></button></td>
+        <%}%>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+  <div class="d-flex justify-content-end">
+    <form
+      action="/librarian/confirm-return-book?_method=put"
+      method="post"
+      name="formSubmit"
+    >
+      <input type="hidden" name="selectBorrowReturnCard" /><br />
+      <button class="submit-btn" type="submit" onclick="DoSubmit()">
+        Xác nhận
+      </button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,118 @@
+<%- contentFor('head') %>
+<title>Mua sách</title>
+<script src="/socket.io/socket.io.js"></script>
+<link rel="stylesheet" href="/public/css/pages/reader/cart.css" />
+<script src="/public/js/checkout.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/brands.min.css"
+  integrity="sha512-bSncow0ApIhONbz+pNI52n0trz5fMWbgteHsonaPk42JbunIeM9ee+zTYAUP1eLPky5wP0XZ7MSLAPxKkwnlzw=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
+
+<%- contentFor('body') %> <%- include('../partials/header/reader-header.ejs') %>
+<div class="page-content-wrapper">
+  <div class=""><p>Địa chỉ nhận hàng</p></div>
+  <div class="d-flex flex-row pb-3">
+    <div class="col px-1">
+      <select id="province_select" name="province" class="form-select"  aria-label="Tỉnh/Thành Phố" onchange="changeProvince(event)">
+        <option value="-1" disabled selected>Tỉnh/Thành Phố</option>
+      </select>
+    </div>
+    <div class="col px-1">
+      <select id="district_select" name="district" class="form-select"  aria-label="Quận/Huyện" onchange="changeDistrict(event)">
+        <option value="-1" disabled selected>Quận/Huyện</option>
+      </select>
+    </div>
+    <div class="col px-1">
+      <select id="ward_select" name="ward" class="form-select"  aria-label="Xã/Phường" onchange="changeWard(event)">
+        <option value="-1" disabled selected>Xã/Phường</option>
+      </select>
+    </div>
+    
+  </div>
+  <table class="table">
+    <thead>
+      <th></th>
+      <th>Tên sách</th>
+      <th>Đơn giá</th>
+      <th>Số lượng</th>
+      <th>Thành tiền</th>
+    </thead>
+    <tbody>
+      <% bookHeads.forEach((bookHead, index)=>{ %>
+        <tr>
+        <td>
+          <img
+            class="small-img-container"
+            src="<%= bookHead.anh_bia %>"
+            alt=""
+          />
+        </td>
+        <td>
+          <a href="/book-head/<%= bookHead._id%>"
+            ><strong><%= bookHead.ten_dau_sach %></strong></a
+          >
+        </td>
+        <td><%= new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(bookHead.gia)%></td>
+        <td><%= bookHead.so_luong_hang %></td>
+        <td> <%= new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(bookHead.so_luong_hang * bookHead.gia)%></td>
+      </tr>
+      <% }) %>     
+      <tr>
+        <td colspan="5">
+          <div class="row">
+            <div class="col-6 col-sm-6 col-md-8 col-lg-10 text-end my-auto">Tổng số tiền:</div>
+            <div 
+              class="col-6 col-sm-6 col-md-4 col-lg-2 fs-4" 
+              style="color: #ee4d2d; font-weight: 500"
+            >
+              <%=new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(total) %>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="5">
+          <div class="row">
+            <div class="col-6 col-sm-6 col-md-8 col-lg-10 text-end my-auto">Hình thức thanh toán:</div>
+            <div class="col-6 col-sm-6 col-md-4 col-lg-2">
+              <form action="/reader/checkout" method="post" onsubmit="submitOrder(event)">
+                  <input type="text" name="ward" id="text_ward" hidden>
+                  <input type="text" name="district" id="text_district" hidden>
+                  <input type="text" name="province" id="text_province" hidden>
+                  <% bookHeads.forEach((bookHead, index)=>{ %>
+                    <input type="text" name="books" hidden value="<%= bookHead._id %>" />
+                    <input
+                      type="number"
+                      name="<%= bookHead._id %>"
+                      hidden
+                      value="<%= bookHead.so_luong_hang %>"
+                    />  
+                  <% }) %>    
+                  <select name="payment" id="" class="form-control" style="max-width: 250px">
+                    <option value="cod">Thanh toán khi nhận hàng</option>
+                    <option value="paypal">Thanh toán bằng Paypal</option>
+                  </select>
+                  <button type="submit" id="submit_btn" hidden >Đặt hàng</button>
+              </form>
+            </div>
+          </div>  
+        </td>
+      </tr>
+      <tr>
+        <td colspan="5">
+          <div class="row">
+            <div class="col-6 col-sm-6 col-md-8 col-lg-10 text-end my-auto"></div>
+            <div class="col-6 col-sm-6 col-md-4 col-lg-2">
+                <label for="submit_btn" class="px-5 py-2 mx-0" style="background-color: #ee4d2d; color: #fff;" >Đặt hàng</label>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+
+</div>
