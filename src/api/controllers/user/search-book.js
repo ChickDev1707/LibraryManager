@@ -26,7 +26,7 @@ async function showBookDetail(req, res) {
 
         //console.log(bookHead)
         res.render(bookDetailView, {
-            readerId: readerCard.id,
+            readerId: readerCard != null ? readerCard.id : "1234567898765",
             bookHead: bookHead,
             errorMessage: req.query.errorMessage
         })
