@@ -135,13 +135,3 @@ Validator.isConfirmed = function (selector, getConfrimValue, message) {
         }
     }
 }
-
-Validator.isNumber = function (selector, message) {
-    return {
-        selector: selector,
-        test: function (value) {
-            var regex = /^-?\d+$/
-            return regex.test(value) ? undefined : message || 'Trường này phải là kiểu số'
-        }
-    }
-}
