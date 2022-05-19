@@ -20,16 +20,19 @@ async function searchBook(req, res) {
 async function showBookDetail(req, res) {
     try {
         const user = await req.user
-        const readerCard = await Reader.findOne({id_account: user.id})
         const bookDetailView = getBookDetailView(user)
         const bookHead = await searchBookService.showBookDetail(req.params.id)
 
-        //console.log(bookHead)
-        res.render(bookDetailView, {
-            readerId: readerCard != null ? readerCard.id : "1234567898765",
+        const data = {
             bookHead: bookHead,
             errorMessage: req.query.errorMessage
-        })
+        }
+        if(bookDetailView == "reader/book-detail.ejs"){
+            const readerCard = await Reader.findOne({id_account: user.id})
+            data.readerId = readerCard.id
+        }
+        res.render(bookDetailView, data)
+
         //res.json(user)
     } catch (error) {
         res.redirect('/')
