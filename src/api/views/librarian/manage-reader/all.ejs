@@ -91,7 +91,8 @@
                         data-bs-target="#viewReader<%= key %>" 
                         class="icon-btn"
                         >
-                        <i class="far fa-question-circle"></i>
+                        <i class="far fa-question-circle" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                        title="Thông tin chi tiết"></i>
                         
                     </button>
                     <%- include('./view.ejs',{key:key,reader:reader}) %> 
@@ -104,14 +105,16 @@
                             data-bs-target="#editReader<%= key %>" 
                             class="icon-btn"
                             >
-                            <i class="fas fa-edit"></i>
+                            <i class="fas fa-edit" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                            title="Chỉnh sửa"></i>
                             
                         </button>
                         <%- include('./edit.ejs',{key:key,reader:reader}) %> 
                     </div>
                     <form class="form-primary" action="/librarian/reader/<%= reader._id %>?_method=DELETE" method="POST">
                         <button class="icon-btn danger" type="submit">
-                            <i class="far fa-trash-alt"></i>
+                            <i class="far fa-trash-alt" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                            title="Xóa"></i>
                             
                         </button>
                     </form>  
@@ -154,4 +157,4 @@
 </table>
 </div>
 
-
+<script src="../../../../public/js/tooltips.js"></script>

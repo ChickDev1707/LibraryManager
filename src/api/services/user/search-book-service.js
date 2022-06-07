@@ -1,6 +1,7 @@
 const BookHead = require('../../models/book-head.js')
 const BookCategory = require('../../models/book-category.js')
 const Comment = require('../../models/comment.js')
+const BorrowReturnCart = require('../../models/borrow-return-card')
 
 //autocomplete search
 
@@ -69,25 +70,97 @@ async function showBookDetail(id){
 }
 
 //post comment 
-async function comment(readerId, bookHeadId, commentInput){
+async function comment(readerId, bookHeadId, commentInput, voteStart){
+    const bookHead = await BookHead.findById(bookHeadId).populate('cac_nhan_xet')
+    var vote = Number(voteStart)
+    var daBinhLuan = false
+    for(i=0; i< bookHead.cac_nhan_xet.length; i++){
+        if(bookHead.cac_nhan_xet[i].doc_gia.equals(readerId)){
+            daBinhLuan = true
+            break
+        }
+        console.log(bookHead.cac_nhan_xet[i].sao_danh_gia)
+        vote = vote + bookHead.cac_nhan_xet[i].sao_danh_gia
+    }
+    if(daBinhLuan){
+        return "Đã bình luận";
+    }
+
+    vote = vote/(bookHead.cac_nhan_xet.length+1)
+    
     let comment = new Comment({
         doc_gia: readerId,
         noi_dung: commentInput,
-        ngay_dang: Date.now()
+        ngay_dang: Date.now(),
+        sao_danh_gia: voteStart
     })
     await comment.save()
+    
+    
     const update = {$push:{
         cac_nhan_xet: {
             $each: [comment.id],
             $position: 0
         }
+    },
+    $set:{
+        sao_danh_gia: vote
     }}
     await BookHead.findByIdAndUpdate(bookHeadId, update, {useFindAndModify: false}).exec()
+    
+    return "Thành công";
+}
+//put update comment
+async function editComment(bookHeadId, commentId, commentInput, voteStart){
+    const filter = { _id: commentId };
+    const updateCM = { noi_dung: commentInput, sao_danh_gia: voteStart };
+    let updateComment = await Comment.findOneAndUpdate(filter,updateCM,{new:true}).exec()
+
+    var vote = 0
+    const bookHead = await BookHead.findById(bookHeadId).populate('cac_nhan_xet')
+    for(i=0; i< bookHead.cac_nhan_xet.length; i++){
+        console.log(bookHead.cac_nhan_xet[i].sao_danh_gia)
+        vote = vote + bookHead.cac_nhan_xet[i].sao_danh_gia
+    }
+
+    vote = vote/bookHead.cac_nhan_xet.length
+    
+    const update = {$set:{
+        sao_danh_gia: vote
+    }}
+    await BookHead.findByIdAndUpdate(bookHeadId, update, {useFindAndModify: false}).exec()
+    
+    return "Thành công";
+}
+
+//delete comment
+async function deleteComment(bookHeadId, commentId){
+   const deleteComment = {$pull: {cac_nhan_xet: commentId}}
+   await BookHead.updateOne({_id: bookHeadId}, deleteComment)
+
+   var vote = 0
+    const bookHead = await BookHead.findById(bookHeadId).populate('cac_nhan_xet')
+    for(i=0; i< bookHead.cac_nhan_xet.length; i++){
+        console.log(bookHead.cac_nhan_xet[i].sao_danh_gia)
+        vote = vote + bookHead.cac_nhan_xet[i].sao_danh_gia
+    }
+
+    vote = vote/bookHead.cac_nhan_xet.length
+    
+    const update = {$set:{
+        sao_danh_gia: vote
+    }}
+    await BookHead.findByIdAndUpdate(bookHeadId, update, {useFindAndModify: false}).exec()
+    
+   await Comment.deleteOne({_id: commentId})
+   return "Thành công";
 }
 
 module.exports = {
     searchBook,
     showBookDetail,
     comment,
-    autocompleteSearch
+    autocompleteSearch,
+    editComment,
+    deleteComment
 }

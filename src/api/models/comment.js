@@ -14,6 +14,10 @@ const CommentSchema = new mongoose.Schema({
         type: Date,
         required: true,
         default: Date.now()
+    },
+    sao_danh_gia:{
+        type: Number,
+        required: true
     }
 })
 
