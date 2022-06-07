@@ -16,8 +16,8 @@ const orderSchema = new mongoose.Schema(
           type: Number,
         },
         gia: {
-          type: Number
-        }
+          type: Number,
+        },
       },
     ],
     tinh_trang: {
@@ -31,12 +31,16 @@ const orderSchema = new mongoose.Schema(
     paypal: {
       _id: {
         type: String,
-        default: ''
+        default: "",
       },
-      refund: {
+      hoan_tien: {
         type: String,
-        default: ''
-      }
+        default: "",
+      },
+      tong_tien: {
+        type: Number,
+        min: 0,
+      },
     },
     da_thanh_toan: {
       type: Boolean,
@@ -44,7 +48,7 @@ const orderSchema = new mongoose.Schema(
     },
     da_hoan_tien: {
       type: Boolean,
-      default: false
+      default: false,
     },
     tong_tien: {
       type: Number,
@@ -52,26 +56,26 @@ const orderSchema = new mongoose.Schema(
     },
     dia_chi: {
       xa: {
-        type: String, 
-        default: ''
+        type: String,
+        default: "",
       },
       huyen: {
-        type: String, 
-        default: ''
+        type: String,
+        default: "",
       },
       tinh: {
-        type: String, 
-        default: ''
-      }
+        type: String,
+        default: "",
+      },
     },
     so_dien_thoai: {
       type: String,
-      default: ''
+      default: "",
     },
     chu_thich: {
-      type: String, 
-      default: ''
-    }
+      type: String,
+      default: "",
+    },
   },
   { timestamps: true }
 );
