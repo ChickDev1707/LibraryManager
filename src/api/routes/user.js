@@ -37,6 +37,8 @@ module.exports = function(passport){
   router.route('/books/page/:id')
         .get(userAuth.decideAllBookPage, allBookController.getPage)
   
+  router.route('/autocomplete/').get(searchBookController.autocompleteSearch)
+
   return router
 }
 
