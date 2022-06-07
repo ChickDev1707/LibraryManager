@@ -15,6 +15,7 @@ const {checkNewBorrow} = require('../middlewares/borrow-book')
 
 const confirmBook=require('../controllers/librarian/confirm-return-book.js')
 const readerController=require('../controllers/librarian/manage-reader')
+const orderController = require("../controllers/librarian/order");
 
 router.use(userAuth.checkAuthenticatedAsLibrarian)
 // auth
@@ -102,4 +103,9 @@ router.route('/api/notification')
       .get(notificationController.returnNotifications)
       .post(notificationController.clientSideReadNotEvent)
 
+// Order
+router.route("/order")
+      .get(orderController.getOrders)
+router.route("/order/:id")
+      .put(orderController.updateOrder);
 module.exports = router

@@ -52,7 +52,8 @@ async function saveBook(req, res){
         gia: req.body.gia,
         so_luong: req.body.so_luong,
         tom_tat: req.body.tom_tat,
-        so_luong_kha_dung: req.body.so_luong
+        so_luong_kha_dung: req.body.so_luong,
+        so_luong_ban: req.body.so_luong_ban
     }
 
     //Save book data
@@ -116,7 +117,8 @@ async function updateBook(req, res){
             nha_xuat_ban: req.body.nha_xuat_ban,
             ngay_nhap: req.body.ngay_nhap,
             gia: req.body.gia,
-            tom_tat: req.body.tom_tat
+            tom_tat: req.body.tom_tat,
+            so_luong_ban: req.body.so_luong_ban
         };
         
         const result = await updateBookData(id, newBook, req.body.anh_bia)

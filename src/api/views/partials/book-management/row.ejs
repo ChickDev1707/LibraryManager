@@ -8,11 +8,11 @@
   <td scope="col" class="date"><%= book.ngay_nhap.toLocaleDateString('en-GB')%></td>
   <td scope="col" class="price"><%= book.gia %></td>
   <td scope="col" class="quantity"><%= book.so_luong %></td>
+  <td scope="col" class="sale_quantity"><%= book.so_luong_ban %></td>
   <td scope="col" class="tom_tat d-none" ><%= book.tom_tat%></td>
   <td scope="col" class="action-container change-col">  
     <form action="/book-head/<%= book._id %>" method="GET">
-      <button type="submit" class="icon-btn"><i class="far fa-question-circle" data-bs-toggle="tooltip" data-bs-placement="bottom"
-        title="Thông tin chi tiết"></i></button>  
+      <button type="submit" class="icon-btn"><i class="far fa-question-circle"></i></button>  
     </form>
     <button 
       class="icon-btn"
@@ -20,8 +20,7 @@
       data-bs-toggle="modal" 
       data-bs-target="#edit_modal_<%=book._id%>"
     >
-      <i class="fas fa-edit" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="bottom"
-      title="Chỉnh sửa"></i>
+      <i class="fas fa-edit" aria-hidden="true"></i>
     </button>
     
     <button 
@@ -29,8 +28,7 @@
       type="button"
       onclick="deleteBook('<%=book._id %>')"
     >
-      <i class="fas fa-trash-alt" data-bs-toggle="tooltip" data-bs-placement="bottom"
-      title="Xóa"></i>
+      <i class="fas fa-trash-alt"></i>
     </button>
   </td>
 </tr>

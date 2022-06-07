@@ -225,6 +225,27 @@
                                         Vui lòng nhập giá sách
                                     </div>
                                 </div>
+
+                                <div class="mb-3 input-item">
+                                    <label for="so_luong" class="input_lable">
+                                        Số lượng bán:
+                                    </label>
+                                    <input
+                                        name="so_luong_ban"
+                                        id="so_luong"
+                                        type="number"
+                                        value="<%= book?book.so_luong_ban:'' %>"
+                                        required
+                                        class="input-primary text-truncate input-field"
+                                        placeholder="Số lượng"
+                                        min="0"
+                                        disabled
+                                    />
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập số lượng sách bán ra
+                                    </div>
+                                </div>
+
                                 <div class="mb-3 input-item">
                                     <label for="so_luong" class="input_lable">
                                         Số lượng:
@@ -241,7 +262,7 @@
                                         disabled
                                     />
                                     <div class="invalid-feedback">
-                                        Vui lòng nhập số lượng sách
+                                        Vui lòng nhập số lượng sách cho mượn
                                     </div>
                                 </div>
                     
