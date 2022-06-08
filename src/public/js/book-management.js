@@ -106,7 +106,7 @@ function submitEdit(event) {
                                 $(`tr#row_${result.book._id} td.price`).html(book.gia);
                                 $(`tr#row_${result.book._id} td.quantity`).html(book.so_luong);
                                 $(`tr#row_${result.book._id} td.tom_tat`).html(book.tom_tat);
-
+                                $(`tr#row_${result.book._id} td.sale_quantity`).html(book.so_luong_ban);
 
                                 var url = 'url(' + result.anh_bia + ')'
                                 $("button.filepond--file-action-button.filepond--action-remove-item").click()

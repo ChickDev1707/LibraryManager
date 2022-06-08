@@ -216,7 +216,26 @@
                                 </div>
                                 <div class="mb-3 input-item">
                                     <label for="so_luong" class="input_lable">
-                                        Số lượng:
+                                        Số lượng bán:
+                                    </label>
+                                    <input
+                                        name="so_luong_ban"
+                                        id="so_luong"
+                                        type="number"
+                                        value="<%= book?book.so_luong_ban:'' %>"
+                                        required
+                                        class="input-primary text-truncate input-field"
+                                        placeholder="Số lượng"
+                                        min="0"
+                                        disabled
+                                    />
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập số lượng sách bán ra
+                                    </div>
+                                </div>
+                                <div class="mb-3 input-item">
+                                    <label for="so_luong" class="input_lable">
+                                        Số lượng cho mượn:
                                     </label>
                                     <input
                                         name="so_luong"
@@ -230,7 +249,7 @@
                                         disabled
                                     />
                                     <div class="invalid-feedback">
-                                        Vui lòng nhập số lượng sách
+                                        Vui lòng nhập số lượng sách cho mượn
                                     </div>
                                 </div>
                     
@@ -242,7 +261,7 @@
                                         name="tom_tat"
                                         id="tom_tat"
                                         class="input-primary input-field"
-                                        style="min-height: 285px;"
+                                        style="min-height: 205px;"
                                         required
                                         disabled
                                     ><%= book?book.tom_tat:'' %></textarea>

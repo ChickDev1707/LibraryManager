@@ -178,7 +178,27 @@
 
                             <div class="mb-3 input-item">
                                 <label for="so_luong" class="input_lable">
-                                    Số lượng:
+                                    Số lượng bán:
+                                </label>
+                                <input
+                                    name="so_luong_ban"
+                                    id="so_luong_ban"
+                                    type="number"
+                                    value=""
+                                    required
+                                    class="text-truncate input-field"
+                                    placeholder="Số lượng bán"
+                                    min="0"
+                                    
+                                />
+                                <div class="invalid-feedback">
+                                    Vui lòng nhập số lượng sách bán ra
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3 input-item">
+                                <label for="so_luong" class="input_lable">
+                                    Số lượng cho mượn:
                                 </label>
                                 <input
                                     name="so_luong"
@@ -187,14 +207,15 @@
                                     value=""
                                     required
                                     class="text-truncate input-field"
-                                    placeholder="Số lượng"
+                                    placeholder="Số lượng cho mượn"
                                     min="0"
                                     
                                 />
                                 <div class="invalid-feedback">
-                                    Vui lòng nhập số lượng sách
+                                    Vui lòng nhập số lượng sách cho mượn
                                 </div>
                             </div>
+
                 
                             <div class="input-item" >
                                 <label for="tom_tat" class="input_lable">
@@ -204,7 +225,7 @@
                                     name="tom_tat"
                                     id="tom_tat"
                                     class="input-primary input-field"
-                                    style="min-height: 270px;"
+                                    style="min-height: 205px;"
                                     required
                                     
                                 ></textarea>
@@ -226,4 +247,3 @@
       </div>
     </div>
   </div>
-

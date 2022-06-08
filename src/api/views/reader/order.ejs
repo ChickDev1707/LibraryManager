@@ -1,0 +1,79 @@
+<%- contentFor('head') %>
+<title>Đơn hàng</title>
+<script src="/socket.io/socket.io.js"></script>
+<link rel="stylesheet" href="/public/css/pages/reader/cart.css" />
+<%- contentFor('body') %> <%- include('../partials/header/reader-header.ejs') %>
+<div class="page-content-wrapper">
+  <h2 class="page-title">Đơn hàng của bạn</h2>
+  <table class="table">
+    <thead>
+      <td colspan="2">
+        <div class="row justify-content-between">
+          <div class="col">
+            <span> Mã đơn hàng:</span>
+            <span style="font-weight: 500"><%= order._id %></span>
+          </div>
+          <div class="col d-flex flex-row justify-content-center">
+            <span class="my-auto text-end"> Hình thức thanh toán: </span>
+            <span style="font-weight: 500"><%=order.hinh_thuc_thanh_toan==0?"COD":"paypal" %></span>
+          </div>
+          <div class="col d-flex flex-row justify-content-end">
+            <span>Tình trạng đơn hàng:</span>
+            <span  style="font-weight: 500"> <%= order.tinh_trang_don_hang %></span>
+          </div>
+        </div>
+      </td>
+    </thead>
+    <tbody>
+      <tr></tr>
+      <tr class="mb-2">
+        <td colspan="2">
+          <% order.gio_hang.forEach((book, index)=>{ %>
+          <div class="d-flex flex-row">
+            <div class="pb-2 px-2">
+              <img
+                src="<%= book.dau_sach.anh_bia %>"
+                alt=""
+                width="90px"
+                height="141px"
+              />
+            </div>
+            <div class="col text-start"><%= book.dau_sach.ten_dau_sach %></div>
+            <div class="col text-center" style="color: #ee4d2d; font-weight: 400"><%= new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(book.dau_sach.gia) %></div>
+            <div class="col text-center">Số lượng: <%= book.so_luong %></div>
+            <div class="col text-center" style="color: #ee4d2d; font-weight: 400"><%= new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(book.so_luong*book.dau_sach.gia)%></div>
+          </div>
+          <% }) %>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <div class="d-flex flex-row">
+            <div class="pb-2 px-2">
+              <form action="<%=order._id%>?_method=put" method="post">
+                <% if(order.tinh_trang == 0){ %>
+                  <input type="text" name="newStatus" value="-2" hidden>
+                  <button class="px-5 py-2" style="background-color: #ee4d2d; color: #fff;" type="submit">Hủy</button>
+                <% } %>
+                <% if(order.tinh_trang == 3){ %>
+                  <input type="text" name="newStatus" value="4" hidden>
+                  <button class="px-5 py-2" style="background-color: #ee4d2d; color: #fff;" type="submit">Đã nhận hàng</button>
+                <% } %>
+              </form>
+            </div>
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col d-flex flex-row align-items-center">
+              <span class="my-auto text-end px-2">Tổng số tiền:</span>
+              <div class="fs-4 px-2" style="color: #ee4d2d; font-weight: 500">
+                <%=new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.tong_tien) %>
+              </div>  
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  </form>
+</div>

@@ -1,0 +1,38 @@
+<%- contentFor('head') %>
+<title>Đơn hàng</title>
+<script src="/socket.io/socket.io.js"></script>
+<link rel="stylesheet" href="/public/css/pages/reader/cart.css" />
+<%- contentFor('body') %> <%- include('../partials/header/reader-header.ejs') %>
+<div class="page-content-wrapper">
+  <h2 class="page-title">Đơn hàng của bạn</h2>
+  <table class="table">
+    <tbody>
+      <% orders.forEach((order, index)=>{ %>
+      <tr class="pt-3">
+        <td><a href="/reader/yourOrder/<%= order._id %>">id: <%= order._id %></a> </td>
+        <td class="text-end">Tình trạng: <%= status[order.tinh_trang] %></td>
+      </tr>
+      <tr class="mb-2">
+        <td colspan="2">
+          <% order.gio_hang.forEach((book, index)=>{ %>
+          <div class="row">
+            <div class="col pb-2">
+              <img
+                src="<%= book.dau_sach.anh_bia %>"
+                alt=""
+                width="90px"
+                height="141px"
+              />
+            </div>
+            <div class="col"><%= book.dau_sach.ten_dau_sach %></div>
+            <div class="col"><%= book.dau_sach.gia %>đ</div>
+            <div class="col">sl: <%= book.so_luong %></div>
+          </div>
+          <% }) %>
+        </td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+  </form>
+</div>

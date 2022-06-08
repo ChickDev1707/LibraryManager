@@ -220,7 +220,7 @@ async function importBooksByExcel(reqFile){
     var sheet_name_list = workbook.SheetNames;
     var xlData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]], 
         {
-            header:["stt", "ten_dau_sach", "the_loai", "tac_gia", "nha_xuat_ban", "nam_xuat_ban", "ngay_nhap", "gia", "so_luong", "tom_tat"],
+            header:["stt", "ten_dau_sach", "the_loai", "tac_gia", "nha_xuat_ban", "nam_xuat_ban", "ngay_nhap", "gia", "so_luong", "so_luong_ban", "tom_tat"],
             raw: false,
             range: 1
         });
@@ -251,6 +251,7 @@ async function importBooksByExcel(reqFile){
                 ngay_nhap: new Date(bookItem.ngay_nhap),
                 gia: parseInt(bookItem.gia),
                 so_luong: parseInt(bookItem.so_luong),
+                so_luong_ban: parseInt(bookItem.so_luong_ban),
                 so_luong_kha_dung: parseInt(bookItem.so_luong),
                 tom_tat: bookItem.tom_tat
             })

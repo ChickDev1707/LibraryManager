@@ -13,6 +13,7 @@ const passportConfig = require('./config/passport-config.js')
 const notificationConfig = require('./config/notification-config.js')
 const path = require('path')
 const cors = require('cors')
+const paypal = require("paypal-rest-sdk");
 global.appRoot = path.resolve(__dirname, "..");
 // includes routes
 const librarianRoute=require('./api/routes/librarian')
@@ -73,4 +74,14 @@ db.once('open', ()=> console.log('connected to mongoose'))
 
 notificationConfig.init(io)
 // listen
+
+//Paypal configuration
+paypal.configure({
+  mode: "sandbox", //sandbox or live
+  client_id:
+    "AdWjnM3tOmiZuf7v7YLW5ltDThViufjUPtISkyMCtLz4FwYfR8MXHqDIC1wubDaZPJ1-M0jJyMKE93_r",
+  client_secret:
+    "EKbtcL2kWlFMa5ywN4KqqE2cCS8wIAHByvBKGbm8Ltr_wGpLTE3WkMLAwYtpqBnqIHT-DDQz_z7QAUeP",
+});
+
 server.listen(process.env.PORT || port)

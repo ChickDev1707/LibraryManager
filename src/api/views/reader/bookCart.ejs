@@ -1,0 +1,74 @@
+
+<%- contentFor('head') %>
+<title>Giỏ hàng</title>
+<script src="/socket.io/socket.io.js"></script>
+<link rel="stylesheet" href="/public/css/pages/reader/cart.css">
+<script src="/public/js/buy.js"></script>
+
+<%- contentFor('body') %> 
+<%- include('../partials/header/reader-header.ejs') %> 
+<div class="page-content-wrapper">
+  <h2 class="page-title">Giỏ hàng của bạn</h2>
+  <div class="d-flex justify-content-start" style="margin: 2rem 0 1rem 0">
+    <button class="submit-btn" onclick="selectAll()">Chọn tất cả</button>
+    <!-- <form style="margin-left: 1rem;" action="/reader/cart/register-tickets?_method=DELETE" method="POST" onsubmit="confirmDelete()">
+      <input id="delete-selected-book-heads-input" name="bookHeads" value="" type="text" hidden >
+      <button type="submit" class="submit-btn">Xóa</button>
+    </form> -->
+  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <td>STT</td>
+        <td>Chọn</td>
+        <td>Ảnh</td>
+        <td>Tên sách</td>
+        <td>Tác giả</td>
+        <td colspan="3" class="text-center">Số lượng</td>
+        <td>Xóa</td>
+      </tr>
+    </thead>
+    <tbody>
+      <% bookHeads.forEach((bookHead, index)=>{ %>
+        <tr id="<%= bookHead.dau_sach._id%>_row">
+          <td><%= index + 1 %> </td>
+          <td><input class="form-check-input cb-select-book-head" type="checkbox" checked value="<%= bookHead.dau_sach._id%>"></td>
+          <td><img class="small-img-container" src="<%= bookHead.dau_sach.anh_bia %>" alt=""></td>
+          <td><a href="/book-head/<%= bookHead.dau_sach._id%>"><strong><%= bookHead.dau_sach.ten_dau_sach %></strong></a></td>
+          <td><%= bookHead.dau_sach.tac_gia %> </td>
+            <td>                    
+                <form action="/reader/bookCart" method="DELETE" onsubmit="removeBook(event)">
+                    <input name="bookHeadId" type="text" hidden value="<%= bookHead.dau_sach._id%>">
+                    <input name="remove" type="text" hidden value="false">
+                    <button class="icon-btn" id="<%= bookHead.dau_sach._id%>_remove" type="submit"  <%= bookHead.so_luong<=1?"disabled":"" %> ><i class="fa fa-minus"></i></button>
+                </form>
+            </td>
+            <td id="<%= bookHead.dau_sach._id%>_amount"><%= bookHead.so_luong %> </td>
+            <td>                    
+                <form action="/reader/bookCart/json" method="POST" onsubmit="addBook(event)">
+                    <input name="bookHeadId" type="text" hidden value="<%= bookHead.dau_sach._id%>">
+                    <button class="icon-btn" type="submit"><i class="fas fa-plus"></i></button>
+                </form>
+            </td>
+          <td>
+              <form action="/reader/bookCart" method="DELETE" onsubmit="removeBook(event)">
+                <input name="remove" type="text" hidden value="true">
+                <input name="bookHeadId" type="text" hidden value="<%= bookHead.dau_sach._id%>">
+                <button class="icon-btn" type="submit"><i class="fas fa-trash"></i></button>
+              </form>
+          </td>    
+        </tr>
+      <% }) %> 
+    </tbody>
+  </table>
+  <form method="POST" action="/reader/checkout?_method=PUT" onsubmit="confirmOrder()">
+    <div class="row input-row">
+      <input id="register-selected-book-heads-input" name="bookHeads" value="" type="text" hidden >
+      <div class="col d-flex justify-content-end">
+        <a href="/" class="cancel-btn">Cancel</a>
+        <button class="submit-btn" type="submit">Mua</button>
+      </div>
+    </div>
+  </form>
+</div>
+

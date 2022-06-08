@@ -65,7 +65,11 @@ const BookHeadSchema = new mongoose.Schema({
         type: Number,
         required: true,
         default: 0
-    }
+    },
+    so_luong_ban: {
+        type: Number,
+        required: true,
+    },
 })
 
 

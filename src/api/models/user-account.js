@@ -43,6 +43,38 @@ const UseAccount = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  gio_hang: {
+    type: [
+      {
+        dau_sach: {
+          type: mongoose.Types.ObjectId,
+          ref: "BookHead",
+        },
+        so_luong: {
+          type: Number,
+        },
+      },
+    ],
+    default: [],
+  },
+  don_hang: {
+    type: [mongoose.Types.ObjectId],
+    default: [],
+  },
+  dia_chi: {
+    xa: {
+      type: String, 
+      default: ''
+    },
+    huyen: {
+      type: String, 
+      default: ''
+    },
+    tinh: {
+      type: String, 
+      default: ''
+    }
+  },
   kich_hoat:{
     type: Boolean,
     default: false
