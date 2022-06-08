@@ -27,11 +27,16 @@ module.exports = function(passport){
   router.route('/book-head/:id').get(searchBookController.showBookDetail)
   
   //comment book route
-  router.route('/comment/:bookHeadId').post(searchBookController.comment)
+  router.route('/comment/:bookHeadId')
+        .post(searchBookController.comment)
+        .put(searchBookController.editComment)
+        .delete(searchBookController.deleteComment)
 
   router.route('/books/page/:id')
         .get(userAuth.decideAllBookPage, allBookController.getPage)
   
+  router.route('/autocomplete/').get(searchBookController.autocompleteSearch)
+
   return router
 }
 

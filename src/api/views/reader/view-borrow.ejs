@@ -3,6 +3,16 @@
 
 <%- contentFor('body') %> 
 <%- include('../partials/header/reader-header.ejs') %> 
+<% 
+function isContaint(comments, reader){
+  for (let i = 0; i < comments.length; i++) {
+    if(JSON.stringify(comments[i].doc_gia) == JSON.stringify(reader) ){
+      return true;
+    }
+  }
+  return false;
+}
+%> 
 <div class="page-content-wrapper">
   <h2 class="page-title">Các phiếu mượn sách của bạn</h2>
   <div class="d-flex justify-content-end" style="margin: 0 0 1rem 0">
@@ -23,6 +33,7 @@
         <td>Ngày mượn</td>
         <td>Thời hạn còn lại</td>
         <td>Tình trạng</td>
+        <td>bình luận sách</td>
       </tr>
     </thead>
     <tbody>
@@ -43,8 +54,14 @@
               <strong style="color: var(--green-primary);"><%= 'Đã trả' %></strong>
             <% } %> 
           </td>
+          <td>
+            <% if(!isContaint(card.dau_sach.cac_nhan_xet, card.doc_gia)){ %>
+              <a href="/book-head/<%= card.dau_sach.id %>">Bình luận tại đây</a>
+            <% } %>  
+          </td>
         </tr>
       <% }) %> 
     </tbody>
   </table>
 </div>
+

@@ -15,6 +15,15 @@
                 <div><label>Thể loại:</label> <a href="/?option=category&searchBox=<%= bookHead.the_loai.ten_the_loai %>"><%= bookHead.the_loai.ten_the_loai %></a></div>
                 <div><label>Nhà xuất bản:</label> <a href="/?option=publisher&searchBox=<%= bookHead.nha_xuat_ban %>"><%= bookHead.nha_xuat_ban %></a></div>
                 <div><label>Xuất bản năm:</label> <%= bookHead.nam_xuat_ban %></div>
+                <div class="rating">
+                    <% for( let i = 1; i <= 5; i++ ) { %>
+                        <% if (i <= bookHead.sao_danh_gia) { %>
+                            <i class='fa fa-star yellowstar'></i>
+                        <% } else {%>
+                            <i class='fa fa-star-o'></i>
+                        <% } %> 
+                    <% } %>
+                </div>
                 <div class="price"><i class="fas fa-dollar-sign"></i> <%= bookHead.gia %> VND</div>
                 <div><span>Số lượng:</span> <%= bookHead.so_luong %></div>
                 <div class="no-available"><span>Số lượng khả dụng:</span> <span><%= bookHead.so_luong_kha_dung %></span></div>
@@ -48,15 +57,28 @@
         </div>
     </div>
 
-    <div class="section-form-comment">
+    <div class="section-form-comment" id="comment-area">
         <h3 class="page-title">Nhận xét</h3>
         <% if(user == 'reader'){ %>
-            <form class="form-comment" action="/comment/<%= bookHead.id %>" method="post">
+            <form id="form-comment" class="form-comment" action="/comment/<%= bookHead.id %>" method="post">
                 <h4>Nhận xét của bạn</h4>
                 <div class="input-container">
                     <img src="/public/assets/images/user.png" alt="">
                     <div class="input-item">
-                        <textarea name="commentInput" rows="3"  placeholder="Viết nhận xét..."></textarea>
+                        <div style="display: flex;">
+                            <label for="inputEmail4" class="form-label">Nhấn vào 1 ngôi sao để xếp hạng</label>
+                            <div class='rating reader ms-3'>
+                                <i class='fa fa-star-o' id="star1" style="cursor: pointer"></i>
+                                <i class='fa fa-star-o' id="star2" style="cursor: pointer"></i>
+                                <i class='fa fa-star-o' id="star3" style="cursor: pointer"></i>
+                                <i class='fa fa-star-o' id="star4" style="cursor: pointer"></i>
+                                <i class='fa fa-star-o' id="star5" style="cursor: pointer"></i>
+                            </div> 
+                        </div>
+                        <input type="text" name="voteStart" id="voteStart" value="0" hidden>
+                        <input type="text" name="commentId" id="commentId" hidden>
+                        <textarea id="comment" name="commentInput" rows="3"  placeholder="Viết nhận xét..."></textarea>
+                        <span class="errorMessage"></span>
                     </div>
                 </div>
                 <div class="btn-container">
@@ -69,6 +91,17 @@
                 <div class="input-container">
                     <img src="/public/assets/images/user.png" alt="">
                     <div class="input-item">
+                        <div style="display: flex;">
+                            <label for="inputEmail4" class="form-label">Nhấn vào 1 ngôi sao để xếp hạng</label>
+                            <div class='rating ms-3'>
+                                <i class='fa fa-star-o' id="star1" style="cursor: pointer"></i>
+                                <i class='fa fa-star-o' id="star2" style="cursor: pointer"></i>
+                                <i class='fa fa-star-o' id="star3" style="cursor: pointer"></i>
+                                <i class='fa fa-star-o' id="star4" style="cursor: pointer"></i>
+                                <i class='fa fa-star-o' id="star5" style="cursor: pointer"></i>
+                            </div> 
+                        </div>
+                        <input type="text" value="0" hidden>
                         <textarea name="commentInput" rows="3"  placeholder="Viết nhận xét..."></textarea>
                         <input type="text" name="message" value="Đăng nhập để viết nhận xét" hidden>
                         <input type="text" name="type" value="info" hidden>
@@ -83,14 +116,43 @@
 
     <div class="section-comment">
         <% bookHead.cac_nhan_xet.forEach(comment => { %>
-            <div class="comment">
+            <div class="comment position-relative">
                 <img class="avatar" src="<%= comment.doc_gia.anh_bia %>" alt="Avatar">
                 <div class="comment-content">
-                    <b><%= comment.doc_gia.ho_ten %></b>
+                    <b><%= comment.doc_gia.ho_ten %> </b>
+
                     <i><small><%= comment.ngay_dang.toLocaleDateString("VN", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %></small></i>
-                    
+                    <div class="rating">
+                        <% for( let i = 1; i <= 5; i++ ) { %>
+                            <% if (i <= comment.sao_danh_gia) { %>
+                                <i class='fa fa-star yellowstar'></i>
+                            <% } else {%>
+                                <i class='fa fa-star-o'></i>
+                            <% } %> 
+                        <% } %>
+                    </div>
                     <div><%= comment.noi_dung %></div>
                 </div>
+                <% if (comment.doc_gia.id == readerId) { %>
+                    <div class="position-absolute top-0 end-0 mt-3">
+                        <a href="#" style="padding: 5px 13px; border-radius: 50%; background-color: #ddd;" id="dropdownSetting" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-macos mx-0 border-0 shadow" aria-labelledby="dropdownSetting">
+                            <li><a href="#comment-area" class="dropdown-item js-edit-comment" 
+                                data-id-comment = "<%= comment._id %>" 
+                                data-vote-star = "<%= comment.sao_danh_gia %>" 
+                                data-noi-dung="<%= comment.noi_dung %>"><i class="far fa-edit"></i> Chỉnh sửa nhận xét</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form id="deleteCommentForm" method="POST" action="/comment/<%= bookHead.id %>?_method=DELETE">
+                                    <input type="text" name="commentId" value="<%= comment._id %>" hidden>
+                                    <a class="dropdown-item" href="javascript:{}" onclick="document.getElementById('deleteCommentForm').submit(); return false;"><i class="far fa-trash-alt"></i> Xóa nhận xét</a>
+                                  </form>
+                            </li>
+                        </ul>
+                    </div>
+                <% } %>
             </div>
         <% }) %>   
     </div>
