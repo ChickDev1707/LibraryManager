@@ -6,7 +6,9 @@
 @import url('./elements/button.css');
 @import url('./elements/title.css');
 @import url('./elements/table.css');
+@import url('./elements/link.css');
 @import url('./components/footer.css');
+@import url('./components/notification.css');
 @import url('./elements/icon.css');
 
 *{
@@ -23,17 +25,6 @@ button{
 }
 a{
   text-decoration: none;
-}
-
-/* logo-link */
-.logo-link{
-  color: white;
-  text-decoration: none;
-  font-size: 2rem;
-  font-weight: bold;
-}
-.logo-link:hover{
-  color: var(--primary);
 }
   
 /* page-content-wrapper */

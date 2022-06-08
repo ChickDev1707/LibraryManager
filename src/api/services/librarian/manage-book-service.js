@@ -215,7 +215,7 @@ async function softDeleteBook(id){
 
 async function importBooksByExcel(reqFile){
 
-    const uploadPath = path.join('./src/public/uploads/addBook',reqFile.originalname+'')
+    const uploadPath = path.join('./src/public/uploads/addBook',reqFile.originalName+'')
     var workbook = XLSX.readFile(uploadPath);
     var sheet_name_list = workbook.SheetNames;
     var xlData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]], 

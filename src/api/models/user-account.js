@@ -75,6 +75,10 @@ const UseAccount = new mongoose.Schema({
       default: ''
     }
   },
+  kich_hoat:{
+    type: Boolean,
+    default: false
+  }
 })
 
 module.exports = mongoose.model('UseAccount', UseAccount, "TaiKhoan")

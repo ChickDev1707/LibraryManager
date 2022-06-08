@@ -8,13 +8,15 @@ function init(passport){
 
     let user = await getUserAccountByEmail(email)
     if(user == null){
-      done(null, false, {message: 'user not found'})
+      done(null, false, {message: 'Không tìm thấy người dùng'})
     }else{
       try{
         if(password == user.mat_khau){
-          return done(null, user)
+          
+          if(user.kich_hoat) return done(null, user)
+          else return done(null, false, {message: 'Tài khoản chưa được kích hoạt'})
         }else{
-          return done(null, false, {message: 'password incorrect'})
+          return done(null, false, {message: 'Mật khẩu không đúng'})
         }
       }catch(e){
         console.log(e)
