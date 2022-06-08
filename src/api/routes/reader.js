@@ -49,4 +49,5 @@ router.route('/fine')
 router.route('/api/notification')
       .get(notificationController.returnNotifications)
       .post(notificationController.clientSideReadNotEvent)
+
 module.exports = router;

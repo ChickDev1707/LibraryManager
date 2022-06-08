@@ -5,6 +5,7 @@ const BookHead = require('../../models/book-head.js')
 const Account = require('../../models/user-account')
 const policyService = require('../../services/librarian/policy.js')
 const Policy = require('../../models/policy.js')
+const {sendMail} = require('../../helpers/mailer')
 
 // confirm register borrow
 async function getUnconfirmedRegisterBorrowCard(){
@@ -39,7 +40,7 @@ async function createBorrowReturnCard(registerBorrowCardId){
 }
 
 
-async function denyRegisterBorrowCard(registerBorrowCardId){
+async function handelDenyRegisterBorrowCard(registerBorrowCardId){
   //update quantity available of book-head
   let registerBorrowCard = await RegisterBorrowCard.findById(registerBorrowCardId)
   for await(const bookHeadId of registerBorrowCard.cac_dau_sach){
@@ -80,12 +81,19 @@ async function saveNewNotification(registerBorrowCardId, not){
   await readerAccount.save()
 }
 
+async function sendNotificationByMail(registerBorrowCardId, message){
+  const registerBorrowCard = await RegisterBorrowCard.findById(registerBorrowCardId).populate('doc_gia')
+  const readerEmail = registerBorrowCard.doc_gia.email
+  sendMail(readerEmail, message)
+}
+
 module.exports={
   getUnconfirmedRegisterBorrowCard,
   updateRegisterBorrowCardStatus,
   createBorrowReturnCard,
-  denyRegisterBorrowCard,
-  saveNewNotification
+  handelDenyRegisterBorrowCard,
+  saveNewNotification,
+  sendNotificationByMail
   // denyOverdueRegisterBorrowCard, 
 }
 

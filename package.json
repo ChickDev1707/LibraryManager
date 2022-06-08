@@ -7,7 +7,8 @@
   },
   "scripts": {
     "start": "node ./src/server.js",
-    "devStart": "nodemon ./src/server.js localhost 3000"
+    "devStart": "nodemon ./src/server.js localhost 3000",
+    "test": "jest"
   },
   "dependencies": {
     "autoprefixer": "^10.3.1",
@@ -24,6 +25,8 @@
     "method-override": "^3.0.0",
     "mongoose": "^6.0.12",
     "multer": "^1.4.2",
+    "node-fetch": "^2.6.5",
+    "nodemailer": "^6.7.2",
     "nodemon": "^2.0.14",
     "passport": "^0.5.0",
     "passport-local": "^1.0.0",
@@ -32,6 +35,7 @@
     "xlsx": "^0.17.4"
   },
   "devDependencies": {
-    "dotenv": "^10.0.0"
+    "dotenv": "^10.0.0",
+    "jest": "^27.5.1"
   }
 }

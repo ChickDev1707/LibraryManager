@@ -42,6 +42,10 @@ const UseAccount = new mongoose.Schema({
   thong_bao_moi:{
     type: Boolean,
     default: false
+  },
+  kich_hoat:{
+    type: Boolean,
+    default: false
   }
 })
 
