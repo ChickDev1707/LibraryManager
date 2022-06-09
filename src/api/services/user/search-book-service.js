@@ -144,10 +144,14 @@ async function deleteComment(bookHeadId, commentId){
         console.log(bookHead.cac_nhan_xet[i].sao_danh_gia)
         vote = vote + bookHead.cac_nhan_xet[i].sao_danh_gia
     }
-
+    console.log("vote : " + vote);
+    console.log("so danh gia : " + bookHead.cac_nhan_xet.length);
+    console.log(vote/bookHead.cac_nhan_xet.length)
     if(bookHead.cac_nhan_xet.length > 0) {
         vote = vote/bookHead.cac_nhan_xet.length
     }
+
+    
     
     const update = {$set:{
         sao_danh_gia: vote
