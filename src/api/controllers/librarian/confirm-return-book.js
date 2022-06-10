@@ -50,7 +50,7 @@ async function putConfirmReturnBook(req,res){
         
         const redirectUrl=urlHelper.getEncodedMessageUrl('/librarian/confirm-return-book/',{
             type:'success',
-            message:"Đã xác nhận các phiếu mượn thành công"
+            message:"Đã xác nhận trả sách thành công"
         })
         res.redirect(redirectUrl)
 
