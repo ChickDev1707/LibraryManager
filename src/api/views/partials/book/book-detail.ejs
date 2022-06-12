@@ -45,7 +45,7 @@
                 </div>
                 <div class="price">
                     <i class="fas fa-dollar-sign"></i>
-                    <%= bookHead.gia %> VND
+                    <%= new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(bookHead.gia) %>
                 </div>
                 <div><span>Số lượng:</span>
                     <%= bookHead.so_luong %>
@@ -79,13 +79,13 @@
                     <form action="/reader/bookCart" method="POST">
                         <input name="bookHeadId" type="text" hidden value="<%= bookHead._id%>" />
                         <button class="submit-btn" type="submit" <%=bookHead.so_luong_ban==0?'disabled':''%>>
-                            <i class="fas fa-cart-plus"></i> Thêm vào giỏ sách
+                            <i class="fas fa-cart-plus"></i> Mua sách
                         </button>
                     </form>
                     <form action="/reader/favorite-books" method="POST">
                         <input name="bookHeadIdFavorite" type="text" hidden value="<%= bookHead._id%>" />
                         <button class="outline-btn" type="submit">
-                            <i class="fas fa-heart"></i> Thêm vào yêu thích
+                            <i class="fas fa-heart"></i> Yêu thích
                         </button>
                     </form>
                     <% }else if(user=='guest' ){ %>

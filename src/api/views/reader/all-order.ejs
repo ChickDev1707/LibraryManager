@@ -25,7 +25,7 @@
               />
             </div>
             <div class="col"><%= book.dau_sach.ten_dau_sach %></div>
-            <div class="col"><%= book.dau_sach.gia %>đ</div>
+            <div class="col"><%= new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(book.dau_sach.gia) %></div>
             <div class="col">sl: <%= book.so_luong %></div>
           </div>
           <% }) %>

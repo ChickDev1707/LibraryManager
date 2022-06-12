@@ -31,7 +31,7 @@ function isContaint(comments, reader){
         <td>STT</td>
         <td>Tên sách</td>
         <td>Ngày mượn</td>
-        <td>Thời hạn còn lại</td>
+        <td>Thời hạn còn lại (Ngày)</td>
         <td>Tình trạng</td>
         <td>bình luận sách</td>
       </tr>
@@ -45,6 +45,8 @@ function isContaint(comments, reader){
           <td>
             <% if(card.ngay_tra == null){ %>
               <%= card.remainDay %> 
+            <% }else{ %>
+              <%= "N/A" %> 
             <% } %>
           </td>
           <td>

@@ -4,10 +4,12 @@ const dateUtils = require('../../helpers/date.js')
 const policyServices = require('../../services/librarian/policy.js')
 
 async function searchBorrowCards(searchOptions){
-  const borrowCards = await  BorrowReturnCard.find(searchOptions).populate({
-                                                                            path : 'dau_sach',
-                                                                            populate : {path : 'cac_nhan_xet'}
-                                                                          }).exec()
+  const borrowCards = await BorrowReturnCard
+      .find(searchOptions)
+      .populate({
+        path : 'dau_sach',
+        populate : {path : 'cac_nhan_xet'}
+      }).exec()
   const viewBorrowCards = getViewBorrowCards(borrowCards)
   return viewBorrowCards
 }

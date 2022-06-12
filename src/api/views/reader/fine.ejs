@@ -21,7 +21,7 @@
         <tr>
           <td><%= index + 1 %></td>
           <td><%= card.ngay_thu.toISOString().split('T')[0] %></td>
-          <td><%= card.so_tien_thu %></td>
+          <td><%= new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(card.so_tien_thu) %></td>
           <td><%= card.con_lai %></td>
         </tr>
       <% }); %> 
