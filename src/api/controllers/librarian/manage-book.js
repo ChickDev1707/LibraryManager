@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
       cb(null, uploadPath)
     },
     filename: function (req, file, cb) {
-      cb(null, file.originalName)
+      cb(null, file.originalname)
     }
   })
 const uploadBook = multer({ storage: storage })

@@ -28,7 +28,7 @@ async function searchReader(query){
 
 async function handleAddFileExcel(reqFile){
 
-    const uploadPath = path.join('./src/public/uploads/addReader', reqFile.originalName+'')
+    const uploadPath = path.join('./src/public/uploads/addReader', reqFile.originalname+'')
     const result = excelToJson({
         sourceFile:uploadPath,
         header:{
@@ -49,6 +49,7 @@ async function handleAddFileExcel(reqFile){
         const dateOfBirth= new Date(result.Reader[i].ngay_sinh)
         const minAge= await checkMinAge(dateOfBirth)
         const maxAge= await checkMaxAge(dateOfBirth)
+        const validateMailResult = await validateMail(result.Reader[i].email)
 
         try{
             const validAccount= await Account.find({ten_tai_khoan:result.Reader[i].email})
@@ -59,6 +60,7 @@ async function handleAddFileExcel(reqFile){
             if(minAge==false||maxAge==false){
                 continue;
             }
+            if(!validateMailResult.is_smtp_valid.value) continue
             //
             const account=new Account({
                 ten_tai_khoan:result.Reader[i].email,

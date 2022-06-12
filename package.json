@@ -3,12 +3,11 @@
   "description": "a library manager",
   "version": "1.0.0",
   "engines": {
-    "node": "14.x"
+    "node": "16.x"
   },
   "scripts": {
     "start": "node ./src/server.js",
-    "devStart": "nodemon ./src/server.js localhost 3000",
-    "test": "jest"
+    "devStart": "nodemon ./src/server.js localhost 3000"
   },
   "dependencies": {
     "autoprefixer": "^10.3.1",
@@ -25,7 +24,7 @@
     "express-session": "^1.17.2",
     "method-override": "^3.0.0",
     "mongoose": "^6.0.12",
-    "multer": "^1.4.2",
+    "multer": "^1.4.4-lts.1",
     "node-fetch": "^2.6.5",
     "nodemailer": "^6.7.2",
     "nodemon": "^2.0.14",
@@ -37,7 +36,6 @@
     "xlsx": "^0.17.4"
   },
   "devDependencies": {
-    "dotenv": "^10.0.0",
-    "jest": "^27.5.1"
+    "dotenv": "^10.0.0"
   }
 }
