@@ -70,7 +70,10 @@ function confirmOrder() {
   let bookHeadsInput = document.getElementById(
     "register-selected-book-heads-input"
   );
-  let bookHeadsString = JSON.stringify(getBookHeads());
+  const bookHeads = getBookHeads();
+  if (bookHeads.length == 0)
+    showToast({ success: false, message: "Phải chọn ít nhất một quyển sách!" });
+  let bookHeadsString = JSON.stringify(bookHeads);
   bookHeadsInput.value = bookHeadsString;
 }
 

@@ -8,15 +8,15 @@ const { updateOrderById } = require("../../services/librarian/order");
 var paypal = require("paypal-rest-sdk");
 const { createPayment } = require("./payment");
 const ORDER_STATUS_NAME = {
-  '-3': "Không thành công",
-  '-2': 'Hủy',
-  '-1': 'Từ chối',
-  0: 'Chờ xác nhận',
-  1: 'Đã xác nhận',
-  2: 'Đã vận chuyển',
-  3: 'Giao hàng thành công',
-  4: 'Đã nhận hàng'
-}
+  "-3": "Không thành công",
+  "-2": "Hủy",
+  "-1": "Từ chối",
+  0: "Chờ xác nhận",
+  1: "Đã xác nhận",
+  2: "Đã vận chuyển",
+  3: "Giao hàng thành công",
+  4: "Đã nhận hàng",
+};
 
 const GetAllOrder = async (req, res) => {
   try {
@@ -46,7 +46,7 @@ const GetOrder = async (req, res) => {
       2: "Đã vận chuyển",
       3: "Đã nhận hàng",
     };
-    order.tinh_trang_don_hang = ORDER_STATUS_NAME[order.tinh_trang]
+    order.tinh_trang_don_hang = ORDER_STATUS_NAME[order.tinh_trang];
     res.render("reader/order.ejs", {
       order: order,
       status,
@@ -84,6 +84,7 @@ const AddBook = async (req, res) => {
     res.redirect(redirectUrl);
   } catch (error) {
     console.log(error);
+    const bookId = req.body.bookHeadId;
     const redirectUrl = urlHelper.getEncodedMessageUrl(
       `/book-head/${bookId}/`,
       {
@@ -91,6 +92,7 @@ const AddBook = async (req, res) => {
         message: error,
       }
     );
+    res.redirect(redirectUrl);
   }
 };
 
@@ -185,42 +187,49 @@ const checkOut = async (req, res) => {
   }
 };
 
-const CreateOrder = async (req, res)=>{
+const CreateOrder = async (req, res) => {
   try {
     const currentUser = await AccountService.getCurrentUserAccount(req);
-    const bookIds = [].concat(req.body.books)
-    const accountId = currentUser._id
-    const district = req.body.district
-    const ward = req.body.ward
-    const province = req.body.province
-    const paymentMethod = req.body.payment
+    const bookIds = [].concat(req.body.books);
+    const accountId = currentUser._id;
+    const district = req.body.district;
+    const ward = req.body.ward;
+    const province = req.body.province;
+    const paymentMethod = req.body.payment;
 
-    const account = await Account.findById(accountId).populate('gio_hang.dau_sach')
+    const account = await Account.findById(accountId).populate(
+      "gio_hang.dau_sach"
+    );
 
     if (!account)
-      throw new Error(JSON.stringify({ code: 404, message: 'Account does not exist' }))
+      throw new Error(
+        JSON.stringify({ code: 404, message: "Account does not exist" })
+      );
 
-    let total = 0
-    const orderBooks = bookIds.map(bookId => {
+    let total = 0;
+    const orderBooks = bookIds.map((bookId) => {
       const cartItem = account.gio_hang.find(
-        item => item.dau_sach._id.toString() == bookId
-      )
+        (item) => item.dau_sach._id.toString() == bookId
+      );
 
       if (!cartItem)
-        throw new Error(JSON.stringify({
-          code: 400,
-          message: 'Book and account are not valid'
-        }))
-      if (cartItem.dau_sach.so_luong_ban < cartItem.so_luong) throw new Error('Not enough')
+        throw new Error(
+          JSON.stringify({
+            code: 400,
+            message: "Book and account are not valid",
+          })
+        );
+      if (cartItem.dau_sach.so_luong_ban < cartItem.so_luong)
+        throw new Error("Not enough");
 
-      total += cartItem.dau_sach.gia * cartItem.so_luong
+      total += cartItem.dau_sach.gia * cartItem.so_luong;
 
       return {
         dau_sach: cartItem.dau_sach._id,
         so_luong: cartItem.so_luong,
-        gia: cartItem.dau_sach.gia
-      }
-    })
+        gia: cartItem.dau_sach.gia,
+      };
+    });
 
     const newOrder = new Order({
       tai_khoan: account._id,
@@ -231,117 +240,116 @@ const CreateOrder = async (req, res)=>{
       dia_chi: {
         xa: ward,
         huyen: district,
-        tinh: province
-      }
-    })
+        tinh: province,
+      },
+    });
 
-    const asyncUpdateBooks = orderBooks.map(orderItem => {
+    const asyncUpdateBooks = orderBooks.map((orderItem) => {
       return BookHead.updateOne(
         { _id: orderItem.dau_sach },
         { $inc: { so_luong_ban: -orderItem.so_luong } }
-      )
-    })
+      );
+    });
 
     //COD
-    if (paymentMethod == 'cod') {
-      newOrder.hinh_thuc_thanh_toan = 0
-      const savedOrder = await newOrder.save()
+    if (paymentMethod == "cod") {
+      newOrder.hinh_thuc_thanh_toan = 0;
+      const savedOrder = await newOrder.save();
       const asyncUpdateCart = Account.updateOne(
         { _id: accountId },
         {
           $pull: {
             gio_hang: {
-              dau_sach: { $in: bookIds }
-            }
+              dau_sach: { $in: bookIds },
+            },
           },
           $push: {
-            don_hang: savedOrder._id
-          }
-        },
-      )
-      await Promise.all([...asyncUpdateBooks, asyncUpdateCart])
+            don_hang: savedOrder._id,
+          },
+        }
+      );
+      await Promise.all([...asyncUpdateBooks, asyncUpdateCart]);
       const redirectUrl = urlHelper.getEncodedMessageUrl(
         `/reader/yourOrder/${savedOrder._id}`,
         {
-            type: "success",
-            message: "Đặt hàng thành công",
+          type: "success",
+          message: "Đặt hàng thành công",
         }
       );
-      return res.redirect(redirectUrl)
-    } else if (paymentMethod == 'paypal') {
-      //Payment by 
-      newOrder.hinh_thuc_thanh_toan = 1
-      const savedOrder = await newOrder.save()
+      return res.redirect(redirectUrl);
+    } else if (paymentMethod == "paypal") {
+      //Payment by
+      newOrder.hinh_thuc_thanh_toan = 1;
+      const savedOrder = await newOrder.save();
       const asyncUpdateCart = Account.updateOne(
         { _id: accountId },
         {
           $pull: {
             gio_hang: {
-              dau_sach: { $in: bookIds }
-            }
+              dau_sach: { $in: bookIds },
+            },
           },
           $push: {
-            don_hang: savedOrder._id
-          }
-        },
-      )
-      await Promise.all([...asyncUpdateBooks, asyncUpdateCart])
-      await createPayment(savedOrder._id, res)    
-    } else throw new Error(JSON.stringify({ code: 400, message: 'Invalid payment method' }))
+            don_hang: savedOrder._id,
+          },
+        }
+      );
+      await Promise.all([...asyncUpdateBooks, asyncUpdateCart]);
+      await createPayment(savedOrder._id, res);
+    } else
+      throw new Error(
+        JSON.stringify({ code: 400, message: "Invalid payment method" })
+      );
   } catch (error) {
-    console.log(error)
-    const redirectUrl = urlHelper.getEncodedMessageUrl(
-      `/reader/yourOrder`,
-      {
-          type: "error",
-          message: "Đặt hàng không thành công",
-      }
-    );
-    return res.redirect(redirectUrl)
+    console.log(error);
+    const redirectUrl = urlHelper.getEncodedMessageUrl(`/reader/yourOrder`, {
+      type: "error",
+      message: "Đặt hàng không thành công",
+    });
+    return res.redirect(redirectUrl);
   }
-}
+};
 
 const updateOrder = async (req, res) => {
   try {
-    const id = req.params.id
-    let newStatus = parseInt(req.body.newStatus)
-    if (newStatus !== 4 && newStatus !== -2) throw new Error('Invalid status')
+    const id = req.params.id;
+    let newStatus = parseInt(req.body.newStatus);
+    if (newStatus !== 4 && newStatus !== -2) throw new Error("Invalid status");
 
     await updateOrderById(id, newStatus, (error, order) => {
       if (error) {
-        console.log(error)
+        console.log(error);
         const redirectUrl = urlHelper.getEncodedMessageUrl(
           `/reader/yourOrder/${id}`,
           {
-              type: "error",
-              message: "Cập nhật đơn hàng không thành công",
+            type: "error",
+            message: "Cập nhật đơn hàng không thành công",
           }
         );
-        return res.redirect(redirectUrl)
+        return res.redirect(redirectUrl);
       } else {
         const redirectUrl = urlHelper.getEncodedMessageUrl(
           `/reader/yourOrder/${id}`,
           {
-              type: "success",
-              message: "Cập nhật đơn hàng thành công",
+            type: "success",
+            message: "Cập nhật đơn hàng thành công",
           }
         );
-        return res.redirect(redirectUrl)
+        return res.redirect(redirectUrl);
       }
-    })
+    });
   } catch (error) {
-    console.log(error)
-    const errorObj = JSON.parse(error)
+    console.log(error);
     const redirectUrl = urlHelper.getEncodedMessageUrl(
       `/reader/yourOrder/${id}`,
       {
-          type: "error",
-          message: "Cập nhật đơn hàng không thành công",
+        type: "error",
+        message: "Cập nhật đơn hàng không thành công",
       }
     );
-    return res.redirect(redirectUrl)
+    return res.redirect(redirectUrl);
   }
-}
+};
 
 // const CreateOrder = async (req, res) => {
 //   try {
@@ -546,5 +554,5 @@ module.exports = {
   Cancel,
   GetOrder,
   successOrder,
-  updateOrder
+  updateOrder,
 };

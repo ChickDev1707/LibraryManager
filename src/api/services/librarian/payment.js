@@ -1,5 +1,5 @@
 var paypal = require("paypal-rest-sdk");
-const fetch = require("node-fetch");
+const CC = require("currency-converter-lt");
 
 const refundPayment = (id, callback) => {
   paypal.sale.refund(id, {}, (error, response) => {
@@ -8,11 +8,14 @@ const refundPayment = (id, callback) => {
 };
 
 const convertCurrency = async () => {
-  const response = await fetch(
-    "https://free.currconv.com/api/v7/convert?q=VND_USD&compact=ultra&apiKey=6426789aa17a2b67eedb"
-  );
-  const data = await response.json();
-  return data.VND_USD;
+  try {
+    let currencyConverter = new CC({ from: "USD", to: "VND" });
+    const result = await currencyConverter.rates();
+    return 1 / result;
+  } catch (error) {
+    console.log(error);
+    return 1 / 23182;
+  }
 };
 
 module.exports = { refundPayment, convertCurrency };
